@@ -1,1018 +1,535 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>4A8A1A9CAEF0473797EE9B25</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Pods.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5438A3318D8A4BCF9AC3F9B3</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>B54EA18411124EAF8FC2BD72</key>
-		<dict>
-			<key>fileRef</key>
-			<string>FA9419B472B54ED08B208BA4</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6DB18B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A6ED18B24ACD00A5E4EB</string>
-				<string>C3A4A70618B24ACD00A5E4EB</string>
-				<string>C3A4A6E618B24ACD00A5E4EB</string>
-				<string>C3A4A6E518B24ACD00A5E4EB</string>
-				<string>4A8A1A9CAEF0473797EE9B25</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6DC18B24ACD00A5E4EB</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0500</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>Delphi</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>C3A4A6FE18B24ACD00A5E4EB</key>
-					<dict>
-						<key>TestTargetID</key>
-						<string>C3A4A6E318B24ACD00A5E4EB</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>C3A4A6DF18B24ACD00A5E4EB</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-			</array>
-			<key>mainGroup</key>
-			<string>C3A4A6DB18B24ACD00A5E4EB</string>
-			<key>productRefGroup</key>
-			<string>C3A4A6E518B24ACD00A5E4EB</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>C3A4A6E318B24ACD00A5E4EB</string>
-				<string>C3A4A6FE18B24ACD00A5E4EB</string>
-			</array>
-		</dict>
-		<key>C3A4A6DF18B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>C3A4A70E18B24ACD00A5E4EB</string>
-				<string>C3A4A70F18B24ACD00A5E4EB</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>C3A4A6E018B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C3A4A6F818B24ACD00A5E4EB</string>
-				<string>C3A4A6F418B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C3A4A6E118B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C3A4A6EA18B24ACD00A5E4EB</string>
-				<string>C3A4A6EC18B24ACD00A5E4EB</string>
-				<string>C3A4A6E818B24ACD00A5E4EB</string>
-				<string>B54EA18411124EAF8FC2BD72</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C3A4A6E218B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C3A4A6F218B24ACD00A5E4EB</string>
-				<string>C3A4A6FA18B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C3A4A6E318B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>C3A4A71018B24ACD00A5E4EB</string>
-			<key>buildPhases</key>
-			<array>
-				<string>5438A3318D8A4BCF9AC3F9B3</string>
-				<string>C3A4A6E018B24ACD00A5E4EB</string>
-				<string>C3A4A6E118B24ACD00A5E4EB</string>
-				<string>C3A4A6E218B24ACD00A5E4EB</string>
-				<string>FF416ABD8B7A46368DEC63BF</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>ScrumPlanningPoker</string>
-			<key>productName</key>
-			<string>ScrumPlanningPoker</string>
-			<key>productReference</key>
-			<string>C3A4A6E418B24ACD00A5E4EB</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>C3A4A6E418B24ACD00A5E4EB</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>ScrumPlanningPoker.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>C3A4A6E518B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A6E418B24ACD00A5E4EB</string>
-				<string>C3A4A6FF18B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6E618B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A6E718B24ACD00A5E4EB</string>
-				<string>C3A4A6E918B24ACD00A5E4EB</string>
-				<string>C3A4A6EB18B24ACD00A5E4EB</string>
-				<string>C3A4A70018B24ACD00A5E4EB</string>
-				<string>FA9419B472B54ED08B208BA4</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6E718B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>C3A4A6E818B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6E718B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6E918B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreGraphics.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreGraphics.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>C3A4A6EA18B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6E918B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6EB18B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>UIKit.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/UIKit.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>C3A4A6EC18B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6EB18B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6ED18B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A6F618B24ACD00A5E4EB</string>
-				<string>C3A4A6F718B24ACD00A5E4EB</string>
-				<string>C3A4A6F918B24ACD00A5E4EB</string>
-				<string>C3A4A6EE18B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>ScrumPlanningPoker</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6EE18B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A6EF18B24ACD00A5E4EB</string>
-				<string>C3A4A6F018B24ACD00A5E4EB</string>
-				<string>C3A4A6F318B24ACD00A5E4EB</string>
-				<string>C3A4A6F518B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6EF18B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>ScrumPlanningPoker-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6F018B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A6F118B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6F118B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6F218B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6F018B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6F318B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>main.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6F418B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6F318B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6F518B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>ScrumPlanningPoker-Prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6F618B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>AppDelegate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6F718B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>AppDelegate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6F818B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6F718B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6F918B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Images.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A6FA18B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6F918B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A6FB18B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C3A4A70D18B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C3A4A6FC18B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C3A4A70118B24ACD00A5E4EB</string>
-				<string>C3A4A70318B24ACD00A5E4EB</string>
-				<string>C3A4A70218B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C3A4A6FD18B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C3A4A70B18B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C3A4A6FE18B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>C3A4A71318B24ACD00A5E4EB</string>
-			<key>buildPhases</key>
-			<array>
-				<string>C3A4A6FB18B24ACD00A5E4EB</string>
-				<string>C3A4A6FC18B24ACD00A5E4EB</string>
-				<string>C3A4A6FD18B24ACD00A5E4EB</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>C3A4A70518B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>ScrumPlanningPokerTests</string>
-			<key>productName</key>
-			<string>ScrumPlanningPokerTests</string>
-			<key>productReference</key>
-			<string>C3A4A6FF18B24ACD00A5E4EB</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>C3A4A6FF18B24ACD00A5E4EB</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>ScrumPlanningPokerTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>C3A4A70018B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>XCTest.framework</string>
-			<key>path</key>
-			<string>Library/Frameworks/XCTest.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>C3A4A70118B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A70018B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A70218B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6E718B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A70318B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A6EB18B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A70418B24ACD00A5E4EB</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>C3A4A6DC18B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>C3A4A6E318B24ACD00A5E4EB</string>
-			<key>remoteInfo</key>
-			<string>ScrumPlanningPoker</string>
-		</dict>
-		<key>C3A4A70518B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>C3A4A6E318B24ACD00A5E4EB</string>
-			<key>targetProxy</key>
-			<string>C3A4A70418B24ACD00A5E4EB</string>
-		</dict>
-		<key>C3A4A70618B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A70C18B24ACD00A5E4EB</string>
-				<string>C3A4A70718B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>ScrumPlanningPokerTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A70718B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A70818B24ACD00A5E4EB</string>
-				<string>C3A4A70918B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A70818B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>ScrumPlanningPokerTests-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A70918B24ACD00A5E4EB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C3A4A70A18B24ACD00A5E4EB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A70A18B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A70B18B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A70918B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A70C18B24ACD00A5E4EB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>ScrumPlanningPokerTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C3A4A70D18B24ACD00A5E4EB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C3A4A70C18B24ACD00A5E4EB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C3A4A70E18B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>C3A4A70F18B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>C3A4A71018B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>C3A4A71118B24ACD00A5E4EB</string>
-				<string>C3A4A71218B24ACD00A5E4EB</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>C3A4A71118B24ACD00A5E4EB</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>4A8A1A9CAEF0473797EE9B25</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>ScrumPlanningPoker/ScrumPlanningPoker-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>C3A4A71218B24ACD00A5E4EB</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>4A8A1A9CAEF0473797EE9B25</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>ScrumPlanningPoker/ScrumPlanningPoker-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>C3A4A71318B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>C3A4A71418B24ACD00A5E4EB</string>
-				<string>C3A4A71518B24ACD00A5E4EB</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>C3A4A71418B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/ScrumPlanningPoker.app/ScrumPlanningPoker</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>ScrumPlanningPokerTests/ScrumPlanningPokerTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>C3A4A71518B24ACD00A5E4EB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/ScrumPlanningPoker.app/ScrumPlanningPoker</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>ScrumPlanningPokerTests/ScrumPlanningPokerTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>FA9419B472B54ED08B208BA4</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>FF416ABD8B7A46368DEC63BF</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Pods-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>C3A4A6DC18B24ACD00A5E4EB</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		882C81D218C4B42C0011AD59 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882C81D118C4B42C0011AD59 /* main.storyboard */; };
+		882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C81D418C4C8D00011AD59 /* ConnectViewController.m */; };
+		885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */; };
+		8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */; };
+		88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B5BCB618D1C6DC007918E8 /* SPPProperties.m */; };
+		88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6057D18D3399900A1EB77 /* RoomViewController.m */; };
+		B54EA18411124EAF8FC2BD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9419B472B54ED08B208BA4 /* libPods.a */; };
+		C3A4A6E818B24ACD00A5E4EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */; };
+		C3A4A6EA18B24ACD00A5E4EB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E918B24ACD00A5E4EB /* CoreGraphics.framework */; };
+		C3A4A6EC18B24ACD00A5E4EB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6EB18B24ACD00A5E4EB /* UIKit.framework */; };
+		C3A4A6F218B24ACD00A5E4EB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C3A4A6F018B24ACD00A5E4EB /* InfoPlist.strings */; };
+		C3A4A6F418B24ACD00A5E4EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A4A6F318B24ACD00A5E4EB /* main.m */; };
+		C3A4A6F818B24ACD00A5E4EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A4A6F718B24ACD00A5E4EB /* AppDelegate.m */; };
+		C3A4A6FA18B24ACD00A5E4EB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3A4A6F918B24ACD00A5E4EB /* Images.xcassets */; };
+		C3A4A70118B24ACD00A5E4EB /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A70018B24ACD00A5E4EB /* XCTest.framework */; };
+		C3A4A70218B24ACD00A5E4EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */; };
+		C3A4A70318B24ACD00A5E4EB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6EB18B24ACD00A5E4EB /* UIKit.framework */; };
+		C3A4A70B18B24ACD00A5E4EB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C3A4A70918B24ACD00A5E4EB /* InfoPlist.strings */; };
+		C3A4A70D18B24ACD00A5E4EB /* ScrumPlanningPokerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A4A70C18B24ACD00A5E4EB /* ScrumPlanningPokerTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C3A4A70418B24ACD00A5E4EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C3A4A6DC18B24ACD00A5E4EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3A4A6E318B24ACD00A5E4EB;
+			remoteInfo = ScrumPlanningPoker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4A8A1A9CAEF0473797EE9B25 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		882C81D118C4B42C0011AD59 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
+		882C81D318C4C8D00011AD59 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
+		882C81D418C4C8D00011AD59 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
+		885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPBaseViewController.h; sourceTree = "<group>"; };
+		885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPBaseViewController.m; sourceTree = "<group>"; };
+		8860A78418D1F04F005C5EB1 /* SelectRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRoomViewController.h; sourceTree = "<group>"; };
+		8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRoomViewController.m; sourceTree = "<group>"; };
+		88B5BCB518D1C6DC007918E8 /* SPPProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPProperties.h; sourceTree = "<group>"; };
+		88B5BCB618D1C6DC007918E8 /* SPPProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPProperties.m; sourceTree = "<group>"; };
+		88C6057C18D3399900A1EB77 /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
+		88C6057D18D3399900A1EB77 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
+		C3A4A6E418B24ACD00A5E4EB /* ScrumPlanningPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPlanningPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C3A4A6E918B24ACD00A5E4EB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C3A4A6EB18B24ACD00A5E4EB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C3A4A6EF18B24ACD00A5E4EB /* ScrumPlanningPoker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ScrumPlanningPoker-Info.plist"; sourceTree = "<group>"; };
+		C3A4A6F118B24ACD00A5E4EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C3A4A6F318B24ACD00A5E4EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C3A4A6F518B24ACD00A5E4EB /* ScrumPlanningPoker-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ScrumPlanningPoker-Prefix.pch"; sourceTree = "<group>"; };
+		C3A4A6F618B24ACD00A5E4EB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C3A4A6F718B24ACD00A5E4EB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C3A4A6F918B24ACD00A5E4EB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		C3A4A6FF18B24ACD00A5E4EB /* ScrumPlanningPokerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScrumPlanningPokerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3A4A70018B24ACD00A5E4EB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C3A4A70818B24ACD00A5E4EB /* ScrumPlanningPokerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ScrumPlanningPokerTests-Info.plist"; sourceTree = "<group>"; };
+		C3A4A70A18B24ACD00A5E4EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C3A4A70C18B24ACD00A5E4EB /* ScrumPlanningPokerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScrumPlanningPokerTests.m; sourceTree = "<group>"; };
+		FA9419B472B54ED08B208BA4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C3A4A6E118B24ACD00A5E4EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3A4A6EA18B24ACD00A5E4EB /* CoreGraphics.framework in Frameworks */,
+				C3A4A6EC18B24ACD00A5E4EB /* UIKit.framework in Frameworks */,
+				C3A4A6E818B24ACD00A5E4EB /* Foundation.framework in Frameworks */,
+				B54EA18411124EAF8FC2BD72 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3A4A6FC18B24ACD00A5E4EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3A4A70118B24ACD00A5E4EB /* XCTest.framework in Frameworks */,
+				C3A4A70318B24ACD00A5E4EB /* UIKit.framework in Frameworks */,
+				C3A4A70218B24ACD00A5E4EB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C3A4A6DB18B24ACD00A5E4EB = {
+			isa = PBXGroup;
+			children = (
+				C3A4A6ED18B24ACD00A5E4EB /* ScrumPlanningPoker */,
+				C3A4A70618B24ACD00A5E4EB /* ScrumPlanningPokerTests */,
+				C3A4A6E618B24ACD00A5E4EB /* Frameworks */,
+				C3A4A6E518B24ACD00A5E4EB /* Products */,
+				4A8A1A9CAEF0473797EE9B25 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		C3A4A6E518B24ACD00A5E4EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C3A4A6E418B24ACD00A5E4EB /* ScrumPlanningPoker.app */,
+				C3A4A6FF18B24ACD00A5E4EB /* ScrumPlanningPokerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C3A4A6E618B24ACD00A5E4EB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */,
+				C3A4A6E918B24ACD00A5E4EB /* CoreGraphics.framework */,
+				C3A4A6EB18B24ACD00A5E4EB /* UIKit.framework */,
+				C3A4A70018B24ACD00A5E4EB /* XCTest.framework */,
+				FA9419B472B54ED08B208BA4 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C3A4A6ED18B24ACD00A5E4EB /* ScrumPlanningPoker */ = {
+			isa = PBXGroup;
+			children = (
+				C3A4A6F618B24ACD00A5E4EB /* AppDelegate.h */,
+				C3A4A6F718B24ACD00A5E4EB /* AppDelegate.m */,
+				882C81D118C4B42C0011AD59 /* main.storyboard */,
+				C3A4A6F918B24ACD00A5E4EB /* Images.xcassets */,
+				C3A4A6EE18B24ACD00A5E4EB /* Supporting Files */,
+				882C81D318C4C8D00011AD59 /* ConnectViewController.h */,
+				882C81D418C4C8D00011AD59 /* ConnectViewController.m */,
+				885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */,
+				885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */,
+				88B5BCB518D1C6DC007918E8 /* SPPProperties.h */,
+				88B5BCB618D1C6DC007918E8 /* SPPProperties.m */,
+				8860A78418D1F04F005C5EB1 /* SelectRoomViewController.h */,
+				8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */,
+				88C6057C18D3399900A1EB77 /* RoomViewController.h */,
+				88C6057D18D3399900A1EB77 /* RoomViewController.m */,
+			);
+			path = ScrumPlanningPoker;
+			sourceTree = "<group>";
+		};
+		C3A4A6EE18B24ACD00A5E4EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C3A4A6EF18B24ACD00A5E4EB /* ScrumPlanningPoker-Info.plist */,
+				C3A4A6F018B24ACD00A5E4EB /* InfoPlist.strings */,
+				C3A4A6F318B24ACD00A5E4EB /* main.m */,
+				C3A4A6F518B24ACD00A5E4EB /* ScrumPlanningPoker-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C3A4A70618B24ACD00A5E4EB /* ScrumPlanningPokerTests */ = {
+			isa = PBXGroup;
+			children = (
+				C3A4A70C18B24ACD00A5E4EB /* ScrumPlanningPokerTests.m */,
+				C3A4A70718B24ACD00A5E4EB /* Supporting Files */,
+			);
+			path = ScrumPlanningPokerTests;
+			sourceTree = "<group>";
+		};
+		C3A4A70718B24ACD00A5E4EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C3A4A70818B24ACD00A5E4EB /* ScrumPlanningPokerTests-Info.plist */,
+				C3A4A70918B24ACD00A5E4EB /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C3A4A6E318B24ACD00A5E4EB /* ScrumPlanningPoker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3A4A71018B24ACD00A5E4EB /* Build configuration list for PBXNativeTarget "ScrumPlanningPoker" */;
+			buildPhases = (
+				5438A3318D8A4BCF9AC3F9B3 /* Check Pods Manifest.lock */,
+				C3A4A6E018B24ACD00A5E4EB /* Sources */,
+				C3A4A6E118B24ACD00A5E4EB /* Frameworks */,
+				C3A4A6E218B24ACD00A5E4EB /* Resources */,
+				FF416ABD8B7A46368DEC63BF /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScrumPlanningPoker;
+			productName = ScrumPlanningPoker;
+			productReference = C3A4A6E418B24ACD00A5E4EB /* ScrumPlanningPoker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C3A4A6FE18B24ACD00A5E4EB /* ScrumPlanningPokerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3A4A71318B24ACD00A5E4EB /* Build configuration list for PBXNativeTarget "ScrumPlanningPokerTests" */;
+			buildPhases = (
+				C3A4A6FB18B24ACD00A5E4EB /* Sources */,
+				C3A4A6FC18B24ACD00A5E4EB /* Frameworks */,
+				C3A4A6FD18B24ACD00A5E4EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C3A4A70518B24ACD00A5E4EB /* PBXTargetDependency */,
+			);
+			name = ScrumPlanningPokerTests;
+			productName = ScrumPlanningPokerTests;
+			productReference = C3A4A6FF18B24ACD00A5E4EB /* ScrumPlanningPokerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C3A4A6DC18B24ACD00A5E4EB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = Delphi;
+				TargetAttributes = {
+					C3A4A6FE18B24ACD00A5E4EB = {
+						TestTargetID = C3A4A6E318B24ACD00A5E4EB;
+					};
+				};
+			};
+			buildConfigurationList = C3A4A6DF18B24ACD00A5E4EB /* Build configuration list for PBXProject "ScrumPlanningPoker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C3A4A6DB18B24ACD00A5E4EB;
+			productRefGroup = C3A4A6E518B24ACD00A5E4EB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C3A4A6E318B24ACD00A5E4EB /* ScrumPlanningPoker */,
+				C3A4A6FE18B24ACD00A5E4EB /* ScrumPlanningPokerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C3A4A6E218B24ACD00A5E4EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3A4A6F218B24ACD00A5E4EB /* InfoPlist.strings in Resources */,
+				882C81D218C4B42C0011AD59 /* main.storyboard in Resources */,
+				C3A4A6FA18B24ACD00A5E4EB /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3A4A6FD18B24ACD00A5E4EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3A4A70B18B24ACD00A5E4EB /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5438A3318D8A4BCF9AC3F9B3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FF416ABD8B7A46368DEC63BF /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C3A4A6E018B24ACD00A5E4EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3A4A6F818B24ACD00A5E4EB /* AppDelegate.m in Sources */,
+				885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */,
+				882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */,
+				88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */,
+				88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */,
+				C3A4A6F418B24ACD00A5E4EB /* main.m in Sources */,
+				8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3A4A6FB18B24ACD00A5E4EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3A4A70D18B24ACD00A5E4EB /* ScrumPlanningPokerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C3A4A70518B24ACD00A5E4EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3A4A6E318B24ACD00A5E4EB /* ScrumPlanningPoker */;
+			targetProxy = C3A4A70418B24ACD00A5E4EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C3A4A6F018B24ACD00A5E4EB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C3A4A6F118B24ACD00A5E4EB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C3A4A70918B24ACD00A5E4EB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C3A4A70A18B24ACD00A5E4EB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C3A4A70E18B24ACD00A5E4EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C3A4A70F18B24ACD00A5E4EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C3A4A71118B24ACD00A5E4EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4A8A1A9CAEF0473797EE9B25 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch";
+				INFOPLIST_FILE = "ScrumPlanningPoker/ScrumPlanningPoker-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C3A4A71218B24ACD00A5E4EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4A8A1A9CAEF0473797EE9B25 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch";
+				INFOPLIST_FILE = "ScrumPlanningPoker/ScrumPlanningPoker-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C3A4A71418B24ACD00A5E4EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ScrumPlanningPoker.app/ScrumPlanningPoker";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "ScrumPlanningPokerTests/ScrumPlanningPokerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		C3A4A71518B24ACD00A5E4EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ScrumPlanningPoker.app/ScrumPlanningPoker";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch";
+				INFOPLIST_FILE = "ScrumPlanningPokerTests/ScrumPlanningPokerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C3A4A6DF18B24ACD00A5E4EB /* Build configuration list for PBXProject "ScrumPlanningPoker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3A4A70E18B24ACD00A5E4EB /* Debug */,
+				C3A4A70F18B24ACD00A5E4EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C3A4A71018B24ACD00A5E4EB /* Build configuration list for PBXNativeTarget "ScrumPlanningPoker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3A4A71118B24ACD00A5E4EB /* Debug */,
+				C3A4A71218B24ACD00A5E4EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C3A4A71318B24ACD00A5E4EB /* Build configuration list for PBXNativeTarget "ScrumPlanningPokerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3A4A71418B24ACD00A5E4EB /* Debug */,
+				C3A4A71518B24ACD00A5E4EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C3A4A6DC18B24ACD00A5E4EB /* Project object */;
+}
