@@ -7,7 +7,6 @@
 //
 
 #import "ConnectViewController.h"
-#import "SignalR.h"
 #import "SPPProperties.h"
 
 @interface ConnectViewController ()
@@ -29,6 +28,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.navigationItem.title=@"Connection";
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,7 +39,8 @@
 
 - (IBAction)actConnect:(id)sender {
     [self lockView];
-    NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@/WebSignalR/Handlers/LoginHeader.ashx", [_txtServer text]]];
+    //NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://vinw2617/WebSignalR/Handlers/LoginHandler.ashx"]];
+    NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@/WebSignalR/Handlers/LoginHandler.ashx", [_txtServer text]]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     
     NSData* passwordData=[[_txtPassword text] dataUsingEncoding:NSUTF8StringEncoding];
@@ -60,7 +61,7 @@
                     [SPPProperties sharedProperties].server = _txtServer.text;
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+                        [self performSegueWithIdentifier:@"ShowRooms" sender:self];
                     });
                 }
                 else

@@ -7,7 +7,8 @@
 //
 
 #import "SPPBaseViewController.h"
+#import "SignalR.h"
 
-@interface RoomViewController : SPPBaseViewController
+@interface RoomViewController : SPPBaseViewController <SRConnectionDelegate>
 
 @end

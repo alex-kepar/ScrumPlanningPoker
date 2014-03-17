@@ -32,6 +32,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.navigationItem.prompt=[SPPProperties sharedProperties].server;
+    self.navigationItem.title=@"select room";
+    
     NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/WebSignalR/api/room/GetRooms",  [SPPProperties sharedProperties].server ]]];
     NSURLSession *session = [NSURLSession sharedSession];
     //NSLog(@"%@", session.configuration.URLCache);
