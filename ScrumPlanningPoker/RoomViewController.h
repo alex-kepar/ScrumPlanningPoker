@@ -8,7 +8,13 @@
 
 #import "SPPBaseViewController.h"
 #import "SignalR.h"
+#import "SPPAgileHub.h"
 
-@interface RoomViewController : SPPBaseViewController <SRConnectionDelegate>
+//@interface PushupListViewController : UICollectionViewController <UICollectionViewDataSource>
+
+@interface RoomViewController : SPPBaseViewController <SRConnectionDelegate, SPPAgileHubRoomDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+
+- (IBAction)actJoin:(id)sender;
+@property (weak, nonatomic) IBOutlet UICollectionView *cvUsers;
 
 @end

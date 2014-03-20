@@ -7,11 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SignalR.h"
+#import "SPPUser.h"
+#import "SPPAgileHub.h"
 
 @interface SPPProperties : NSObject
 
-@property NSString *server;
-@property NSString *room;
+@property NSString* server;
+@property NSString* selectedRoom;
+@property NSString* userToken;
+@property SPPUser* user;
+@property SPPRoom *room;
+@property SRHubConnection* hubConnection;
+@property SPPAgileHub* agileHub;
 
 
 + (SPPProperties *)sharedProperties;

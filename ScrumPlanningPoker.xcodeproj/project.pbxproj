@@ -7,11 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		881F469718DB565D004DF389 /* CALayer+XibConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */; };
 		882C81D218C4B42C0011AD59 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882C81D118C4B42C0011AD59 /* main.storyboard */; };
 		882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C81D418C4C8D00011AD59 /* ConnectViewController.m */; };
+		8858A78D18D896DB00A06AD2 /* SPPAgileHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */; };
+		8858A79018D9B85300A06AD2 /* SPPRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A78F18D9B85300A06AD2 /* SPPRoom.m */; };
+		8858A79418D9F5B500A06AD2 /* SPPVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A79318D9F5B500A06AD2 /* SPPVote.m */; };
+		8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */; };
 		885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */; };
 		8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */; };
 		88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B5BCB618D1C6DC007918E8 /* SPPProperties.m */; };
+		88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAC18D7583F00B03251 /* SPPUser.m */; };
+		88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAF18D7588100B03251 /* SPPPrivilege.m */; };
 		88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6057D18D3399900A1EB77 /* RoomViewController.m */; };
 		B54EA18411124EAF8FC2BD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9419B472B54ED08B208BA4 /* libPods.a */; };
 		C3A4A6E818B24ACD00A5E4EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */; };
@@ -40,15 +47,29 @@
 
 /* Begin PBXFileReference section */
 		4A8A1A9CAEF0473797EE9B25 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		881F469518DB565D004DF389 /* CALayer+XibConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+XibConfiguration.h"; sourceTree = "<group>"; };
+		881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+XibConfiguration.m"; sourceTree = "<group>"; };
 		882C81D118C4B42C0011AD59 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		882C81D318C4C8D00011AD59 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		882C81D418C4C8D00011AD59 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
+		8858A78B18D896DA00A06AD2 /* SPPAgileHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPAgileHub.h; sourceTree = "<group>"; };
+		8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPAgileHub.m; sourceTree = "<group>"; };
+		8858A78E18D9B85300A06AD2 /* SPPRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPRoom.h; sourceTree = "<group>"; };
+		8858A78F18D9B85300A06AD2 /* SPPRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPRoom.m; sourceTree = "<group>"; };
+		8858A79218D9F5B500A06AD2 /* SPPVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVote.h; sourceTree = "<group>"; };
+		8858A79318D9F5B500A06AD2 /* SPPVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVote.m; sourceTree = "<group>"; };
+		8858A79518DAF4C900A06AD2 /* SPPUserViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUserViewCell.h; sourceTree = "<group>"; };
+		8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUserViewCell.m; sourceTree = "<group>"; };
 		885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPBaseViewController.h; sourceTree = "<group>"; };
 		885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPBaseViewController.m; sourceTree = "<group>"; };
 		8860A78418D1F04F005C5EB1 /* SelectRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRoomViewController.h; sourceTree = "<group>"; };
 		8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRoomViewController.m; sourceTree = "<group>"; };
 		88B5BCB518D1C6DC007918E8 /* SPPProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPProperties.h; sourceTree = "<group>"; };
 		88B5BCB618D1C6DC007918E8 /* SPPProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPProperties.m; sourceTree = "<group>"; };
+		88BD7FAB18D7583F00B03251 /* SPPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUser.h; sourceTree = "<group>"; };
+		88BD7FAC18D7583F00B03251 /* SPPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUser.m; sourceTree = "<group>"; };
+		88BD7FAE18D7588100B03251 /* SPPPrivilege.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPPrivilege.h; sourceTree = "<group>"; };
+		88BD7FAF18D7588100B03251 /* SPPPrivilege.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPPrivilege.m; sourceTree = "<group>"; };
 		88C6057C18D3399900A1EB77 /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		88C6057D18D3399900A1EB77 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		C3A4A6E418B24ACD00A5E4EB /* ScrumPlanningPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPlanningPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +116,65 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		881F469118DB3BA3004DF389 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */,
+				885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */,
+				882C81D318C4C8D00011AD59 /* ConnectViewController.h */,
+				882C81D418C4C8D00011AD59 /* ConnectViewController.m */,
+				8860A78418D1F04F005C5EB1 /* SelectRoomViewController.h */,
+				8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */,
+				88C6057C18D3399900A1EB77 /* RoomViewController.h */,
+				88C6057D18D3399900A1EB77 /* RoomViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		881F469218DB3C21004DF389 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8858A78B18D896DA00A06AD2 /* SPPAgileHub.h */,
+				8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		881F469318DB3C46004DF389 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8858A79518DAF4C900A06AD2 /* SPPUserViewCell.h */,
+				8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		881F469418DB55F7004DF389 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				881F469518DB565D004DF389 /* CALayer+XibConfiguration.h */,
+				881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */,
+			);
+			name = Support;
+			sourceTree = "<group>";
+		};
+		8858A79118D9B86800A06AD2 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				88B5BCB518D1C6DC007918E8 /* SPPProperties.h */,
+				88B5BCB618D1C6DC007918E8 /* SPPProperties.m */,
+				88BD7FAB18D7583F00B03251 /* SPPUser.h */,
+				88BD7FAC18D7583F00B03251 /* SPPUser.m */,
+				88BD7FAE18D7588100B03251 /* SPPPrivilege.h */,
+				88BD7FAF18D7588100B03251 /* SPPPrivilege.m */,
+				8858A78E18D9B85300A06AD2 /* SPPRoom.h */,
+				8858A78F18D9B85300A06AD2 /* SPPRoom.m */,
+				8858A79218D9F5B500A06AD2 /* SPPVote.h */,
+				8858A79318D9F5B500A06AD2 /* SPPVote.m */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		C3A4A6DB18B24ACD00A5E4EB = {
 			isa = PBXGroup;
 			children = (
@@ -130,21 +210,16 @@
 		C3A4A6ED18B24ACD00A5E4EB /* ScrumPlanningPoker */ = {
 			isa = PBXGroup;
 			children = (
+				881F469418DB55F7004DF389 /* Support */,
 				C3A4A6F618B24ACD00A5E4EB /* AppDelegate.h */,
 				C3A4A6F718B24ACD00A5E4EB /* AppDelegate.m */,
 				882C81D118C4B42C0011AD59 /* main.storyboard */,
 				C3A4A6F918B24ACD00A5E4EB /* Images.xcassets */,
+				881F469318DB3C46004DF389 /* View */,
+				881F469218DB3C21004DF389 /* Network */,
+				881F469118DB3BA3004DF389 /* Controller */,
+				8858A79118D9B86800A06AD2 /* Data */,
 				C3A4A6EE18B24ACD00A5E4EB /* Supporting Files */,
-				882C81D318C4C8D00011AD59 /* ConnectViewController.h */,
-				882C81D418C4C8D00011AD59 /* ConnectViewController.m */,
-				885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */,
-				885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */,
-				88B5BCB518D1C6DC007918E8 /* SPPProperties.h */,
-				88B5BCB618D1C6DC007918E8 /* SPPProperties.m */,
-				8860A78418D1F04F005C5EB1 /* SelectRoomViewController.h */,
-				8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */,
-				88C6057C18D3399900A1EB77 /* RoomViewController.h */,
-				88C6057D18D3399900A1EB77 /* RoomViewController.m */,
 			);
 			path = ScrumPlanningPoker;
 			sourceTree = "<group>";
@@ -309,12 +384,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				881F469718DB565D004DF389 /* CALayer+XibConfiguration.m in Sources */,
+				8858A78D18D896DB00A06AD2 /* SPPAgileHub.m in Sources */,
 				C3A4A6F818B24ACD00A5E4EB /* AppDelegate.m in Sources */,
 				885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */,
+				88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */,
 				882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */,
 				88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */,
 				88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */,
 				C3A4A6F418B24ACD00A5E4EB /* main.m in Sources */,
+				8858A79018D9B85300A06AD2 /* SPPRoom.m in Sources */,
+				8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */,
+				8858A79418D9F5B500A06AD2 /* SPPVote.m in Sources */,
+				88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */,
 				8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,7 +7,8 @@
 //
 
 #import "SPPBaseViewController.h"
+#import "SignalR.h"
 
-@interface SelectRoomViewController : SPPBaseViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SelectRoomViewController : SPPBaseViewController <UITableViewDataSource, UITableViewDelegate, SRConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tvRooms;
 @end

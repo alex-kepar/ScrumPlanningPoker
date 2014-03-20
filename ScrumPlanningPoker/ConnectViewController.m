@@ -58,11 +58,30 @@
                 NSInteger status = [(NSHTTPURLResponse *)response statusCode];
                 if(status == 200)
                 {
-                    [SPPProperties sharedProperties].server = _txtServer.text;
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self performSegueWithIdentifier:@"ShowRooms" sender:self];
-                    });
+                    SPPProperties *properties = [SPPProperties sharedProperties];
+                    NSArray* cookies = [NSURLSession sharedSession].configuration.HTTPCookieStorage.cookies;
+                    NSUInteger cookieIndex=[cookies indexOfObjectPassingTest:^BOOL(id cookieId, NSUInteger idx, BOOL *stop)
+                                            {
+                                                if([[(NSHTTPCookie *)cookieId name] isEqualToString:@".ASPXAUTH"])
+                                                {
+                                                    *stop=YES;
+                                                    return YES;
+                                                }
+                                                return NO;
+                                            }];
+                    if (cookieIndex != NSNotFound)
+                    {
+                        properties.userToken = [(NSHTTPCookie *)cookies[cookieIndex] value];
+                        properties.server = _txtServer.text;
+                        properties.hubConnection = nil;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self performSegueWithIdentifier:@"ShowRooms" sender:self];
+                        });
+                    }
+                    else
+                    {
+                        [self showMessage:@"Authorization not passed" withTitle:@"Error connection"];
+                    }
                 }
                 else
                 {
@@ -75,71 +94,7 @@
             }
         }];
     [task resume];
-
-    //hub=[connection createHubProxy:@""];
-    
 }
-
-/*
--(void) queryResponceData: NSData *data responce: NSURLResponse *responce error: NSError *error
-{
-    NSInteger status = [response statusCode];
-    if(status == 200)
-    {
-        NSString* responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        [_outText setText:[NSString stringWithFormat:@"%@ - %i", responseString, status]];
-        
-        NSArray* cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[response allHeaderFields] forURL:[NSURL URLWithString:@""]];
-        
-        NSUInteger cookieIndex=[cookies indexOfObjectPassingTest:^BOOL(id cookieId, NSUInteger idx, BOOL *stop)
-                                {
-                                    if([[(NSHTTPCookie *)cookieId name] isEqualToString:@".ASPXAUTH"])
-                                    {
-                                        *stop=YES;
-                                        return YES;
-                                    }
-                                    return NO;
-                                }];
-        
-        if (cookieIndex != NSNotFound)
-        {
-            NSHTTPCookie *cookie = cookies[cookieIndex];
-            NSLog(@"%@", cookie.name);
-            
-            
-            NSURLRequest *requestUserList=[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://vinw2617/WebSignalR/api/room/GetRooms"]];
-            NSData *dataUserList = [NSURLConnection sendSynchronousRequest:requestUserList returningResponse:&response error:&error];
-            NSArray *userList = [NSJSONSerialization JSONObjectWithData:dataUserList options:0 error:&error];
-            
-            for (NSDictionary *user in userList)
-            {
-                NSLog(@"Id=%@", [user objectForKey:@"Id"]);
-                NSLog(@"Name=%@", [user objectForKey:@"Name"]);
-                NSLog(@"Description=%@", [user objectForKey:@"Description"]);
-                NSLog(@"Active=%d", [[user objectForKey:@"Active"] boolValue]);
-            }
-            
-            //            // Connect to the service
-            //            connection = [SRHubConnection connectionWithURL: @"http://vinw2617/WebSignalR"];
-            //            [connection addValue:[NSString stringWithFormat:@".ASPXAUTH=%@", cookie.value] forHTTPHeaderField:@"Cookie" ];
-            //            // Create a proxy to the chat service
-            //            hub = [connection createHubProxy:@"agileHub"];
-            //            //[hub on:@"addMessage" perform:self selector:@selector(addMessage:message:)];
-            //            [connection setDelegate:self];
-            //            // Start the connection
-            //            [connection start];
-            
-            
-        }
-    }
-    else
-    {
-        [_outText setText:[NSString stringWithFormat:@"%@", [NSHTTPURLResponse localizedStringForStatusCode: status ]]];
-    }
-   
-}
-*/
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField
 {

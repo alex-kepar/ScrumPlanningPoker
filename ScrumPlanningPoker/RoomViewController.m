@@ -9,12 +9,13 @@
 #import "RoomViewController.h"
 #import "SPPProperties.h"
 #import "SignalR.h"
-#import "SRVersion.h"
+#import "SPPUser.h"
+#import "SPPUserViewCell.h"
 
 @interface RoomViewController ()
 {
-    SRHubConnection *roomConnection;
-    SRHubProxy *roomHub;
+    //SRHubConnection *roomConnection;
+    SPPProperties *properties;
 }
 @end
 
@@ -33,54 +34,13 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    SPPProperties *properties=[SPPProperties sharedProperties];
-    self.navigationItem.prompt=[NSString stringWithFormat:@"%@ / %@", properties.server, properties.room];
-
-    //roomConnection = [SRHubConnection connectionWithURL:[NSString stringWithFormat:@"http://%@/SignalRMvc", properties.server]];
-    roomConnection = [SRHubConnection connectionWithURL:[NSString stringWithFormat:@"http://%@/WebSignalR", properties.server]];
-    
-    SRVersion *pr=[[SRVersion alloc] initWithMajor:1 minor: 2];
-    //[roomConnection verifyProtocolVersion: @""];
-    [roomConnection setProtocol:pr];
-    NSArray* cookies = [NSURLSession sharedSession].configuration.HTTPCookieStorage.cookies;
-
-    NSUInteger cookieIndex=[cookies indexOfObjectPassingTest:^BOOL(id cookieId, NSUInteger idx, BOOL *stop)
-                            {
-                                if([[(NSHTTPCookie *)cookieId name] isEqualToString:@".ASPXAUTH"])
-                                {
-                                    *stop=YES;
-                                    return YES;
-                                }
-                                return NO;
-                            }];
-    if (cookieIndex != NSNotFound)
-    {
-        NSHTTPCookie *cookie = cookies[cookieIndex];
-        //[roomConnection addValue:[NSString stringWithFormat:@".ASPXAUTH=%@", [cookie.value stringByReplacingOccurrencesOfString:@"\n" withString:@""]] forHTTPHeaderField:@"Cookie"];
-        [roomConnection addValue:[NSString stringWithFormat:@".ASPXAUTH=%@", [cookie.value stringByReplacingOccurrencesOfString:@"\n" withString:@""]] forHTTPHeaderField:@"Cookie"];
-        roomHub = [roomConnection createHubProxy:@"agileHub"];
-        //roomHub = [roomConnection createHubProxy:@"chatHub"];
-        [roomConnection setDelegate:self];
-        [roomConnection start];
-        [self lockView];
-    }
-    else
-    {
-        [self showMessage:@"Authorization not passed" withTitle:@"Error connect to hub"];
-    }
-    //NSString *auth=session.configuration.HTTPCookieStorage
-    
-    //[roomConnection addValue:[NSString stringWithFormat:@".ASPXAUTH=%@", cookie.value] forHTTPHeaderField:@"Cookie" ];
-    //            // Connect to the service
-    //            connection = [SRHubConnection connectionWithURL: @"http://vinw2617/WebSignalR"];
-    //            [connection addValue:[NSString stringWithFormat:@".ASPXAUTH=%@", cookie.value] forHTTPHeaderField:@"Cookie" ];
-    //            // Create a proxy to the chat service
-    //            hub = [connection createHubProxy:@"agileHub"];
-    //            //[hub on:@"addMessage" perform:self selector:@selector(addMessage:message:)];
-    //            [connection setDelegate:self];
-    //            // Start the connection
-    //            [connection start];
-
+    properties=[SPPProperties sharedProperties];
+    self.navigationItem.prompt=[NSString stringWithFormat:@"%@ / %@", properties.server, properties.selectedRoom];
+    //[_cvUsers registerClass:[SPPUserViewCell class] forCellWithReuseIdentifier: userCellIdentifier];
+    SPPAgileHub *hub=properties.agileHub;
+    hub.roomDelegate = self;
+    [hub JoinRoom:properties.selectedRoom];
+//    [self lockView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,30 +49,59 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark SRConnection Delegate
-- (void)SRConnectionDidOpen:(SRConnection *)connection
-{
-     NSLog(@"***** SRConnectionDidOpen invoked");
-     [self unLockView];
+- (IBAction)actJoin:(id)sender {
+//    [roomHub invoke:@"joinRoom" withArgs:@[properties.room, properties.sessionId] completionHandler:^(id response) {
+//        NSLog(@"%@", response);
+//    }];
 }
 
-- (void)SRConnection:(SRConnection *)connection didReceiveData:(id)data
+#pragma mark SPPAgileHubRoomDelegate
+- (void)onJoinRoom: (SPPRoom *)room
 {
-    NSLog(@"***** SRConnection did receive data invoked");
-    //[messagesReceived insertObject:[MessageItem messageItemWithUserName:@"Connection did recieve data" Message:@""] atIndex:0];
-    //[tvMessages reloadData];
+    NSLog(@"%@", room.name);
+    [_cvUsers reloadData];
 }
 
-- (void)SRConnectionDidClose:(SRConnection *)connection
+#pragma makr -
+
+
+#pragma mark UICollectionViewDataSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    NSLog(@"***** SRConnectionDidClose invoked");
+    return 1;
 }
 
-- (void)SRConnection:(SRConnection *)connection didReceiveError:(NSError *)error
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSLog(@"***** SRConnection did receive error invoked");
+    return properties.room.connectedUsers.count;
 }
 
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    SPPUserViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserCell" forIndexPath:indexPath];
+    
+    if(cell!=nil)
+    {
+        SPPUser *user=properties.room.connectedUsers[indexPath.row];
+        cell.userName.text=user.name;
+        //cell.frame = CGRectMake(0, 0, 150, 120);
+        //cell.backgroundColor = [UIColor redColor];
+        //cell = [[UICollectionViewCell alloc] init];
+                //initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    
+        //[cell setImage: @"ffffff"];
+    //NSDictionary *roomItem = [[rooms objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    //cell.textLabel.text = [roomItem objectForKey:@"Name"];
+    //cell.detailTextLabel.text = [roomItem objectForKey:@"Description"];
+    }
+    return cell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
+}
 #pragma mark -
 
 @end

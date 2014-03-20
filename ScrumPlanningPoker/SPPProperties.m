@@ -14,7 +14,12 @@
 //}
 
 @synthesize server;
+@synthesize selectedRoom;
+@synthesize userToken;
+@synthesize user;
 @synthesize room;
+@synthesize hubConnection;
+@synthesize agileHub;
 
 static SPPProperties *sharedProperties_ = nil;
 
