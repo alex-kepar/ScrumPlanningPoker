@@ -10,15 +10,18 @@
 #import "SignalR.h"
 #import "SPPUser.h"
 #import "SPPAgileHub.h"
+#import "SPPConnection.h"
 
 @interface SPPProperties : NSObject
 
-@property NSString* server;
-@property NSString* selectedRoom;
-@property NSString* userToken;
+//@property NSString* server;
+//@property NSString* selectedRoom;
+//@property NSString* userToken;
 @property SPPUser* user;
 @property SPPRoom *room;
-@property SRHubConnection* hubConnection;
+@property NSMutableArray *roomList;
+//@property SRHubConnection* hubConnection;
+@property (readonly) SPPConnection* connection;
 @property SPPAgileHub* agileHub;
 
 

@@ -15,11 +15,16 @@
 		8858A79418D9F5B500A06AD2 /* SPPVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A79318D9F5B500A06AD2 /* SPPVote.m */; };
 		8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */; };
 		885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */; };
+		885FB4E91958510900AB1A21 /* SPPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 885FB4E81958510900AB1A21 /* SPPConnection.m */; };
 		8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */; };
+		887B4BDF19533060005CE261 /* SPPRoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 887B4BDE19533060005CE261 /* SPPRoomViewCell.m */; };
+		887B4BE31954546B005CE261 /* RoomClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = 887B4BE11954546B005CE261 /* RoomClosed.png */; };
+		887B4BE41954546B005CE261 /* RoomOpened.png in Resources */ = {isa = PBXBuildFile; fileRef = 887B4BE21954546B005CE261 /* RoomOpened.png */; };
 		88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B5BCB618D1C6DC007918E8 /* SPPProperties.m */; };
 		88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAC18D7583F00B03251 /* SPPUser.m */; };
 		88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAF18D7588100B03251 /* SPPPrivilege.m */; };
 		88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6057D18D3399900A1EB77 /* RoomViewController.m */; };
+		88EDD2F118E5BF810065C6A4 /* TestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EDD2F018E5BF800065C6A4 /* TestController.m */; };
 		B54EA18411124EAF8FC2BD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9419B472B54ED08B208BA4 /* libPods.a */; };
 		C3A4A6E818B24ACD00A5E4EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */; };
 		C3A4A6EA18B24ACD00A5E4EB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E918B24ACD00A5E4EB /* CoreGraphics.framework */; };
@@ -62,8 +67,14 @@
 		8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUserViewCell.m; sourceTree = "<group>"; };
 		885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPBaseViewController.h; sourceTree = "<group>"; };
 		885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPBaseViewController.m; sourceTree = "<group>"; };
+		885FB4E71958510900AB1A21 /* SPPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPConnection.h; sourceTree = "<group>"; };
+		885FB4E81958510900AB1A21 /* SPPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPConnection.m; sourceTree = "<group>"; };
 		8860A78418D1F04F005C5EB1 /* SelectRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRoomViewController.h; sourceTree = "<group>"; };
 		8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRoomViewController.m; sourceTree = "<group>"; };
+		887B4BDD19533060005CE261 /* SPPRoomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPRoomViewCell.h; sourceTree = "<group>"; };
+		887B4BDE19533060005CE261 /* SPPRoomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPRoomViewCell.m; sourceTree = "<group>"; };
+		887B4BE11954546B005CE261 /* RoomClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoomClosed.png; sourceTree = "<group>"; };
+		887B4BE21954546B005CE261 /* RoomOpened.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoomOpened.png; sourceTree = "<group>"; };
 		88B5BCB518D1C6DC007918E8 /* SPPProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPProperties.h; sourceTree = "<group>"; };
 		88B5BCB618D1C6DC007918E8 /* SPPProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPProperties.m; sourceTree = "<group>"; };
 		88BD7FAB18D7583F00B03251 /* SPPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUser.h; sourceTree = "<group>"; };
@@ -72,6 +83,8 @@
 		88BD7FAF18D7588100B03251 /* SPPPrivilege.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPPrivilege.m; sourceTree = "<group>"; };
 		88C6057C18D3399900A1EB77 /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		88C6057D18D3399900A1EB77 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
+		88EDD2EF18E5BF800065C6A4 /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
+		88EDD2F018E5BF800065C6A4 /* TestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestController.m; sourceTree = "<group>"; };
 		C3A4A6E418B24ACD00A5E4EB /* ScrumPlanningPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPlanningPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3A4A6E918B24ACD00A5E4EB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,6 +140,8 @@
 				8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */,
 				88C6057C18D3399900A1EB77 /* RoomViewController.h */,
 				88C6057D18D3399900A1EB77 /* RoomViewController.m */,
+				88EDD2EF18E5BF800065C6A4 /* TestController.h */,
+				88EDD2F018E5BF800065C6A4 /* TestController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -136,6 +151,8 @@
 			children = (
 				8858A78B18D896DA00A06AD2 /* SPPAgileHub.h */,
 				8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */,
+				885FB4E71958510900AB1A21 /* SPPConnection.h */,
+				885FB4E81958510900AB1A21 /* SPPConnection.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -145,6 +162,8 @@
 			children = (
 				8858A79518DAF4C900A06AD2 /* SPPUserViewCell.h */,
 				8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */,
+				887B4BDD19533060005CE261 /* SPPRoomViewCell.h */,
+				887B4BDE19533060005CE261 /* SPPRoomViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -158,7 +177,7 @@
 			name = Support;
 			sourceTree = "<group>";
 		};
-		8858A79118D9B86800A06AD2 /* Data */ = {
+		8858A79118D9B86800A06AD2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				88B5BCB518D1C6DC007918E8 /* SPPProperties.h */,
@@ -172,7 +191,16 @@
 				8858A79218D9F5B500A06AD2 /* SPPVote.h */,
 				8858A79318D9F5B500A06AD2 /* SPPVote.m */,
 			);
-			name = Data;
+			name = Model;
+			sourceTree = "<group>";
+		};
+		887B4BE01954546B005CE261 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				887B4BE11954546B005CE261 /* RoomClosed.png */,
+				887B4BE21954546B005CE261 /* RoomOpened.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		C3A4A6DB18B24ACD00A5E4EB = {
@@ -210,6 +238,7 @@
 		C3A4A6ED18B24ACD00A5E4EB /* ScrumPlanningPoker */ = {
 			isa = PBXGroup;
 			children = (
+				887B4BE01954546B005CE261 /* Images */,
 				881F469418DB55F7004DF389 /* Support */,
 				C3A4A6F618B24ACD00A5E4EB /* AppDelegate.h */,
 				C3A4A6F718B24ACD00A5E4EB /* AppDelegate.m */,
@@ -218,7 +247,7 @@
 				881F469318DB3C46004DF389 /* View */,
 				881F469218DB3C21004DF389 /* Network */,
 				881F469118DB3BA3004DF389 /* Controller */,
-				8858A79118D9B86800A06AD2 /* Data */,
+				8858A79118D9B86800A06AD2 /* Model */,
 				C3A4A6EE18B24ACD00A5E4EB /* Supporting Files */,
 			);
 			path = ScrumPlanningPoker;
@@ -330,6 +359,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				887B4BE31954546B005CE261 /* RoomClosed.png in Resources */,
+				887B4BE41954546B005CE261 /* RoomOpened.png in Resources */,
 				C3A4A6F218B24ACD00A5E4EB /* InfoPlist.strings in Resources */,
 				882C81D218C4B42C0011AD59 /* main.storyboard in Resources */,
 				C3A4A6FA18B24ACD00A5E4EB /* Images.xcassets in Resources */,
@@ -388,12 +419,15 @@
 				8858A78D18D896DB00A06AD2 /* SPPAgileHub.m in Sources */,
 				C3A4A6F818B24ACD00A5E4EB /* AppDelegate.m in Sources */,
 				885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */,
+				88EDD2F118E5BF810065C6A4 /* TestController.m in Sources */,
 				88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */,
 				882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */,
+				887B4BDF19533060005CE261 /* SPPRoomViewCell.m in Sources */,
 				88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */,
 				88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */,
 				C3A4A6F418B24ACD00A5E4EB /* main.m in Sources */,
 				8858A79018D9B85300A06AD2 /* SPPRoom.m in Sources */,
+				885FB4E91958510900AB1A21 /* SPPConnection.m in Sources */,
 				8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */,
 				8858A79418D9F5B500A06AD2 /* SPPVote.m in Sources */,
 				88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */,

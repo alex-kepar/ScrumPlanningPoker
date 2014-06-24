@@ -12,9 +12,10 @@
 
 @implementation SPPRoom
 
-@synthesize isActive;
+@synthesize roomId;
 @synthesize name;
 @synthesize description;
+@synthesize isActive;
 @synthesize connectedUsers;
 @synthesize itemsToVote;
 
@@ -28,9 +29,10 @@
     self = [super init];
     if (self)
     {
-        isActive = [[initData objectForKey:@"Active"] boolValue];
+        roomId = [[initData objectForKey:@"Id"] integerValue];
         name = [initData objectForKey:@"Name"];
         description = [initData objectForKey:@"Description"];
+        isActive = [[initData objectForKey:@"Active"] boolValue];
         
         NSArray *usersData = [initData objectForKey:@"ConnectedUsers"];
         connectedUsers = [[NSMutableArray alloc] initWithCapacity:usersData.count];
@@ -46,5 +48,15 @@
     }
     return self;
 }
+
+- (void) updateFromRoom: (SPPRoom *) room
+{
+    self.name = room.name;
+    self.description = room.description;
+    self.isActive = room.isActive;
+    self.connectedUsers = room.connectedUsers;
+    self.itemsToVote = room.itemsToVote;
+}
+
 
 @end

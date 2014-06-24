@@ -1,4 +1,4 @@
- //
+//
 //  ConnectViewController.m
 //  ScrumPlanningPoker
 //
@@ -14,6 +14,9 @@
 @end
 
 @implementation ConnectViewController
+{
+    SPPProperties *properties;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,6 +32,26 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.title=@"Connection";
+    properties = [SPPProperties sharedProperties];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    properties.connection.connectionDelegate = self;
+    properties.agileHub.connectionDelegate = self;
+    [properties.agileHub Disconnect];
+}
+
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    if (properties.connection.connectionDelegate == self) {
+        properties.connection.connectionDelegate = Nil;
+    }
+    if (properties.agileHub.connectionDelegate == self) {
+        properties.agileHub.connectionDelegate = Nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,8 +62,10 @@
 
 - (IBAction)actConnect:(id)sender {
     [self lockView];
-    //NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://vinw2617/WebSignalR/Handlers/LoginHandler.ashx"]];
-    NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@/WebSignalR/Handlers/LoginHandler.ashx", [_txtServer text]]];
+    [properties.connection ConnectTo:[_txtServer text] Login:[_txtLogin text] Password:[_txtPassword text]];
+    
+    
+    /*NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@/Handlers/LoginHandler.ashx", [_txtServer text]]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     
     NSData* passwordData=[[_txtPassword text] dataUsingEncoding:NSUTF8StringEncoding];
@@ -58,7 +83,7 @@
                 NSInteger status = [(NSHTTPURLResponse *)response statusCode];
                 if(status == 200)
                 {
-                    SPPProperties *properties = [SPPProperties sharedProperties];
+                    properties = [SPPProperties sharedProperties];
                     NSArray* cookies = [NSURLSession sharedSession].configuration.HTTPCookieStorage.cookies;
                     NSUInteger cookieIndex=[cookies indexOfObjectPassingTest:^BOOL(id cookieId, NSUInteger idx, BOOL *stop)
                                             {
@@ -77,6 +102,9 @@
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self performSegueWithIdentifier:@"ShowRooms" sender:self];
                         });
+                        //dispatch_async(dispatch_get_main_queue(), ^{
+                        //    [self performSegueWithIdentifier:@"TestSegue" sender:self];
+                        //});
                     }
                     else
                     {
@@ -93,7 +121,7 @@
                 [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
             }
         }];
-    [task resume];
+    [task resume];*/
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField
@@ -105,5 +133,40 @@
 - (IBAction)backgroundTap:(id)sender {
     [self.view endEditing:YES];
 }
+
+#pragma mark + SPPConnectionDelegate
+-(void) connectionDidOpen:(SPPConnection *)connection
+{
+    [connection GetRoomList];
+}
+
+-(void) connection:(SPPConnection *)connection didReceiveError:(NSError *)error
+{
+    [self unLockView];
+    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
+}
+
+-(void) connection:(SPPConnection *)connection didReceiveRoomList:(NSArray *)data
+{
+    properties.roomList = [[NSMutableArray alloc] initWithCapacity:data.count];
+    for (int i = 0; i < data.count; i++) {
+        properties.roomList[i] = [SPPRoom SPPRoomWithDataDictionary:data[i]];
+    }
+    [properties.agileHub ConnectTo:connection.server];
+}
+#pragma mark - SPPConnectionDelegate
+
+#pragma mark + SPPAgileHubConnectionDelegate
+- (void)agileHubDidOpen:(SPPAgileHub *) agileHub
+{
+    [self unLockView];
+    [self performSegueWithIdentifier:@"ShowRooms" sender:self];
+}
+- (void)agileHub:(SPPAgileHub *) agileHub didReceiveError:(NSString *)error
+{
+    [self unLockView];
+    [self showMessage:error withTitle:@"Error connection"];
+}
+#pragma mark - SPPAgileHubConnectionDelegate
 
 @end

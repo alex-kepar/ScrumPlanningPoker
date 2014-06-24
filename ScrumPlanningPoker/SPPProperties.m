@@ -13,13 +13,14 @@
     //SURLSession *session = [NSURLSession sharedSession];
 //}
 
-@synthesize server;
-@synthesize selectedRoom;
-@synthesize userToken;
-@synthesize user;
-@synthesize room;
-@synthesize hubConnection;
+//@synthesize server;
+//@synthesize selectedRoom;
+//@synthesize userToken;
+//@synthesize user;
+//@synthesize room;
+//@synthesize hubConnection;
 @synthesize agileHub;
+@synthesize connection;
 
 static SPPProperties *sharedProperties_ = nil;
 
@@ -30,6 +31,16 @@ static SPPProperties *sharedProperties_ = nil;
         sharedProperties_ = [[SPPProperties alloc] init];
     }
     return sharedProperties_;
+}
+
+-(id)init
+{
+    self = [super init];
+    if (self) {
+        connection = [[SPPConnection alloc] init];
+        agileHub = [[SPPAgileHub alloc] init];
+    }
+    return self;
 }
 
 @end

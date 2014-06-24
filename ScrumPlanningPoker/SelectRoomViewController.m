@@ -8,12 +8,12 @@
 
 #import "SelectRoomViewController.h"
 #import "SPPProperties.h"
+#import "SPPRoomViewCell.h"
 #import "SRVersion.h"
 
 @interface SelectRoomViewController ()
 {
-    NSArray *rooms;
-    SPPProperties *properties;
+    SPPProperties* properties;
 }
 
 @end
@@ -36,64 +36,23 @@
     
     properties=[SPPProperties sharedProperties];
     
-    self.navigationItem.prompt=properties.server;
+    self.navigationItem.prompt=properties.connection.server;
     self.navigationItem.title=@"select room";
-    
-    NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/WebSignalR/api/room/GetRooms", properties.server]]];
-    NSURLSession *session = [NSURLSession sharedSession];
-    //NSLog(@"%@", session.configuration.URLCache);
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-        {
-            if (error == nil)
-            {
-                NSArray *roomsList = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                for (NSDictionary *user in roomsList)
-                {
-                    NSLog(@"Id=%@", [user objectForKey:@"Id"]);
-                    NSLog(@"Name=%@", [user objectForKey:@"Name"]);
-                    NSLog(@"Description=%@", [user objectForKey:@"Description"]);
-                    NSLog(@"Active=%d", [[user objectForKey:@"Active"] boolValue]);
-                }
-                NSArray *activeRooms = [roomsList filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *bind)
-                    {
-                        return [[(NSDictionary *) obj objectForKey:@"Active"] boolValue];
-                    }]];
-                NSArray *inactiveRooms = [roomsList filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *bind)
-                    {
-                        return ![[(NSDictionary *) obj objectForKey:@"Active"] boolValue];
-                    }]];
-                rooms = [[NSArray alloc] initWithObjects:activeRooms, inactiveRooms, nil];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [_tvRooms reloadData];
-                });
-
-                SRHubConnection *hubConnection = [SRHubConnection connectionWithURL:[NSString stringWithFormat:@"http://%@/WebSignalR", properties.server]];
-                [hubConnection setProtocol:[[SRVersion alloc] initWithMajor:1 minor: 2]];
-                [hubConnection addValue:[NSString stringWithFormat:@".ASPXAUTH=%@", properties.userToken] forHTTPHeaderField:@"Cookie"];
-                
-                properties.agileHub = [SPPAgileHub SPPAgileHubWithHubConnection:hubConnection];
-                properties.hubConnection=hubConnection;
-                
-                [hubConnection setDelegate:self];
-                [hubConnection start];
-                //[self lockView];
-            }
-            else
-            {
-                [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
-            }
-        }];
-    [task resume];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    properties.agileHub.roomDelegate=self;
+    [_tvRooms reloadData];
+}
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    //if (properties.hubConnection != nil) {
-    //    [properties.hubConnection disconnect];
-    //    properties.hubConnection = nil;
-    //}
     [super viewDidDisappear:animated];
+    if (properties.agileHub.roomDelegate == self) {
+        properties.agileHub.roomDelegate=Nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,79 +65,85 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    //return 2;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"RoomCell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    SPPRoomViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if(cell==nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[SPPRoomViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    NSDictionary *roomItem = [[rooms objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    
-    cell.textLabel.text = [roomItem objectForKey:@"Name"];
-    cell.detailTextLabel.text = [roomItem objectForKey:@"Description"];
+    SPPRoom* room=[properties.roomList objectAtIndex:indexPath.row];
+    cell.nameLabel.text = room.name;
+    cell.descriptionLabel.text = room.description;
+    cell.statusImage.image = [self imageForRoomStatus: room.isActive];
+    cell.usersCount.text = [NSString stringWithFormat:@"%d", room.connectedUsers.count];
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[rooms objectAtIndex:section] count];
+    return properties.roomList.count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+    //if (section==0)
+    //{
+    //    return @"Active rooms:";
+    //}
+    //else
+    //{
+    //    return @"Inactive rooms:";
+    //}
+//}
+
+-(UIImage *) imageForRoomStatus: (BOOL)isOpened
 {
-    if (section==0)
+    if(isOpened)
     {
-        return @"Active rooms:";
+        return [UIImage imageNamed:@"RoomOpened.png"];
     }
     else
     {
-        return @"Inactive rooms:";
+        return [UIImage imageNamed:@"RoomClosed.png"];
     }
 }
+
 #pragma mark -
 
-#pragma mark UITableViewDelegate
+#pragma mark + UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    properties.selectedRoom = [rooms[indexPath.section][indexPath.row] objectForKey:@"Name"];
+    properties.room = properties.roomList[indexPath.row];
 }
-#pragma mark -
+#pragma mark - UITableViewDelegate
 
-#pragma mark SRConnection Delegate
-- (void)SRConnectionDidOpen:(SRConnection *)connection
+#pragma mark + SPPAgileHubRoomDelegate
+
+- (void)agileHubRoomChanged:(SPPRoom *)room
 {
-    NSLog(@"***** SRConnectionDidOpen invoked");
-    [self unLockView];
+    NSInteger idx = [properties.roomList indexOfObjectPassingTest:^BOOL(SPPRoom* roomItem, NSUInteger idx, BOOL *stop) {
+        return (roomItem.roomId == room.roomId);
+    }];
+    if (idx != NSNotFound) {
+        [properties.roomList replaceObjectAtIndex:idx withObject:room];
+    }
+    else {
+        [properties.roomList addObject:room];
+    }
+    //dispatch_async(dispatch_get_main_queue(), ^{
+    [_tvRooms reloadData];
+    //});
 }
 
-- (void)SRConnection:(SRConnection *)connection didReceiveData:(id)data
-{
-    NSLog(@"***** SRConnection did receive data invoked Data:\n%@", data);
-    //[messagesReceived insertObject:[MessageItem messageItemWithUserName:@"Connection did recieve data" Message:@""] atIndex:0];
-    //[tvMessages reloadData];
-}
+#pragma mark - SPPAgileHubRoomDelegate*/
 
-- (void)SRConnectionDidClose:(SRConnection *)connection
-{
-    NSLog(@"***** SRConnectionDidClose invoked");
-}
-
-- (void)SRConnection:(SRConnection *)connection didReceiveError:(NSError *)error
-{
-    NSLog(@"***** SRConnection did receive error invoked");
-    [self unLockView];
-    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
-
-}
-
-#pragma mark -
 
 
 @end

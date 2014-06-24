@@ -14,7 +14,6 @@
 
 @interface RoomViewController : SPPBaseViewController <SRConnectionDelegate, SPPAgileHubRoomDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
-- (IBAction)actJoin:(id)sender;
 @property (weak, nonatomic) IBOutlet UICollectionView *cvUsers;
 
 @end

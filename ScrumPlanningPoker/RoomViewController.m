@@ -14,8 +14,8 @@
 
 @interface RoomViewController ()
 {
-    //SRHubConnection *roomConnection;
-    SPPProperties *properties;
+    SPPProperties* properties;
+    SPPAgileHub* hub;
 }
 @end
 
@@ -34,13 +34,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    properties=[SPPProperties sharedProperties];
-    self.navigationItem.prompt=[NSString stringWithFormat:@"%@ / %@", properties.server, properties.selectedRoom];
-    //[_cvUsers registerClass:[SPPUserViewCell class] forCellWithReuseIdentifier: userCellIdentifier];
-    SPPAgileHub *hub=properties.agileHub;
-    hub.roomDelegate = self;
-    [hub JoinRoom:properties.selectedRoom];
-//    [self lockView];
+    properties = [SPPProperties sharedProperties];
+    hub = properties.agileHub;
+    self.navigationItem.prompt = [NSString stringWithFormat:@"%@/%@", properties.connection.server, properties.room.name];
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,23 +45,51 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)actJoin:(id)sender {
-//    [roomHub invoke:@"joinRoom" withArgs:@[properties.room, properties.sessionId] completionHandler:^(id response) {
-//        NSLog(@"%@", response);
-//    }];
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    hub.roomDelegate = self;
+    [hub joinRoom:properties.room.name];
+    [self lockView];
 }
 
-#pragma mark SPPAgileHubRoomDelegate
-- (void)onJoinRoom: (SPPRoom *)room
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [hub leaveRoom:properties.room.name];
+    if (hub.roomDelegate == self) {
+        hub.roomDelegate = Nil;
+    }
+}
+
+#pragma mark + SPPAgileHubRoomDelegate
+- (void)agileHubJoinRoom: (SPPRoom *)room
 {
     NSLog(@"%@", room.name);
     [_cvUsers reloadData];
+    UIImage *img = [UIImage imageNamed:@"RoomOpened.png"];
+    UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+    imgV.frame = CGRectMake(0, 0, 35, 35);
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:imgV];
+    self.navigationItem.rightBarButtonItem = barItem;
+    [self unLockView];
 }
 
-#pragma makr -
+- (void)agileHubJoinUser: (SPPUser *) user toRoom: (SPPRoom *) room
+{
+    NSLog(@"Joined user %@", user.name);
+    [_cvUsers reloadData];
+}
 
+- (void)agileHubLeftUser: (SPPUser *) user theRoom: (SPPRoom *) room
+{
+    NSLog(@"Left user %@", user.name);
+    [_cvUsers reloadData];
+}
 
-#pragma mark UICollectionViewDataSource
+#pragma makr - SPPAgileHubRoomDelegate
+
+#pragma mark + UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
@@ -84,16 +108,6 @@
     {
         SPPUser *user=properties.room.connectedUsers[indexPath.row];
         cell.userName.text=user.name;
-        //cell.frame = CGRectMake(0, 0, 150, 120);
-        //cell.backgroundColor = [UIColor redColor];
-        //cell = [[UICollectionViewCell alloc] init];
-                //initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    
-        //[cell setImage: @"ffffff"];
-    //NSDictionary *roomItem = [[rooms objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    
-    //cell.textLabel.text = [roomItem objectForKey:@"Name"];
-    //cell.detailTextLabel.text = [roomItem objectForKey:@"Description"];
     }
     return cell;
 }
@@ -102,6 +116,6 @@
 {
     return nil;
 }
-#pragma mark -
+#pragma mark - UICollectionViewDataSource
 
 @end

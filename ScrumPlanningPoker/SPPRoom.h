@@ -8,21 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
-struct SPPRoomResult
-{
-    BOOL isActive;
-    BOOL isHostMaster;
-};
+//struct SPPRoomResult
+//{
+//    BOOL isActive;
+//    BOOL isHostMaster;
+//};
 
 @interface SPPRoom : NSObject
 
-@property BOOL isActive;
+@property NSInteger roomId;
 @property NSString* name;
 @property NSString* description;
+@property BOOL isActive;
 @property NSMutableArray* connectedUsers;
 @property NSMutableArray* itemsToVote;
 
 + (instancetype)SPPRoomWithDataDictionary: (NSDictionary*) initData;
 - (instancetype)initWithDataDictionary:(NSDictionary *)initData;
 
+- (void) updateFromRoom: (SPPRoom *) room;
 @end
