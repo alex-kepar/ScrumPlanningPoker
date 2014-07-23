@@ -7,56 +7,181 @@
 //
 
 #import "SPPRoom.h"
+#import "SPPBaseEntity+Protected.h"
 #import "SPPUser.h"
 #import "SPPVote.h"
 
-@implementation SPPRoom
+@implementation SPPRoom {
+    BOOL isPropertiesChanged;
+    SPPListItemConstructor _userItemConstructor;
+    SPPListItemConstructor _voteItemConstructor;
+}
 
-@synthesize roomId;
-@synthesize name;
-@synthesize description;
-@synthesize isActive;
+@synthesize roomDelegate;
+@synthesize name = _name;
+@synthesize description = _description;
+@synthesize isActive = _isActive;
 @synthesize connectedUsers;
 @synthesize itemsToVote;
 
-+ (instancetype)SPPRoomWithDataDictionary: (NSDictionary*) initData
-{
-    return [[self alloc] initWithDataDictionary:initData];
-}
 
-- (instancetype)initWithDataDictionary:(NSDictionary *)initData
-{
-    self = [super init];
-    if (self)
-    {
-        roomId = [[initData objectForKey:@"Id"] integerValue];
-        name = [initData objectForKey:@"Name"];
-        description = [initData objectForKey:@"Description"];
-        isActive = [[initData objectForKey:@"Active"] boolValue];
-        
-        NSArray *usersData = [initData objectForKey:@"ConnectedUsers"];
-        connectedUsers = [[NSMutableArray alloc] initWithCapacity:usersData.count];
-        for (int i = 0; i<usersData.count; i++) {
-            connectedUsers[i]=[SPPUser SPPUserWithDataDictionary:usersData[i]];
-        }
-
-        NSArray *votesData = [initData objectForKey:@"ItemsToVote"];
-        itemsToVote = [[NSMutableArray alloc] initWithCapacity:votesData.count];
-        for (int i = 0; i<itemsToVote.count; i++) {
-            itemsToVote[i]=[SPPVote SPPVoteWithDataDictionary:votesData[i]];
-        }
+- (SPPListItemConstructor) userItemConstructor {
+    if (_userItemConstructor == nil) {
+        _userItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
+            return [SPPUser SPPBaseEntityWithDataDictionary:initData];
+        };
     }
-    return self;
+    return _userItemConstructor;
 }
 
-- (void) updateFromRoom: (SPPRoom *) room
-{
-    self.name = room.name;
-    self.description = room.description;
-    self.isActive = room.isActive;
-    self.connectedUsers = room.connectedUsers;
-    self.itemsToVote = room.itemsToVote;
+- (SPPListItemConstructor) voteItemConstructor {
+    if (_voteItemConstructor == nil) {
+        _voteItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
+            SPPVote *vote = [SPPVote SPPBaseEntityWithDataDictionary:initData];
+            vote.owner = owner;
+            return vote;
+        };
+    }
+    return _voteItemConstructor;
 }
 
+
+- (void) setName:(NSString*) name {
+    if (![_name isEqualToString:name]) {
+        isPropertiesChanged = YES;
+        _name = name;
+    }
+}
+
+- (NSString*) name {
+    return _name;
+}
+
+- (void) setDescription:(NSString *) description {
+    if (![_description isEqualToString:description]) {
+        isPropertiesChanged = YES;
+        _description = description;
+    }
+}
+
+- (NSString*) description {
+    return _description;
+}
+
+- (void) setIsActive:(BOOL) isActive {
+    if (_isActive != isActive) {
+        isPropertiesChanged = YES;
+        _isActive = isActive;
+    }
+}
+
+- (BOOL) isActive {
+    return _isActive;
+}
+
+- (void) doUpdateFromDictionary:(NSDictionary*) data propertyIsChanged: (BOOL *) isChanged {
+    [super doUpdateFromDictionary:data propertyIsChanged:isChanged];
+    if (self.entityId != [[data objectForKey:@"Id"] integerValue]) return;
+    isPropertiesChanged = NO;
+    self.name = [data objectForKey:@"Name"];
+    self.description = [data objectForKey:@"Description"];
+    self.isActive = [[data objectForKey:@"Active"] boolValue];
+    
+    if (connectedUsers == nil) {
+        connectedUsers = [self initializeListFromData:[data objectForKey:@"ConnectedUsers"] useItemConstructor: self.userItemConstructor];
+    } else {
+        [self synchronizeList:connectedUsers fromListData:[data objectForKey:@"ConnectedUsers"] useItemConstructor:self.userItemConstructor];
+    }
+    
+    if (itemsToVote == nil) {
+        itemsToVote = [self initializeListFromData:[data objectForKey:@"ItemsToVote"] useItemConstructor:self.voteItemConstructor];
+    } else {
+        [self synchronizeList:itemsToVote fromListData:[data objectForKey:@"ItemsToVote"] useItemConstructor:self.voteItemConstructor];
+    }
+    if (isPropertiesChanged) {
+        *isChanged = YES;
+    }
+}
+
+- (void) addUserUseData:(NSDictionary*)userData {
+    [self insertUpdateItemInList:connectedUsers useItemData:userData useItemConstructor:self.userItemConstructor];
+}
+
+- (void) removeUserUseData:(NSDictionary*)userData {
+    [self deleteItemInList:connectedUsers useItemData:userData];
+}
+
+- (void) addVoteUseData:(NSDictionary*)voteData {
+    [self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
+}
+
+- (void) hubDidUserVote:(NSDictionary*)userVoteData {
+    NSInteger voteId=[[userVoteData objectForKey:@"VoteItemId"] integerValue];
+    NSInteger idx = [self.itemsToVote indexOfObjectPassingTest:^BOOL(SPPBaseEntity* item, NSUInteger idx, BOOL *stop) {
+        return (item.entityId == voteId);
+    }];
+    if (idx != NSNotFound) {
+        SPPVote *vote = self.itemsToVote[idx];
+        SPPUserVote *userVote = [vote userDidVoteWithData:userVoteData];
+        [self onDidVote:vote withUserVote:userVote];
+    }
+}
+
+- (void) hubDidVoteFinish: (NSDictionary *) voteData {
+    SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
+    [self onDidVoteFinish:vote];
+}
+
+- (void) hubDidVoteOpen: (NSDictionary *) voteData {
+    SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
+    [self onDidVoteOpen:vote];
+}
+
+- (void) hubDidVoteClose: (NSDictionary *) voteData {
+    SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
+    [self onDidVoteClose:vote];
+}
+
+- (void) onDidVote: (SPPVote*) vote withUserVote: (SPPUserVote*) userVote {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVote:withUserVote:)]) {
+        [roomDelegate room:self DidVote:vote withUserVote:userVote];
+    }
+}
+
+- (void) onDidVoteFinish: (SPPVote*) vote {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVoteFinish:)]) {
+        [roomDelegate room:self DidVoteFinish:vote];
+    }
+}
+
+- (void) onDidVoteOpen: (SPPVote*) vote {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVoteOpen:)]) {
+        [roomDelegate room:self DidVoteOpen:vote];
+    }
+}
+
+- (void) onDidVoteClose: (SPPVote*) vote {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVoteClose:)]) {
+        [roomDelegate room:self DidVoteClose:vote];
+    }
+}
+
+//- (void) open {
+//    if (roomDelegate && [roomDelegate respondsToSelector:@selector(openRoom:)]) {
+//        [roomDelegate openRoom:self];
+//    }
+//}
+//
+//- (void) close {
+//    if (roomDelegate && [roomDelegate respondsToSelector:@selector(closeRoom:)]) {
+//        [roomDelegate closeRoom:self];
+//    }
+//}
+//
+//- (void) vote: (SPPVote*) vote doVote: (NSInteger) voteValue {
+//    if (roomDelegate && [roomDelegate respondsToSelector:@selector(vote:doVote:forRooom:)]) {
+//        [roomDelegate vote:vote doVote:voteValue forRooom:self];
+//    }
+//}
 
 @end

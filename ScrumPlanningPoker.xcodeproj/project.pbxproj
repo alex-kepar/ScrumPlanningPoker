@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8809DB47195B0EA600D03238 /* SPPPagedFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809DB46195B0EA600D03238 /* SPPPagedFlowView.m */; };
+		8809DB4A195D873D00D03238 /* SPPVoteCardsViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809DB49195D873D00D03238 /* SPPVoteCardsViewLayout.m */; };
+		8810666B1975286900969385 /* SPPBaseEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8810666A1975286900969385 /* SPPBaseEntity.m */; };
+		8810666E197699F500969385 /* SPPBaseEntity+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 8810666D197699F500969385 /* SPPBaseEntity+Protected.m */; };
+		8812FBD61959D54A005DA858 /* VoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8812FBD51959D54A005DA858 /* VoteViewController.m */; };
+		8812FBD91959D9B8005DA858 /* SPPVoteCardViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8812FBD81959D9B8005DA858 /* SPPVoteCardViewCell.m */; };
 		881F469718DB565D004DF389 /* CALayer+XibConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */; };
 		882C81D218C4B42C0011AD59 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882C81D118C4B42C0011AD59 /* main.storyboard */; };
 		882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C81D418C4C8D00011AD59 /* ConnectViewController.m */; };
@@ -23,6 +29,8 @@
 		88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B5BCB618D1C6DC007918E8 /* SPPProperties.m */; };
 		88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAC18D7583F00B03251 /* SPPUser.m */; };
 		88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAF18D7588100B03251 /* SPPPrivilege.m */; };
+		88C2E93B197913AC00E33A83 /* SPPVoteViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */; };
+		88C2E93E19797C8F00E33A83 /* SPPUserVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C2E93D19797C8F00E33A83 /* SPPUserVote.m */; };
 		88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6057D18D3399900A1EB77 /* RoomViewController.m */; };
 		88EDD2F118E5BF810065C6A4 /* TestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EDD2F018E5BF800065C6A4 /* TestController.m */; };
 		B54EA18411124EAF8FC2BD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9419B472B54ED08B208BA4 /* libPods.a */; };
@@ -52,6 +60,18 @@
 
 /* Begin PBXFileReference section */
 		4A8A1A9CAEF0473797EE9B25 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		8809DB45195B0EA600D03238 /* SPPPagedFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPPagedFlowView.h; sourceTree = "<group>"; };
+		8809DB46195B0EA600D03238 /* SPPPagedFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPPagedFlowView.m; sourceTree = "<group>"; };
+		8809DB48195D873D00D03238 /* SPPVoteCardsViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVoteCardsViewLayout.h; sourceTree = "<group>"; };
+		8809DB49195D873D00D03238 /* SPPVoteCardsViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVoteCardsViewLayout.m; sourceTree = "<group>"; };
+		881066691975286900969385 /* SPPBaseEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPBaseEntity.h; sourceTree = "<group>"; };
+		8810666A1975286900969385 /* SPPBaseEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPBaseEntity.m; sourceTree = "<group>"; };
+		8810666C197699F500969385 /* SPPBaseEntity+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SPPBaseEntity+Protected.h"; sourceTree = "<group>"; };
+		8810666D197699F500969385 /* SPPBaseEntity+Protected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SPPBaseEntity+Protected.m"; sourceTree = "<group>"; };
+		8812FBD41959D54A005DA858 /* VoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteViewController.h; sourceTree = "<group>"; };
+		8812FBD51959D54A005DA858 /* VoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoteViewController.m; sourceTree = "<group>"; };
+		8812FBD71959D9B8005DA858 /* SPPVoteCardViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVoteCardViewCell.h; sourceTree = "<group>"; };
+		8812FBD81959D9B8005DA858 /* SPPVoteCardViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVoteCardViewCell.m; sourceTree = "<group>"; };
 		881F469518DB565D004DF389 /* CALayer+XibConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+XibConfiguration.h"; sourceTree = "<group>"; };
 		881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+XibConfiguration.m"; sourceTree = "<group>"; };
 		882C81D118C4B42C0011AD59 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
@@ -81,6 +101,10 @@
 		88BD7FAC18D7583F00B03251 /* SPPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUser.m; sourceTree = "<group>"; };
 		88BD7FAE18D7588100B03251 /* SPPPrivilege.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPPrivilege.h; sourceTree = "<group>"; };
 		88BD7FAF18D7588100B03251 /* SPPPrivilege.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPPrivilege.m; sourceTree = "<group>"; };
+		88C2E939197913AC00E33A83 /* SPPVoteViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVoteViewCell.h; sourceTree = "<group>"; };
+		88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVoteViewCell.m; sourceTree = "<group>"; };
+		88C2E93C19797C8F00E33A83 /* SPPUserVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUserVote.h; sourceTree = "<group>"; };
+		88C2E93D19797C8F00E33A83 /* SPPUserVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUserVote.m; sourceTree = "<group>"; };
 		88C6057C18D3399900A1EB77 /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		88C6057D18D3399900A1EB77 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		88EDD2EF18E5BF800065C6A4 /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
@@ -142,6 +166,8 @@
 				88C6057D18D3399900A1EB77 /* RoomViewController.m */,
 				88EDD2EF18E5BF800065C6A4 /* TestController.h */,
 				88EDD2F018E5BF800065C6A4 /* TestController.m */,
+				8812FBD41959D54A005DA858 /* VoteViewController.h */,
+				8812FBD51959D54A005DA858 /* VoteViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -164,6 +190,14 @@
 				8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */,
 				887B4BDD19533060005CE261 /* SPPRoomViewCell.h */,
 				887B4BDE19533060005CE261 /* SPPRoomViewCell.m */,
+				8809DB45195B0EA600D03238 /* SPPPagedFlowView.h */,
+				8809DB46195B0EA600D03238 /* SPPPagedFlowView.m */,
+				8812FBD71959D9B8005DA858 /* SPPVoteCardViewCell.h */,
+				8812FBD81959D9B8005DA858 /* SPPVoteCardViewCell.m */,
+				8809DB48195D873D00D03238 /* SPPVoteCardsViewLayout.h */,
+				8809DB49195D873D00D03238 /* SPPVoteCardsViewLayout.m */,
+				88C2E939197913AC00E33A83 /* SPPVoteViewCell.h */,
+				88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -184,12 +218,18 @@
 				88B5BCB618D1C6DC007918E8 /* SPPProperties.m */,
 				88BD7FAB18D7583F00B03251 /* SPPUser.h */,
 				88BD7FAC18D7583F00B03251 /* SPPUser.m */,
+				88C2E93C19797C8F00E33A83 /* SPPUserVote.h */,
+				88C2E93D19797C8F00E33A83 /* SPPUserVote.m */,
 				88BD7FAE18D7588100B03251 /* SPPPrivilege.h */,
 				88BD7FAF18D7588100B03251 /* SPPPrivilege.m */,
 				8858A78E18D9B85300A06AD2 /* SPPRoom.h */,
 				8858A78F18D9B85300A06AD2 /* SPPRoom.m */,
 				8858A79218D9F5B500A06AD2 /* SPPVote.h */,
 				8858A79318D9F5B500A06AD2 /* SPPVote.m */,
+				881066691975286900969385 /* SPPBaseEntity.h */,
+				8810666A1975286900969385 /* SPPBaseEntity.m */,
+				8810666C197699F500969385 /* SPPBaseEntity+Protected.h */,
+				8810666D197699F500969385 /* SPPBaseEntity+Protected.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -238,12 +278,12 @@
 		C3A4A6ED18B24ACD00A5E4EB /* ScrumPlanningPoker */ = {
 			isa = PBXGroup;
 			children = (
-				887B4BE01954546B005CE261 /* Images */,
-				881F469418DB55F7004DF389 /* Support */,
 				C3A4A6F618B24ACD00A5E4EB /* AppDelegate.h */,
 				C3A4A6F718B24ACD00A5E4EB /* AppDelegate.m */,
 				882C81D118C4B42C0011AD59 /* main.storyboard */,
 				C3A4A6F918B24ACD00A5E4EB /* Images.xcassets */,
+				887B4BE01954546B005CE261 /* Images */,
+				881F469418DB55F7004DF389 /* Support */,
 				881F469318DB3C46004DF389 /* View */,
 				881F469218DB3C21004DF389 /* Network */,
 				881F469118DB3BA3004DF389 /* Controller */,
@@ -417,20 +457,28 @@
 			files = (
 				881F469718DB565D004DF389 /* CALayer+XibConfiguration.m in Sources */,
 				8858A78D18D896DB00A06AD2 /* SPPAgileHub.m in Sources */,
+				8810666E197699F500969385 /* SPPBaseEntity+Protected.m in Sources */,
 				C3A4A6F818B24ACD00A5E4EB /* AppDelegate.m in Sources */,
 				885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */,
 				88EDD2F118E5BF810065C6A4 /* TestController.m in Sources */,
 				88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */,
+				8812FBD61959D54A005DA858 /* VoteViewController.m in Sources */,
 				882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */,
+				8809DB47195B0EA600D03238 /* SPPPagedFlowView.m in Sources */,
+				8809DB4A195D873D00D03238 /* SPPVoteCardsViewLayout.m in Sources */,
 				887B4BDF19533060005CE261 /* SPPRoomViewCell.m in Sources */,
 				88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */,
 				88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */,
+				8810666B1975286900969385 /* SPPBaseEntity.m in Sources */,
 				C3A4A6F418B24ACD00A5E4EB /* main.m in Sources */,
+				88C2E93B197913AC00E33A83 /* SPPVoteViewCell.m in Sources */,
 				8858A79018D9B85300A06AD2 /* SPPRoom.m in Sources */,
+				88C2E93E19797C8F00E33A83 /* SPPUserVote.m in Sources */,
 				885FB4E91958510900AB1A21 /* SPPConnection.m in Sources */,
 				8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */,
 				8858A79418D9F5B500A06AD2 /* SPPVote.m in Sources */,
 				88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */,
+				8812FBD91959D9B8005DA858 /* SPPVoteCardViewCell.m in Sources */,
 				8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,7 +602,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch";
 				INFOPLIST_FILE = "ScrumPlanningPoker/ScrumPlanningPoker-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -568,7 +618,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ScrumPlanningPoker/ScrumPlanningPoker-Prefix.pch";
 				INFOPLIST_FILE = "ScrumPlanningPoker/ScrumPlanningPoker-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

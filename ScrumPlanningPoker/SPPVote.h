@@ -7,12 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SPPBaseEntity.h"
+#import "SPPUserVote.h"
 
-@interface SPPVote : NSObject
 
-@property NSString* content;
+@interface SPPVote : SPPBaseEntity
 
-+ (instancetype)SPPVoteWithDataDictionary: (NSDictionary*) initData;
-- (instancetype)initWithDataDictionary:(NSDictionary *)initData;
+@property NSString *content;
+@property NSInteger roomId;
+@property BOOL isClosed;
+@property BOOL isOpened;
+@property BOOL isFinished;
+@property NSInteger overallMark;
+@property NSMutableArray *votedUsers;
+@property NSObject *owner;
+
+- (SPPUserVote*) userDidVoteWithData:(NSDictionary*)userVoteData;
 
 @end

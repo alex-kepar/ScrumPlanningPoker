@@ -7,7 +7,6 @@
 //
 
 #import "SPPAgileHub.h"
-#import "SPPProperties.h"
 #import "SRVersion.h"
 
 @implementation SPPAgileHub
@@ -16,47 +15,18 @@
     SRHubProxy *hub;
 }
 
-@synthesize roomDelegate;
-@synthesize connectionDelegate;
-
-//@synthesize hubConnection;
-//@synthesize hub;
 @synthesize sessionId;
-
-
-
-/*+ (instancetype) SPPAgileHubWithHubConnection: (SRHubConnection*) initHubConnection
-{
-    return [[self alloc] initWithHubConnection:initHubConnection];
-}
-
-- (instancetype)initWithHubConnection:(SRHubConnection *) initHubConnection
-{
-    self = [super init];
-    if (self)
-    {
-        hubConnection = initHubConnection;
-        hub = [hubConnection createHubProxy:@"agileHub"];
-        // Connection events
-        [hub on:@"onUserLogged" perform:self selector:@selector(onUserLogged:)];
-        [hub on:@"onState" perform:self selector:@selector(onState:)];
-        [hub on:@"onErrorHandler" perform:self selector:@selector(onErrorHandler:)];
-        // Room events
-        [hub on:@"onInitRoom" perform:self selector:@selector(onInitRoom:)];
-        [hub on:@"onJoinedRoom" perform:self selector:@selector(onJoinedRoom:)];
-        [hub on:@"onLeftRoom" perform:self selector:@selector(onLeftRoom:)];
-        [hub on:@"onRoomStateChanged" perform:self selector:@selector(onRoomStateChanged:)];
-    }
-    return self;
-}
-*/
+@synthesize connectDelegate;
+@synthesize stateDelegate;
+@synthesize roomDelegate;
+@synthesize voteDelegate;
 
 - (void) Disconnect
 {
     if (hubConnection) {
         [hubConnection stop];
         [hubConnection disconnect];
-        hubConnection = Nil;
+        hubConnection = nil;
     }
 }
 
@@ -70,173 +40,180 @@
     hubConnection.received = ^(NSString * dataReceived){
         NSLog(@"***********************************\n***********************************\nData received:\n%@", dataReceived);
     };
-    //[hubConnection addValue:[NSString stringWithFormat:@".ASPXAUTH=%@", properties.userToken] forHTTPHeaderField:@"Cookie"];
-    
-//    properties.agileHub = [SPPAgileHub SPPAgileHubWithHubConnection:hubConnection];
-//    properties.hubConnection=hubConnection;
-    
+
     hub = [hubConnection createHubProxy:@"agileHub"];
     // Connection events
     [hub on:@"onUserLogged" perform:self selector:@selector(onUserLogged:)];
     [hub on:@"onState" perform:self selector:@selector(onState:)];
+    [hub on:@"onHubStateChanged" perform:self selector:@selector(onHubStateChanged:)];
     [hub on:@"onErrorHandler" perform:self selector:@selector(onErrorHandler:)];
     // Room events
     [hub on:@"onInitRoom" perform:self selector:@selector(onInitRoom:)];
     [hub on:@"onJoinedRoom" perform:self selector:@selector(onJoinedRoom:)];
     [hub on:@"onLeftRoom" perform:self selector:@selector(onLeftRoom:)];
     [hub on:@"onRoomStateChanged" perform:self selector:@selector(onRoomStateChanged:)];
+    // Vote events
+    [hub on:@"onUserVoted" perform:self selector:@selector(onUserVoted:)];
+    [hub on:@"onVoteFinished" perform:self selector:@selector(onVoteFinished:)];
+    [hub on:@"onVoteItemOpened" perform:self selector:@selector(onVoteItemOpened:)];
+    [hub on:@"onVoteItemClosed" perform:self selector:@selector(onVoteItemClosed:)];
     
     [hubConnection setDelegate:self];
     [hubConnection start];
 }
 
 
-#pragma mark + SRConnection Delegate
+#pragma mark + SRConnection Delegate & SPPAgileHubConnectDelegate
 - (void)SRConnectionDidOpen:(SRConnection *)connection
 {
-    NSLog(@"***** SRConnectionDidOpen invoked");
-    //[self unLockView];
+    NSLog(@"***** SRHubConnectionDidOpen invoked");
 }
 
 - (void)SRConnection:(SRConnection *)connection didReceiveData:(id)data
 {
-    NSLog(@"***** SRConnection did receive data invoked Data:\n%@", data);
-    //[messagesReceived insertObject:[MessageItem messageItemWithUserName:@"Connection did recieve data" Message:@""] atIndex:0];
-    //[tvMessages reloadData];
+    NSLog(@"***** SRHubConnection did receive data invoked Data:\n%@", data);
 }
 
 - (void)SRConnectionDidClose:(SRConnection *)connection
 {
-    NSLog(@"***** SRConnectionDidClose invoked");
+    NSLog(@"***** SRHubConnectionDidClose invoked");
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHubDidClose:)])
+    {
+        [connectDelegate agileHubDidClose:self];
+    }
 }
 
 - (void)SRConnection:(SRConnection *)connection didReceiveError:(NSError *)error
 {
-    NSLog(@"***** SRConnection did receive error invoked");
-    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:didReceiveError:)])
+    NSLog(@"***** SRHubConnection did receive error invoked");
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:didReceiveError:)])
     {
-        [connectionDelegate agileHub:self didReceiveError:[NSString stringWithFormat:@"%@", [error localizedDescription]]];
+        [connectDelegate agileHub:self didReceiveError:[NSString stringWithFormat:@"%@", [error localizedDescription]]];
     }
 }
-#pragma mark - SRConnection Delegate
 
 - (void)onUserLogged: (NSDictionary *) userDto
 {
-    [SPPProperties sharedProperties].user = [SPPUser SPPUserWithDataDictionary:userDto];
     NSLog(@"***** onUserLogged Data:\n%@", userDto);
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:didLogUser:)])
+    {
+        [connectDelegate agileHub:self didLogUser:userDto];
+    }
 }
 
 - (void)onState: (NSDictionary *) state
 {
+    // invoked after onUserLogged and indicate - connection is ok
     NSLog(@"***** onState Data:\n%@", state);
     sessionId = [state objectForKey:@"SessionId"];
-    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubDidOpen:)])
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHubDidOpen:)])
     {
-        [connectionDelegate agileHubDidOpen:self];
+        [connectDelegate agileHubDidOpen:self];
     }
 }
 
 -(void)onErrorHandler: (NSDictionary *) messageDto
 {
     NSLog(@"***** onErrorHandler\nmessage:\n%@", messageDto);
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:didReceiveError:)])
+    {
+        [connectDelegate agileHub:self didReceiveError:[NSString stringWithFormat: @"%@", messageDto]];
+    }
+}
+#pragma mark - SRConnection Delegate & SPPAgileHubConnectDelegate
+
+#pragma mark + SPPAgileHubStateDelegate
+-(void)onHubStateChanged: (NSDictionary *) roomDto
+{
+    NSLog(@"***** onHubStateChanged Data:\n%@", roomDto);
+    if (stateDelegate && [stateDelegate respondsToSelector:@selector(agileHubDidChangeState:)]) {
+        [stateDelegate agileHubDidChangeState:roomDto];
+    }
 }
 
 -(void)onInitRoom: (NSDictionary *) roomDto
 {
     NSLog(@"***** onInitRoom Data:\n%@", roomDto);
-    SPPRoom* initRoom=[SPPRoom SPPRoomWithDataDictionary:roomDto];
-    NSMutableArray *roomList = [SPPProperties sharedProperties].roomList;
-    NSInteger idx = [roomList indexOfObjectPassingTest:^BOOL(SPPRoom* item, NSUInteger idx, BOOL *stop) {
-        return (item.roomId == initRoom.roomId);
-    }];
-    if (idx == NSNotFound) {
-        [roomList addObject:initRoom];
-    } else {
-        [[roomList objectAtIndex:idx] updateFromRoom:initRoom];
-        initRoom = [roomList objectAtIndex:idx];
-    }
-    [SPPProperties sharedProperties].room = initRoom;
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubJoinRoom:)])
+    if (stateDelegate && [stateDelegate respondsToSelector:@selector(agileHubDidOpenRoom:)])
     {
-        [roomDelegate agileHubJoinRoom:initRoom];
+        [stateDelegate agileHubDidOpenRoom:roomDto];
     }
 }
+#pragma mark - SPPAgileHubStateDelegate
 
+#pragma mark + SPPAgileHubRoomDelegate
 -(void)onJoinedRoom: (NSDictionary *) userDto
 {
     NSLog(@"***** onJoinedRoom Data:\n%@", userDto);
-    SPPUser * joinedUser = [SPPUser SPPUserWithDataDictionary:userDto];
-    SPPRoom * room = [SPPProperties sharedProperties].room;
-    [room.connectedUsers addObject:joinedUser];
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubJoinUser:toRoom:)]) {
-        [roomDelegate agileHubJoinUser:joinedUser toRoom:room];
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidJoinUser:)]) {
+        [roomDelegate agileHubDidJoinUser:userDto];
     }
 }
 
 -(void)onLeftRoom: (NSDictionary *) userDto
 {
     NSLog(@"***** onLeftRoom Data:\n%@", userDto);
-    SPPUser * leftUser = [SPPUser SPPUserWithDataDictionary:userDto];
-    SPPRoom * room = [SPPProperties sharedProperties].room;
-    //NSMutableArray* connectedUsers = room.connectedUsers;
-    NSInteger idx = [room.connectedUsers indexOfObjectPassingTest:^BOOL(SPPUser* user, NSUInteger idx, BOOL *stop) {
-        return (user.userId == leftUser.userId);
-    }];
-    if (idx != NSNotFound) {
-        [room.connectedUsers removeObjectAtIndex:idx];
-        if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubLeftUser:theRoom:)]) {
-            [roomDelegate agileHubLeftUser:leftUser theRoom:room];
-        }
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidLeaveUser:)]) {
+        [roomDelegate agileHubDidLeaveUser:userDto];
     }
+    //}
 }
 
 -(void)onRoomStateChanged: (NSDictionary *) roomDto
 {
     NSLog(@"***** onRoomStateChanged Data:\n%@", roomDto);
-    SPPRoom* room=[SPPRoom SPPRoomWithDataDictionary:roomDto];
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubRoomChanged:)]) {
-        [roomDelegate agileHubRoomChanged:room];
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidChangeRoom:)]) {
+        [roomDelegate agileHubDidChangeRoom:roomDto];
     }
+}
+#pragma mark - SPPAgileHubRoomDelegate
 
-    
-    //NSInteger idx = [room.connectedUsers indexOfObjectPassingTest:^BOOL(SPPUser* user, NSUInteger idx, BOOL *stop) {
-    //    return (user.userId == leftUser.userId);
-    //}];
 
-    
-/*    SPPRoom* room=[SPPRoom SPPRoomWithDataDictionary:roomDto];
-    [SPPProperties sharedProperties].room = room;
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubJoinRoom:)])
-    {
-        [roomDelegate agileHubJoinRoom:room];
+-(void)onUserVoted: (NSDictionary *) userVoteDto
+{
+    NSLog(@"***** onUserVoted Data:\n%@", userVoteDto);
+    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidUserVote:)]) {
+        [voteDelegate agileHubDidUserVote:userVoteDto];
     }
-
-    
-    NSLog(@"***** onLeftRoom Data:\n%@", userDto);
-    SPPUser * leftUser = [SPPUser SPPUserWithDataDictionary:userDto];
-    SPPRoom * room = [SPPProperties sharedProperties].room;
-    //NSMutableArray* connectedUsers = room.connectedUsers;
-    NSInteger idx = [room.connectedUsers indexOfObjectPassingTest:^BOOL(SPPUser* user, NSUInteger idx, BOOL *stop) {
-        return (user.userId == leftUser.userId);
-    }];
-    if (idx != NSNotFound) {
-        [room.connectedUsers removeObjectAtIndex:idx];
-        if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubLeftUser:theRoom:)]) {
-            [roomDelegate agileHubLeftUser:leftUser theRoom:room];
-        }
-    }*/
 }
 
-- (void) joinRoom: (NSString *) roomName
+-(void)onVoteFinished: (NSDictionary *) voteDto
 {
+    NSLog(@"***** onVoteFinished Data:\n%@", voteDto);
+    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidVoteFinish:)]) {
+        [voteDelegate agileHubDidVoteFinish:voteDto];
+    }
+}
+
+-(void)onVoteItemOpened: (NSDictionary *) voteDto
+{
+    NSLog(@"***** onVoteItemOpened Data:\n%@", voteDto);
+    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidVoteOpen:)]) {
+        [voteDelegate agileHubDidVoteOpen:voteDto];
+    }
+}
+
+-(void)onVoteItemClosed: (NSDictionary *) voteDto
+{
+    NSLog(@"***** onVoteItemClosed Data:\n%@", voteDto);
+    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidVoteClose:)]) {
+        [voteDelegate agileHubDidVoteClose:voteDto];
+    }
+}
+
+- (void) joinRoom: (NSString *) roomName {
     [hub   invoke:@"JoinRoom"
          withArgs:@[roomName, sessionId]];
 }
 
-- (void) leaveRoom: (NSString *) roomName
-{
+- (void) leaveRoom: (NSString *) roomName {
     [hub   invoke:@"LeaveRoom"
          withArgs:@[roomName, sessionId]];
 }
-     
+
+- (void) vote: (NSInteger) voteId doVote: (NSInteger) voteValue forRooom: (NSString *) roomName {
+    [hub   invoke:@"VoteForItem"
+         withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", voteValue]]];
+}
+
 @end

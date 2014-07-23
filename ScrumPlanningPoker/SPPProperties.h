@@ -14,16 +14,11 @@
 
 @interface SPPProperties : NSObject
 
-//@property NSString* server;
-//@property NSString* selectedRoom;
-//@property NSString* userToken;
-@property SPPUser* user;
-@property SPPRoom *room;
-@property NSMutableArray *roomList;
-//@property SRHubConnection* hubConnection;
 @property (readonly) SPPConnection* connection;
 @property SPPAgileHub* agileHub;
 
+@property SPPUser *user;
+//@property SPPRoom *room;
 
 + (SPPProperties *)sharedProperties;
 

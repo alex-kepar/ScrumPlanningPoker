@@ -7,14 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SPPBaseEntity.h"
 
-@interface SPPPrivilege : NSObject
+@interface SPPPrivilege : SPPBaseEntity
 
-@property int privilegeId;
 @property NSString *name;
 @property NSString *description;
-
-+ (instancetype) SPPPrivilegeWithDataDictionary: (NSDictionary*) initData;
-- (instancetype)initWithDataDictionary:(NSDictionary *)initData;
 
 @end

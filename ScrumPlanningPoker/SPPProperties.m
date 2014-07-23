@@ -9,16 +9,7 @@
 #import "SPPProperties.h"
 
 @implementation SPPProperties
-//{
-    //SURLSession *session = [NSURLSession sharedSession];
-//}
 
-//@synthesize server;
-//@synthesize selectedRoom;
-//@synthesize userToken;
-//@synthesize user;
-//@synthesize room;
-//@synthesize hubConnection;
 @synthesize agileHub;
 @synthesize connection;
 

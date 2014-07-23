@@ -8,44 +8,57 @@
 
 #import "SPPUser.h"
 #import "SPPPrivilege.h"
+#import "SPPBaseEntity+Protected.h"
 
-@implementation SPPUser
+@implementation SPPUser {
+    BOOL isPropertiesChanged;
+}
 
-@synthesize userId;
-@synthesize name;
-@synthesize isAdmin;
+@synthesize name = _name;
+@synthesize isAdmin = _isAdmin;
 @synthesize privileges;
 
-
-+ (instancetype) SPPUserWithDataDictionary: (NSDictionary*) initData
-{
-    return [[self alloc] initWithDataDictionary:initData];
-}
-
-- (instancetype)initWithDataDictionary:(NSDictionary *)initData
-{
-    self = [super init];
-    if (self)
-    {
-        userId = [[initData objectForKey:@"Id"] integerValue];
-        name = [initData objectForKey:@"Name"];
-        isAdmin = [[initData objectForKey:@"IsAdmin"] boolValue];
-        NSArray *privilegeData = [initData objectForKey:@"Privileges"];
-        
-        privileges = [[NSMutableArray alloc] initWithCapacity:privilegeData.count];
-        for (int i = 0; i<privilegeData.count; i++) {
-            privileges[i]=[SPPPrivilege SPPPrivilegeWithDataDictionary:privilegeData[i]];
-        }
-      
-        //_message = initMessage;
-        //NSLog(@"Id=%@", );
-        //NSLog(@"Name=%@", [userDto objectForKey:@"Name"]);
-        //NSLog(@"isAdmin=%@", [userDto objectForKey:@"IsAdmin"]);
-        //NSLog(@"Privileges=%@", [userDto objectForKey:@"Privileges"]);
-        //NSArray *privilegesList = [userDto objectForKey:@"Privileges"];
+- (void) setName:(NSString *)name {
+    if (![_name isEqualToString:name]) {
+        isPropertiesChanged = YES;
+        _name = name;
     }
-    return self;
 }
 
+- (NSString*) name {
+    return _name;
+}
+
+- (void) setIsAdmin:(BOOL)isAdmin {
+    if (_isAdmin != isAdmin) {
+        isPropertiesChanged = YES;
+        _isAdmin = isAdmin;
+    }
+}
+
+- (BOOL) isAdmin {
+    return _isAdmin;
+}
+
+- (void) doUpdateFromDictionary:(NSDictionary*) data propertyIsChanged: (BOOL *) isChanged {
+    SPPListItemConstructor privelegeItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
+        return [SPPPrivilege SPPBaseEntityWithDataDictionary:initData];
+    };
+
+    [super doUpdateFromDictionary:data propertyIsChanged:isChanged];
+    if (self.entityId != [[data objectForKey:@"Id"] integerValue]) return;
+    isPropertiesChanged = NO;
+    self.name = [data objectForKey:@"Name"];
+    self.isAdmin = [[data objectForKey:@"IsAdmin"] boolValue];
+   
+    if (privileges == nil) {
+        privileges = [self initializeListFromData:[data objectForKey:@"Privileges"] useItemConstructor:privelegeItemConstructor];
+    } else {
+        [self synchronizeList:privileges fromListData:[data objectForKey:@"Privileges"] useItemConstructor:privelegeItemConstructor];
+    }
+    if (isPropertiesChanged) {
+        *isChanged = YES;
+    }
+}
 
 @end

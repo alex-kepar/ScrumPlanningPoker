@@ -12,7 +12,7 @@
 #import "SPPConnection.h"
 #import "SPPAgileHub.h"
 
-@interface ConnectViewController : SPPBaseViewController <UITextFieldDelegate, SPPConnectionDelegate, SPPAgileHubConnectionDelegate>
+@interface ConnectViewController : SPPBaseViewController <UITextFieldDelegate, SPPConnectionDelegate, SPPAgileHubConnectDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtServer;
 @property (weak, nonatomic) IBOutlet UITextField *txtLogin;

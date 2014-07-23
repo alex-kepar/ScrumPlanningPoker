@@ -7,15 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SPPBaseEntity.h"
 
-@interface SPPUser : NSObject
+@interface SPPUser : SPPBaseEntity
 
-@property NSInteger userId;
 @property NSString *name;
 @property BOOL isAdmin;
 @property NSMutableArray *privileges;
-
-+ (instancetype)SPPUserWithDataDictionary: (NSDictionary*) initData;
-- (instancetype)initWithDataDictionary:(NSDictionary *)initData;
 
 @end

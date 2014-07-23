@@ -7,24 +7,16 @@
 //
 
 #import "ConnectViewController.h"
-#import "SPPProperties.h"
-
-@interface ConnectViewController ()
-
-@end
+#import "SPPUser.h"
+#import "SPPRoom.h"
+#import "SelectRoomViewController.h"
 
 @implementation ConnectViewController
 {
-    SPPProperties *properties;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    SPPConnection *webConnection;
+    SPPAgileHub *agileHub;
+    SPPUser *logUser;
+    NSMutableArray *roomList;
 }
 
 - (void)viewDidLoad
@@ -32,26 +24,29 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.title=@"Connection";
-    properties = [SPPProperties sharedProperties];
+    webConnection = [[SPPConnection alloc] init];
+    agileHub = [[SPPAgileHub alloc] init];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    properties.connection.connectionDelegate = self;
-    properties.agileHub.connectionDelegate = self;
-    [properties.agileHub Disconnect];
+    webConnection.connectionDelegate = self;
+    agileHub.connectDelegate = self;
+    agileHub.stateDelegate = nil;
+    agileHub.roomDelegate = nil;
+    [agileHub Disconnect];
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    if (properties.connection.connectionDelegate == self) {
-        properties.connection.connectionDelegate = Nil;
-    }
-    if (properties.agileHub.connectionDelegate == self) {
-        properties.agileHub.connectionDelegate = Nil;
-    }
+    //if (connection.connectionDelegate == self) {
+    //    connection.connectionDelegate = nil;
+    //}
+    //if (agileHub.connectDelegate == self) {
+    //    agileHub.connectDelegate = nil;
+    //}
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,66 +57,7 @@
 
 - (IBAction)actConnect:(id)sender {
     [self lockView];
-    [properties.connection ConnectTo:[_txtServer text] Login:[_txtLogin text] Password:[_txtPassword text]];
-    
-    
-    /*NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@/Handlers/LoginHandler.ashx", [_txtServer text]]];
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
-    
-    NSData* passwordData=[[_txtPassword text] dataUsingEncoding:NSUTF8StringEncoding];
-    NSString* passwordEncode=[[passwordData base64EncodedStringWithOptions:0] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    NSData* messageData=[[NSString stringWithFormat:@"%@:%@", [_txtLogin text], passwordEncode] dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [request addValue:[NSString stringWithFormat:@"Basic %@", [messageData base64EncodedStringWithOptions:0]] forHTTPHeaderField:@"Authorization"];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-        {
-            [self unLockView];
-            if (error == nil)
-            {
-                NSInteger status = [(NSHTTPURLResponse *)response statusCode];
-                if(status == 200)
-                {
-                    properties = [SPPProperties sharedProperties];
-                    NSArray* cookies = [NSURLSession sharedSession].configuration.HTTPCookieStorage.cookies;
-                    NSUInteger cookieIndex=[cookies indexOfObjectPassingTest:^BOOL(id cookieId, NSUInteger idx, BOOL *stop)
-                                            {
-                                                if([[(NSHTTPCookie *)cookieId name] isEqualToString:@".ASPXAUTH"])
-                                                {
-                                                    *stop=YES;
-                                                    return YES;
-                                                }
-                                                return NO;
-                                            }];
-                    if (cookieIndex != NSNotFound)
-                    {
-                        properties.userToken = [(NSHTTPCookie *)cookies[cookieIndex] value];
-                        properties.server = _txtServer.text;
-                        properties.hubConnection = nil;
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self performSegueWithIdentifier:@"ShowRooms" sender:self];
-                        });
-                        //dispatch_async(dispatch_get_main_queue(), ^{
-                        //    [self performSegueWithIdentifier:@"TestSegue" sender:self];
-                        //});
-                    }
-                    else
-                    {
-                        [self showMessage:@"Authorization not passed" withTitle:@"Error connection"];
-                    }
-                }
-                else
-                {
-                    [self showMessage:[NSString stringWithFormat:@"%@", [NSHTTPURLResponse localizedStringForStatusCode: status ]] withTitle:@"Error connection"];
-                }
-            }
-            else
-            {
-                [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
-            }
-        }];
-    [task resume];*/
+    [webConnection ConnectTo:[_txtServer text] Login:[_txtLogin text] Password:[_txtPassword text]];
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField
@@ -137,7 +73,17 @@
 #pragma mark + SPPConnectionDelegate
 -(void) connectionDidOpen:(SPPConnection *)connection
 {
-    [connection GetRoomList];
+    [agileHub ConnectTo:connection.server];
+}
+
+-(void) connection:(SPPConnection *)connection didReceiveRoomList:(NSArray *)data
+{
+    roomList = [[NSMutableArray alloc] initWithCapacity:data.count];
+    for (int i = 0; i < data.count; i++) {
+        roomList[i] = [SPPRoom SPPBaseEntityWithDataDictionary:data[i]];
+    }
+    [self unLockView];
+    [self performSegueWithIdentifier:@"ShowRooms" sender:self];
 }
 
 -(void) connection:(SPPConnection *)connection didReceiveError:(NSError *)error
@@ -145,28 +91,39 @@
     [self unLockView];
     [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
 }
-
--(void) connection:(SPPConnection *)connection didReceiveRoomList:(NSArray *)data
-{
-    properties.roomList = [[NSMutableArray alloc] initWithCapacity:data.count];
-    for (int i = 0; i < data.count; i++) {
-        properties.roomList[i] = [SPPRoom SPPRoomWithDataDictionary:data[i]];
-    }
-    [properties.agileHub ConnectTo:connection.server];
-}
 #pragma mark - SPPConnectionDelegate
 
-#pragma mark + SPPAgileHubConnectionDelegate
-- (void)agileHubDidOpen:(SPPAgileHub *) agileHub
-{
-    [self unLockView];
-    [self performSegueWithIdentifier:@"ShowRooms" sender:self];
+#pragma mark + SPPAgileHubConnectDelegate
+
+- (void)agileHubDidOpen:(SPPAgileHub *) agileHub {
+    [webConnection GetRoomList];
 }
-- (void)agileHub:(SPPAgileHub *) agileHub didReceiveError:(NSString *)error
-{
+
+- (void)agileHubDidClose:(SPPAgileHub *) agileHub {
+    logUser = nil;
+}
+
+- (void)agileHub:(SPPAgileHub *) agileHub didLogUser:(NSDictionary *)userData {
+    logUser = [SPPUser SPPBaseEntityWithDataDictionary:userData];
+}
+
+- (void)agileHub:(SPPAgileHub *) agileHub didReceiveError:(NSString *)error {
     [self unLockView];
     [self showMessage:error withTitle:@"Error connection"];
 }
-#pragma mark - SPPAgileHubConnectionDelegate
+#pragma mark - SPPAgileHubConnectDelegate
+
+#pragma mark + segue handling
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ShowRooms"]) {
+        if ([segue.destinationViewController isKindOfClass:[SelectRoomViewController class]]) {
+            SelectRoomViewController *selectRoomController = (SelectRoomViewController *)segue.destinationViewController;
+            selectRoomController.agileHub = agileHub;
+            selectRoomController.promptRoot = webConnection.server;
+            selectRoomController.roomList = roomList;
+        }
+    }
+}
+#pragma mark + segue handling
 
 @end
