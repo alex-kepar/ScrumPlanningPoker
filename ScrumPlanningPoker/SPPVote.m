@@ -24,6 +24,8 @@
 @synthesize overallMark = _overallMark;
 @synthesize votedUsers;
 
+@synthesize voteDelegate;
+
 - (void) setContent:(NSString *)content {
     if (![_content isEqualToString:content]) {
         isPropertiesChanged = YES;
@@ -102,7 +104,6 @@
     return _voteUserItemConstructor;
 }
 
-
 - (void) doUpdateFromDictionary:(NSDictionary*) data propertyIsChanged: (BOOL *) isChanged {
     if (self.entityId != [[data objectForKey:@"Id"] integerValue]) return;
     [super doUpdateFromDictionary:data propertyIsChanged: isChanged];
@@ -125,6 +126,12 @@
 
 - (SPPUserVote*) userDidVoteWithData:(NSDictionary*)userVoteData {
     return (SPPUserVote*)[self insertUpdateItemInList:votedUsers useItemData:userVoteData useItemConstructor:self.voteUserItemConstructor];
+}
+
+- (void) doVote: (NSInteger) voteValue {
+    if (voteDelegate && [voteDelegate respondsToSelector:@selector(SPPVote:doVote:)]) {
+        [voteDelegate SPPVote:self doVote:voteValue];
+    }
 }
 
 @end

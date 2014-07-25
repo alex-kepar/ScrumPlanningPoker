@@ -17,13 +17,13 @@
     SPPListItemConstructor _voteItemConstructor;
 }
 
-@synthesize roomDelegate;
 @synthesize name = _name;
 @synthesize description = _description;
 @synthesize isActive = _isActive;
 @synthesize connectedUsers;
 @synthesize itemsToVote;
 
+@synthesize roomDelegate;
 
 - (SPPListItemConstructor) userItemConstructor {
     if (_userItemConstructor == nil) {
@@ -39,12 +39,12 @@
         _voteItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
             SPPVote *vote = [SPPVote SPPBaseEntityWithDataDictionary:initData];
             vote.owner = owner;
+            vote.voteDelegate = (id)owner;
             return vote;
         };
     }
     return _voteItemConstructor;
 }
-
 
 - (void) setName:(NSString*) name {
     if (![_name isEqualToString:name]) {
@@ -103,19 +103,23 @@
     }
 }
 
-- (void) addUserUseData:(NSDictionary*)userData {
+- (void) agileHubDidJoinUser:(NSDictionary*)userData {
     [self insertUpdateItemInList:connectedUsers useItemData:userData useItemConstructor:self.userItemConstructor];
 }
 
-- (void) removeUserUseData:(NSDictionary*)userData {
+- (void) agileHubDidLeaveUser:(NSDictionary*)userData {
     [self deleteItemInList:connectedUsers useItemData:userData];
 }
 
-- (void) addVoteUseData:(NSDictionary*)voteData {
-    [self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
+- (void)agileHubDidChangeRoom: (NSDictionary *) roomData {
+    [self updateFromDictionary:roomData];
 }
 
-- (void) hubDidUserVote:(NSDictionary*)userVoteData {
+//- (void) addVoteUseData:(NSDictionary*)voteData {
+//    [self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
+//}
+
+- (void) agileHubDidUserVote:(NSDictionary*)userVoteData {
     NSInteger voteId=[[userVoteData objectForKey:@"VoteItemId"] integerValue];
     NSInteger idx = [self.itemsToVote indexOfObjectPassingTest:^BOOL(SPPBaseEntity* item, NSUInteger idx, BOOL *stop) {
         return (item.entityId == voteId);
@@ -127,61 +131,45 @@
     }
 }
 
-- (void) hubDidVoteFinish: (NSDictionary *) voteData {
+- (void) agileHubDidVoteFinish: (NSDictionary *) voteData {
     SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
     [self onDidVoteFinish:vote];
 }
 
-- (void) hubDidVoteOpen: (NSDictionary *) voteData {
+- (void) agileHubDidVoteOpen: (NSDictionary *) voteData {
     SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
     [self onDidVoteOpen:vote];
 }
 
-- (void) hubDidVoteClose: (NSDictionary *) voteData {
+- (void) agileHubDidVoteClose: (NSDictionary *) voteData {
     SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
     [self onDidVoteClose:vote];
 }
 
 - (void) onDidVote: (SPPVote*) vote withUserVote: (SPPUserVote*) userVote {
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVote:withUserVote:)]) {
-        [roomDelegate room:self DidVote:vote withUserVote:userVote];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteNotification" object:self userInfo:@{@"vote": vote, @"userVote": userVote}];
 }
 
 - (void) onDidVoteFinish: (SPPVote*) vote {
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVoteFinish:)]) {
-        [roomDelegate room:self DidVoteFinish:vote];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteFinishNotification" object:self userInfo:@{@"vote": vote}];
 }
 
 - (void) onDidVoteOpen: (SPPVote*) vote {
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVoteOpen:)]) {
-        [roomDelegate room:self DidVoteOpen:vote];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteOpenNotification" object:self userInfo:@{@"vote": vote}];
 }
 
 - (void) onDidVoteClose: (SPPVote*) vote {
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(room:DidVoteClose:)]) {
-        [roomDelegate room:self DidVoteClose:vote];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteCloseNotification" object:self userInfo:@{@"vote": vote}];
 }
 
-//- (void) open {
-//    if (roomDelegate && [roomDelegate respondsToSelector:@selector(openRoom:)]) {
-//        [roomDelegate openRoom:self];
-//    }
-//}
-//
-//- (void) close {
-//    if (roomDelegate && [roomDelegate respondsToSelector:@selector(closeRoom:)]) {
-//        [roomDelegate closeRoom:self];
-//    }
-//}
-//
-//- (void) vote: (SPPVote*) vote doVote: (NSInteger) voteValue {
-//    if (roomDelegate && [roomDelegate respondsToSelector:@selector(vote:doVote:forRooom:)]) {
-//        [roomDelegate vote:vote doVote:voteValue forRooom:self];
-//    }
-//}
+
+#pragma mark + SPPVoteDelegate
+- (void)SPPVote:(SPPVote*) vote doVote: (NSInteger) voteValue {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:withVote:doVote:)]) {
+            [roomDelegate SPPRoom:self withVote:vote doVote:voteValue];
+    }
+}
+#pragma mark - SPPVoteDelegate
+
 
 @end

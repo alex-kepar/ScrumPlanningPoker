@@ -11,13 +11,11 @@
 #import "SPPAgileHub.h"
 #import "SPPRoom.h"
 
-//@interface PushupListViewController : UICollectionViewController <UICollectionViewDataSource>
-
-@interface RoomViewController : SPPBaseViewController <SRConnectionDelegate, SPPAgileHubRoomDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, SPPBaseEntityDelegate, SPPAgileHubVoteDelegate, SPPRoomDelegate>
+@interface RoomViewController : SPPBaseViewController <SRConnectionDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, SPPBaseEntityDelegate>//, SPPAgileHubRoomDelegate, SPPAgileHubVoteDelegate>//, SPPRoomDelegate>
 
 @property SPPRoom *room;
 @property NSString *promptRoot;
-@property SPPAgileHub *agileHub;
+//@property SPPAgileHub *agileHub;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *cvUsers;
 @property (weak, nonatomic) IBOutlet UITableView *tvVotes;

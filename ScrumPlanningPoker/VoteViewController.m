@@ -19,10 +19,10 @@
 
 @implementation VoteViewController
 
-@synthesize room;
+//@synthesize room;
 @synthesize vote;
 @synthesize promptRoot;
-@synthesize agileHub;
+//@synthesize agileHub;
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -81,8 +81,8 @@
 
 - (IBAction)actVote:(id)sender {
     if (_vlCardsLayout.currentItem < cardsList.count) {
-        [agileHub vote:vote.entityId doVote:[cardsList[_vlCardsLayout.currentItem] integerValue] forRooom:room.name];
-        //[vote doVote:[cardsList[_vlCardsLayout.currentItem] integerValue]];
+        //[agileHub vote:vote.entityId doVote:[cardsList[_vlCardsLayout.currentItem] integerValue] forRooom:room.name];
+        [vote doVote:[cardsList[_vlCardsLayout.currentItem] integerValue]];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

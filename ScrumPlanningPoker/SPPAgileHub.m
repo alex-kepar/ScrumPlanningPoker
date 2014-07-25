@@ -19,7 +19,7 @@
 @synthesize connectDelegate;
 @synthesize stateDelegate;
 @synthesize roomDelegate;
-@synthesize voteDelegate;
+//@synthesize voteDelegate;
 
 - (void) Disconnect
 {
@@ -122,6 +122,12 @@
 }
 #pragma mark - SRConnection Delegate & SPPAgileHubConnectDelegate
 
+#pragma mark + SPPAgileHubRoomMethodsDelegate
+- (void) SPPAgileHubRoom:(NSString *) roomName vote: (NSInteger) voteId doVote: (NSInteger) voteValue {
+    
+}
+#pragma mark - SPPAgileHubRoomMethodsDelegate
+
 #pragma mark + SPPAgileHubStateDelegate
 -(void)onHubStateChanged: (NSDictionary *) roomDto
 {
@@ -172,32 +178,32 @@
 -(void)onUserVoted: (NSDictionary *) userVoteDto
 {
     NSLog(@"***** onUserVoted Data:\n%@", userVoteDto);
-    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidUserVote:)]) {
-        [voteDelegate agileHubDidUserVote:userVoteDto];
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidUserVote:)]) {
+        [roomDelegate agileHubDidUserVote:userVoteDto];
     }
 }
 
 -(void)onVoteFinished: (NSDictionary *) voteDto
 {
     NSLog(@"***** onVoteFinished Data:\n%@", voteDto);
-    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidVoteFinish:)]) {
-        [voteDelegate agileHubDidVoteFinish:voteDto];
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidVoteFinish:)]) {
+        [roomDelegate agileHubDidVoteFinish:voteDto];
     }
 }
 
 -(void)onVoteItemOpened: (NSDictionary *) voteDto
 {
     NSLog(@"***** onVoteItemOpened Data:\n%@", voteDto);
-    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidVoteOpen:)]) {
-        [voteDelegate agileHubDidVoteOpen:voteDto];
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidVoteOpen:)]) {
+        [roomDelegate agileHubDidVoteOpen:voteDto];
     }
 }
 
 -(void)onVoteItemClosed: (NSDictionary *) voteDto
 {
     NSLog(@"***** onVoteItemClosed Data:\n%@", voteDto);
-    if (voteDelegate && [voteDelegate respondsToSelector:@selector(agileHubDidVoteClose:)]) {
-        [voteDelegate agileHubDidVoteClose:voteDto];
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidVoteClose:)]) {
+        [roomDelegate agileHubDidVoteClose:voteDto];
     }
 }
 
@@ -211,7 +217,7 @@
          withArgs:@[roomName, sessionId]];
 }
 
-- (void) vote: (NSInteger) voteId doVote: (NSInteger) voteValue forRooom: (NSString *) roomName {
+- (void) room: (NSString *) roomName withVote: (NSInteger) voteId doVote: (NSInteger) voteValue {
     [hub   invoke:@"VoteForItem"
          withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", voteValue]]];
 }

@@ -16,6 +16,7 @@
 {
     //SPPProperties *properties;
     SPPRoom *selectedRoom;
+    NSMutableArray *roomList;
 }
 
 @end
@@ -24,7 +25,8 @@
 
 @synthesize agileHub;
 @synthesize promptRoot;
-@synthesize roomList;
+//@synthesize roomList;
+@synthesize roomListData;
 
 - (void)viewDidLoad
 {
@@ -34,6 +36,11 @@
     //properties=[SPPProperties sharedProperties];
     self.navigationItem.prompt=promptRoot;
     self.navigationItem.title=@"select room";
+
+    roomList = [[NSMutableArray alloc] initWithCapacity:roomListData.count];
+    for (int i = 0; i < roomListData.count; i++) {
+        roomList[i] = [self _createRoomUseData:roomListData[i]];
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -41,10 +48,10 @@
     [super viewDidAppear:animated];
     agileHub.stateDelegate = self;
     agileHub.roomDelegate = nil;
-    agileHub.voteDelegate = nil;
+    //agileHub.voteDelegate = nil;
     if (selectedRoom != nil) {
         selectedRoom.delegate = nil;
-        selectedRoom.roomDelegate = nil;
+        //selectedRoom.roomDelegate = nil;
         [agileHub leaveRoom:selectedRoom.name];
         selectedRoom = nil;
     }
@@ -116,6 +123,12 @@
 
 #pragma mark + SPPAgileHubStateDelegate
 
+- (SPPRoom*) _createRoomUseData:(NSDictionary*) roomData {
+    SPPRoom *room = [SPPRoom SPPBaseEntityWithDataDictionary:roomData];
+    room.roomDelegate = self;
+    return room;
+}
+
 - (SPPRoom*) _GetRoomUseData:(NSDictionary *) roomData {
     NSInteger entityId = [[roomData objectForKey:@"Id"] integerValue];
     NSInteger idx = [roomList indexOfObjectPassingTest:^BOOL(SPPRoom* roomItem, NSUInteger idx, BOOL *stop) {
@@ -127,7 +140,7 @@
         [room updateFromDictionary:roomData];
     }
     else {
-        room = [SPPRoom SPPBaseEntityWithDataDictionary:roomData];
+        room = [self _createRoomUseData:roomData];
         [roomList addObject:room];
     }
     return room;
@@ -143,6 +156,7 @@
 {
     [self unLockView];
     selectedRoom = [self _GetRoomUseData:roomData];
+    agileHub.roomDelegate = selectedRoom;
     [self performSegueWithIdentifier:@"RoomSegue" sender:self];
 }
 
@@ -155,10 +169,17 @@
             RoomViewController *roomViewController = (RoomViewController *)segue.destinationViewController;
             roomViewController.room = selectedRoom;
             roomViewController.promptRoot = self.navigationItem.prompt;
-            roomViewController.agileHub = self.agileHub;
         }
     }
 }
-#pragma mark + segue handling
+#pragma mark - segue handling
+
+#pragma mark + SPPRoomDelegate
+- (void) SPPRoom:(SPPRoom *) room withVote: (SPPVote*) vote doVote: (NSInteger) voteValue {
+    [agileHub room:room.name withVote:vote.entityId doVote:voteValue];
+}
+#pragma mark - SPPRoomDelegate
+
+
 
 @end

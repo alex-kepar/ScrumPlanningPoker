@@ -17,9 +17,6 @@
 
 @interface RoomViewController ()
 {
-    //SPPProperties *properties;
-    //SPPAgileHub *hub;
-    //SPPRoom *room;
     SPPVote *selectedVote;
 }
 @end
@@ -28,7 +25,7 @@
 
 @synthesize room;
 @synthesize promptRoot;
-@synthesize agileHub;
+//@synthesize agileHub;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,10 +54,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    agileHub.roomDelegate = self;
-    agileHub.voteDelegate = self;
+    //agileHub.roomDelegate = self;
+    //agileHub.voteDelegate = self;
     room.delegate = self;
-    room.roomDelegate = self;
+    //room.roomDelegate = self;
     //[hub joinRoom:properties.room.name];
     //[self lockView];
 }
@@ -77,31 +74,11 @@
     //}
 }
 
-#pragma mark + SPPAgileHubRoomDelegate
-
-- (void)agileHubDidJoinUser: (NSDictionary *) userData {
-    [room addUserUseData:userData];
-    //NSLog(@"Joined user %@", user.name);
-    //[_cvUsers reloadData];
-}
-
-- (void)agileHubDidLeaveUser: (NSDictionary *) userData {
-    [room removeUserUseData:userData];
-    //NSLog(@"Left user %@", user.name);
-    //[_cvUsers reloadData];
-}
-
-- (void)agileHubDidChangeRoom: (NSDictionary *) roomData {
-    [room updateFromDictionary:roomData];
-}
-
-#pragma makr - SPPAgileHubRoomDelegate
-
 #pragma mark + UICollectionViewDataSource
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
+//- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+//{
+//    return 1;
+//}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -111,29 +88,21 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     SPPUserViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserCell" forIndexPath:indexPath];
-    
     if (cell != nil)
     {
-        cell.user = room.connectedUsers[indexPath.row];
-        cell.selectedVote = selectedVote;
+        [cell initializeWithUser:room.connectedUsers[indexPath.row] andVote:selectedVote];
     }
     return cell;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    return nil;
-}
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    return nil;
+//}
 #pragma mark - UICollectionViewDataSource
 
 
 #pragma mark + UITableViewDataSource
-
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    //return 2;
-//    return 1;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -149,29 +118,13 @@
     return room.itemsToVote.count;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//if (section==0)
-//{
-//    return @"Active rooms:";
-//}
-//else
-//{
-//    return @"Inactive rooms:";
-//}
-//}
-
 #pragma mark - UITableViewDataSource
 
 #pragma mark + UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     selectedVote = [self.room.itemsToVote objectAtIndex:indexPath.row];
-    for (int i=0; i<room.connectedUsers.count; i++) {
-        SPPUserViewCell *cell = (SPPUserViewCell*)[_cvUsers cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if (!cell) continue;
-        cell.selectedVote = selectedVote;
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomChangeSelectedVoteNotification" object:self.room userInfo:@{@"selectedVote": [self.room.itemsToVote objectAtIndex:indexPath.row]}];
 }
 #pragma mark - UITableViewDelegate
 
@@ -190,10 +143,10 @@
         if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] && indexPath !=nil) {
             //NSIndexPath *indexPath = [self.tvVotes indexPathForSelectedRow];
             VoteViewController *voteController = (VoteViewController *)segue.destinationViewController;
-            voteController.room = self.room;
+            //voteController.room = self.room;
             voteController.vote = [self.room.itemsToVote objectAtIndex:indexPath.row];
             voteController.promptRoot = self.navigationItem.prompt;
-            voteController.agileHub = self.agileHub;
+            //voteController.agileHub = self.agileHub;
         }
         //UINavigationController *navController = (UI)
     }
@@ -216,58 +169,39 @@
 }
 #pragma mark - SPPBaseEntityDelegate
 
-#pragma mark + SPPAgileHubVoteDelegate
-- (void)agileHubDidUserVote: (NSDictionary *) userVoteData {
-    [room hubDidUserVote:userVoteData];
-}
-
-- (void)agileHubDidVoteFinish: (NSDictionary *) voteData {
-    [room hubDidVoteFinish:voteData];
-}
-
-- (void)agileHubDidVoteOpen: (NSDictionary *) voteData {
-    [room hubDidVoteOpen:voteData];
-}
-
-- (void)agileHubDidVoteClose: (NSDictionary *) voteData {
-    [room hubDidVoteClose:voteData];
-}
-#pragma mark - SPPAgileHubVoteDelegate
-
-#pragma mark + SPPRoomDelegate
-- (void)room:(SPPRoom *)room DidVote:(SPPVote *)vote withUserVote:(SPPUserVote *)userVote {
-    for (int i=0; i<self.room.connectedUsers.count; i++) {
-        SPPUserViewCell *cell = (SPPUserViewCell*)[_cvUsers cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if (!cell) continue;
-        [cell DidVote:vote withUserVote:userVote];
-    }
-}
-
-- (void) room:(SPPRoom *) room DidVoteFinish: (SPPVote*) vote {
-    for (int i=0; i<self.room.connectedUsers.count; i++) {
-        SPPUserViewCell *cell = (SPPUserViewCell*)[_cvUsers cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if (!cell) continue;
-        [cell DidVoteFinish:vote];
-    }
-}
-
-- (void) room:(SPPRoom *) room DidVoteOpen: (SPPVote*) vote {
-    for (int i=0; i<self.room.connectedUsers.count; i++) {
-        SPPUserViewCell *cell = (SPPUserViewCell*)[_cvUsers cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if (!cell) continue;
-        [cell DidVoteOpen:vote];
-    }
-}
-
-- (void) room:(SPPRoom *) room DidVoteClose: (SPPVote*) vote {
-    for (int i=0; i<self.room.connectedUsers.count; i++) {
-        SPPUserViewCell *cell = (SPPUserViewCell*)[_cvUsers cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if (!cell) continue;
-        [cell DidVoteClose:vote];
-    }
-}
-
-#pragma mark - SPPRoomDelegate
+//#pragma mark + SPPAgileHubRoomDelegate
+//
+//- (void)agileHubDidJoinUser: (NSDictionary *) userData {
+//    [room addUserUseData:userData];
+//}
+//
+//- (void)agileHubDidLeaveUser: (NSDictionary *) userData {
+//    [room removeUserUseData:userData];
+//}
+//
+//- (void)agileHubDidChangeRoom: (NSDictionary *) roomData {
+//    [room updateFromDictionary:roomData];
+//}
+//
+//#pragma makr - SPPAgileHubRoomDelegate
+//
+//#pragma mark + SPPAgileHubVoteDelegate
+//- (void)agileHubDidUserVote: (NSDictionary *) userVoteData {
+//    [room hubDidUserVote:userVoteData];
+//}
+//
+//- (void)agileHubDidVoteFinish: (NSDictionary *) voteData {
+//    [room hubDidVoteFinish:voteData];
+//}
+//
+//- (void)agileHubDidVoteOpen: (NSDictionary *) voteData {
+//    [room hubDidVoteOpen:voteData];
+//}
+//
+//- (void)agileHubDidVoteClose: (NSDictionary *) voteData {
+//    [room hubDidVoteClose:voteData];
+//}
+//#pragma mark - SPPAgileHubVoteDelegate
 
 
 @end

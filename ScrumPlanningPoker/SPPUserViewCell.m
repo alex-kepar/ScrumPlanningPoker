@@ -10,82 +10,53 @@
 
 @implementation SPPUserViewCell {
     NSInteger voteValue;
+    SPPUser *user;
+    SPPVote *vote;
 }
 
-@synthesize user = _user;
-@synthesize selectedVote = _selectedVote;
-
--(void) setUser:(SPPUser *)user {
-    if (_user != user) {
-        _user = user;
-        [self redrawUser];
-        [self setValueOfVote];
-    }
+-(void) initializeWithUser:(SPPUser*) initUser andVote:(SPPVote*) initVote {
+    user = initUser;
+    vote = initVote;
+    _userName.text = user.name;
+    voteValue = [self calculateValueOfVote];
+    [self redrawVote];
 }
 
--(SPPUser*) user {
-    return _user;
-}
-
--(void) setSelectedVote:(SPPVote *)selectedVote {
-    _selectedVote = selectedVote;
-    [self setValueOfVote];
-}
-
--(SPPVote*) selectedVote {
-    return _selectedVote;
-}
-
-
--(void) setValueOfVote {
-    voteValue = -1;
-    if (self.selectedVote && self.user) {
-        //for (int i = self.selectedVote.votedUsers.count - 1; i<=0; i--) {
-        //    SPPUserVote *userVote = self.selectedVote.votedUsers[i];
-        //    if (userVote.userId == self.user.entityId) {
-        //        voteValue = userVote.mark;
-        //        break;
-        //    }
-        //}
-        for (SPPUserVote *userVote in [self.selectedVote.votedUsers reverseObjectEnumerator]) {
-            if (userVote.userId == self.user.entityId) {
-                voteValue = userVote.mark;
+-(NSInteger) calculateValueOfVote {
+    NSInteger newValue = -1;
+    if (vote && user) {
+        for (SPPUserVote *userVote in [vote.votedUsers reverseObjectEnumerator]) {
+            if (userVote.userId == user.entityId) {
+                newValue = userVote.mark;
                 break;
             }
         }
     }
-    [self redrawVote];
+    return newValue;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+-(id) initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVote:) name:@"SPPRoomDidVoteNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVoteFinish:) name:@"SPPRoomDidVoteFinishNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVoteOpen:) name:@"SPPRoomDidVoteOpenNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVoteClose:) name:@"SPPRoomDidVoteCloseNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidChangeSelectedVote:) name:@"SPPRoomChangeSelectedVoteNotification" object:nil];
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
--(void) redrawUser {
-    _userName.text = self.user.name;
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void) redrawVote {
     NSString *text = @"no vote";
-    if (self.selectedVote.isOpened) {
+    if (vote.isOpened) {
         if (voteValue<0) {
             text = @"?";
         } else {
-            if (self.selectedVote.isFinished) {
+            if (vote.isFinished) {
                 text = [NSString stringWithFormat:@"%d", voteValue];
             } else {
                 text = @"voted";
@@ -99,30 +70,41 @@
     _lVote.text = text;
 }
 
--(void) DidVote:(SPPVote *)vote withUserVote:(SPPUserVote *)userVote {
-    if (self.selectedVote && self.selectedVote.entityId == vote.entityId && self.user.entityId == userVote.userId) {
-        voteValue = userVote.mark;
+-(void) roomDidVote:(NSNotification*) notification {
+    SPPVote *getVote = notification.userInfo[@"vote"];
+    SPPUserVote *getUserVote = notification.userInfo[@"userVote"];
+    if (vote && vote.entityId == getVote.entityId && user.entityId == getUserVote.userId) {
+        voteValue = getUserVote.mark;
         [self redrawVote];
     }
 }
 
--(void) DidVoteOpen:(SPPVote *)vote {
-    if (self.selectedVote && self.selectedVote.entityId == vote.entityId) {
+-(void) roomDidVoteFinish:(NSNotification*) notification {
+    SPPVote *getVote = notification.userInfo[@"vote"];
+    if (vote && vote.entityId == getVote.entityId) {
+        [self redrawVote];
+    }
+}
+
+-(void) roomDidVoteOpen:(NSNotification*) notification {
+    SPPVote *getVote = notification.userInfo[@"vote"];
+    if (vote && vote.entityId == getVote.entityId) {
         voteValue = -1;
         [self redrawVote];
     }
 }
 
--(void) DidVoteClose:(SPPVote *)vote {
-    if (self.selectedVote && self.selectedVote.entityId == vote.entityId) {
+-(void) roomDidVoteClose:(NSNotification*) notification {
+    SPPVote *getVote = notification.userInfo[@"vote"];
+    if (vote && vote.entityId == getVote.entityId) {
         [self redrawVote];
     }
 }
 
--(void) DidVoteFinish:(SPPVote *)vote {
-    if (self.selectedVote && self.selectedVote.entityId == vote.entityId) {
-        [self redrawVote];
-    }
+-(void) roomDidChangeSelectedVote:(NSNotification*) notification {
+    vote = notification.userInfo[@"selectedVote"];
+    voteValue = [self calculateValueOfVote];
+    [self redrawVote];
 }
 
 @end

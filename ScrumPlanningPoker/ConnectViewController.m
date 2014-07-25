@@ -16,7 +16,7 @@
     SPPConnection *webConnection;
     SPPAgileHub *agileHub;
     SPPUser *logUser;
-    NSMutableArray *roomList;
+    NSArray *roomListData;
 }
 
 - (void)viewDidLoad
@@ -78,10 +78,7 @@
 
 -(void) connection:(SPPConnection *)connection didReceiveRoomList:(NSArray *)data
 {
-    roomList = [[NSMutableArray alloc] initWithCapacity:data.count];
-    for (int i = 0; i < data.count; i++) {
-        roomList[i] = [SPPRoom SPPBaseEntityWithDataDictionary:data[i]];
-    }
+    roomListData = data;
     [self unLockView];
     [self performSegueWithIdentifier:@"ShowRooms" sender:self];
 }
@@ -120,7 +117,8 @@
             SelectRoomViewController *selectRoomController = (SelectRoomViewController *)segue.destinationViewController;
             selectRoomController.agileHub = agileHub;
             selectRoomController.promptRoot = webConnection.server;
-            selectRoomController.roomList = roomList;
+            //selectRoomController.roomList = roomList;
+            selectRoomController.roomListData = roomListData;
         }
     }
 }

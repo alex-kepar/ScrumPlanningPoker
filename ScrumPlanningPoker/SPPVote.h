@@ -10,6 +10,11 @@
 #import "SPPBaseEntity.h"
 #import "SPPUserVote.h"
 
+@class SPPVote;
+@protocol SPPVoteDelegate<NSObject>
+@optional
+- (void)SPPVote:(SPPVote*) vote doVote: (NSInteger) voteValue;
+@end
 
 @interface SPPVote : SPPBaseEntity
 
@@ -22,6 +27,9 @@
 @property NSMutableArray *votedUsers;
 @property NSObject *owner;
 
+@property (nonatomic, assign) id <SPPVoteDelegate> voteDelegate;
+
 - (SPPUserVote*) userDidVoteWithData:(NSDictionary*)userVoteData;
+- (void) doVote: (NSInteger) voteValue;
 
 @end

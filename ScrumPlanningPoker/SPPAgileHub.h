@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SignalR.h"
+#import "SPPAgileHubRoomDelegate.h"
 
 @class SPPAgileHub;
 @protocol SPPAgileHubConnectDelegate<NSObject>
@@ -24,27 +25,27 @@
 - (void)agileHubDidOpenRoom: (NSDictionary *) roomData;
 @end
 
-@protocol SPPAgileHubRoomDelegate<NSObject>
-@optional
-- (void)agileHubDidJoinUser: (NSDictionary *) userData;
-- (void)agileHubDidLeaveUser: (NSDictionary *) userData;
-- (void)agileHubDidChangeRoom: (NSDictionary *) roomData;
-@end
+//@protocol SPPAgileHubRoomDelegate<NSObject>
+//@optional
+//- (void)agileHubDidJoinUser: (NSDictionary *) userData;
+//- (void)agileHubDidLeaveUser: (NSDictionary *) userData;
+//- (void)agileHubDidChangeRoom: (NSDictionary *) roomData;
+//@end
 
-@protocol SPPAgileHubVoteDelegate<NSObject>
-@optional
-- (void)agileHubDidUserVote: (NSDictionary *) userVoteData;
-- (void)agileHubDidVoteFinish: (NSDictionary *) voteData;
-- (void)agileHubDidVoteOpen: (NSDictionary *) voteData;
-- (void)agileHubDidVoteClose: (NSDictionary *) voteData;
-@end
+//@protocol SPPAgileHubVoteDelegate<NSObject>
+//@optional
+//- (void)agileHubDidUserVote: (NSDictionary *) userVoteData;
+//- (void)agileHubDidVoteFinish: (NSDictionary *) voteData;
+//- (void)agileHubDidVoteOpen: (NSDictionary *) voteData;
+//- (void)agileHubDidVoteClose: (NSDictionary *) voteData;
+//@end
 
 @interface SPPAgileHub : NSObject <SRConnectionDelegate>
 
 @property (nonatomic, assign)id <SPPAgileHubConnectDelegate> connectDelegate;
 @property (nonatomic, assign)id <SPPAgileHubStateDelegate> stateDelegate;
 @property (nonatomic, assign)id <SPPAgileHubRoomDelegate> roomDelegate;
-@property (nonatomic, assign)id <SPPAgileHubVoteDelegate> voteDelegate;
+//@property (nonatomic, assign)id <SPPAgileHubVoteDelegate> voteDelegate;
 
 @property NSString *sessionId;
 
@@ -54,6 +55,6 @@
 - (void) joinRoom: (NSString *) roomName;
 - (void) leaveRoom: (NSString *) roomName;
 
-- (void) vote: (NSInteger) voteId doVote: (NSInteger) voteValue forRooom: (NSString *) roomName;
+- (void) room: (NSString *) roomName withVote: (NSInteger) voteId doVote: (NSInteger) voteValue;
 
 @end

@@ -10,15 +10,15 @@
 #import "SPPVoteCardsViewLayout.h"
 #import "SPPVoteCardViewCell.h"
 #import "SPPVote.h"
-#import "SPPAgileHub.h"
-#import "SPPRoom.h"
+//#import "SPPAgileHub.h"
+//#import "SPPRoom.h"
 
 @interface VoteViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
-@property SPPRoom *room;
+//@property SPPRoom *room;
 @property SPPVote *vote;
 @property NSString *promptRoot;
-@property SPPAgileHub *agileHub;
+//@property SPPAgileHub *agileHub;
 
 @property (weak, nonatomic) IBOutlet SPPVoteCardViewCell *cvCards;
 @property (weak, nonatomic) IBOutlet SPPVoteCardsViewLayout *vlCardsLayout;

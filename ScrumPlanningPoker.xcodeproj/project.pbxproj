@@ -105,6 +105,7 @@
 		88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVoteViewCell.m; sourceTree = "<group>"; };
 		88C2E93C19797C8F00E33A83 /* SPPUserVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUserVote.h; sourceTree = "<group>"; };
 		88C2E93D19797C8F00E33A83 /* SPPUserVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUserVote.m; sourceTree = "<group>"; };
+		88C2E93F19813DA100E33A83 /* SPPAgileHubRoomDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPAgileHubRoomDelegate.h; sourceTree = "<group>"; };
 		88C6057C18D3399900A1EB77 /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		88C6057D18D3399900A1EB77 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		88EDD2EF18E5BF800065C6A4 /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
@@ -177,6 +178,7 @@
 			children = (
 				8858A78B18D896DA00A06AD2 /* SPPAgileHub.h */,
 				8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */,
+				88C2E93F19813DA100E33A83 /* SPPAgileHubRoomDelegate.h */,
 				885FB4E71958510900AB1A21 /* SPPConnection.h */,
 				885FB4E81958510900AB1A21 /* SPPConnection.m */,
 			);
