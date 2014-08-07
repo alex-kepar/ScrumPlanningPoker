@@ -12,4 +12,5 @@
 
 @property NSInteger currentItem;
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 @end

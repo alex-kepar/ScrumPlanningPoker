@@ -14,4 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImage;
 @property (weak, nonatomic) IBOutlet UILabel *usersCount;
+
+-(void) initializeWithRoomDto:(NSDictionary*) initRoomDto;
+
 @end

@@ -8,6 +8,7 @@
 
 #import "SPPAgileHub.h"
 #import "SRVersion.h"
+#import "SPPAgileHubNotifications.h"
 
 @implementation SPPAgileHub
 {
@@ -17,9 +18,6 @@
 
 @synthesize sessionId;
 @synthesize connectDelegate;
-@synthesize stateDelegate;
-@synthesize roomDelegate;
-//@synthesize voteDelegate;
 
 - (void) Disconnect
 {
@@ -28,18 +26,23 @@
         [hubConnection disconnect];
         hubConnection = nil;
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) ConnectTo:(NSString *) server
 {
     [self Disconnect];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify_JoinRoom:) name:SPPAgileHub_JoinRoom object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify_LeaveRoom:) name:SPPAgileHub_LeaveRoom object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify_Vote:) name:SPPAgileHub_Vote object:nil];
+    
     hubConnection = [SRHubConnection connectionWithURL:[NSString stringWithFormat:@"http://%@", server]];
     [hubConnection setProtocol:[[SRVersion alloc] initWithMajor:1 minor: 2]];
     //[hubConnection setReceived:(onReceived)received]
-    hubConnection.received = ^(NSString * dataReceived){
-        NSLog(@"***********************************\n***********************************\nData received:\n%@", dataReceived);
-    };
+    //hubConnection.received = ^(NSString * dataReceived){
+    //    NSLog(@"***********************************\n***********************************\nData received:\n%@", dataReceived);
+    //};
 
     hub = [hubConnection createHubProxy:@"agileHub"];
     // Connection events
@@ -62,11 +65,13 @@
     [hubConnection start];
 }
 
-
 #pragma mark + SRConnection Delegate & SPPAgileHubConnectDelegate
 - (void)SRConnectionDidOpen:(SRConnection *)connection
 {
-    NSLog(@"***** SRHubConnectionDidOpen invoked");
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:ConnectionDidOpen:)])
+    {
+        [connectDelegate agileHub:self ConnectionDidOpen:connection];
+    }
 }
 
 - (void)SRConnection:(SRConnection *)connection didReceiveData:(id)data
@@ -76,140 +81,116 @@
 
 - (void)SRConnectionDidClose:(SRConnection *)connection
 {
-    NSLog(@"***** SRHubConnectionDidClose invoked");
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHubDidClose:)])
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:ConnectionDidClose:)])
     {
-        [connectDelegate agileHubDidClose:self];
+        [connectDelegate agileHub:self ConnectionDidClose:connection];
     }
 }
 
 - (void)SRConnection:(SRConnection *)connection didReceiveError:(NSError *)error
 {
-    NSLog(@"***** SRHubConnection did receive error invoked");
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:didReceiveError:)])
+    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:Connection:didReceiveError:)])
     {
-        [connectDelegate agileHub:self didReceiveError:[NSString stringWithFormat:@"%@", [error localizedDescription]]];
+        [connectDelegate agileHub:self Connection:connection didReceiveError:error];
     }
 }
+#pragma mark - SRConnection Delegate
 
+#pragma mark + event notitifocations
 - (void)onUserLogged: (NSDictionary *) userDto
 {
-    NSLog(@"***** onUserLogged Data:\n%@", userDto);
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:didLogUser:)])
-    {
-        [connectDelegate agileHub:self didLogUser:userDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_onUserLogged
+                                                        object:self
+                                                      userInfo:@{@"userDto": userDto}];
 }
 
 - (void)onState: (NSDictionary *) state
 {
     // invoked after onUserLogged and indicate - connection is ok
-    NSLog(@"***** onState Data:\n%@", state);
     sessionId = [state objectForKey:@"SessionId"];
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHubDidOpen:)])
-    {
-        [connectDelegate agileHubDidOpen:self];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_onConnected
+                                                        object:self
+                                                      userInfo:@{@"sessionDto": state}];
 }
 
 -(void)onErrorHandler: (NSDictionary *) messageDto
 {
-    NSLog(@"***** onErrorHandler\nmessage:\n%@", messageDto);
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:didReceiveError:)])
-    {
-        [connectDelegate agileHub:self didReceiveError:[NSString stringWithFormat: @"%@", messageDto]];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_onErrorCatched
+                                                        object:self
+                                                      userInfo:@{@"messageDto": messageDto}];
 }
-#pragma mark - SRConnection Delegate & SPPAgileHubConnectDelegate
 
-#pragma mark + SPPAgileHubRoomMethodsDelegate
-- (void) SPPAgileHubRoom:(NSString *) roomName vote: (NSInteger) voteId doVote: (NSInteger) voteValue {
-    
-}
-#pragma mark - SPPAgileHubRoomMethodsDelegate
-
-#pragma mark + SPPAgileHubStateDelegate
 -(void)onHubStateChanged: (NSDictionary *) roomDto
 {
-    NSLog(@"***** onHubStateChanged Data:\n%@", roomDto);
-    if (stateDelegate && [stateDelegate respondsToSelector:@selector(agileHubDidChangeState:)]) {
-        [stateDelegate agileHubDidChangeState:roomDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_onRoomChanged
+                                                        object:self
+                                                      userInfo:@{@"roomDto": roomDto}];
 }
 
 -(void)onInitRoom: (NSDictionary *) roomDto
 {
-    NSLog(@"***** onInitRoom Data:\n%@", roomDto);
-    if (stateDelegate && [stateDelegate respondsToSelector:@selector(agileHubDidOpenRoom:)])
-    {
-        [stateDelegate agileHubDidOpenRoom:roomDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onOpened
+                                                        object:self
+                                                      userInfo:@{@"roomDto": roomDto}];
 }
-#pragma mark - SPPAgileHubStateDelegate
 
-#pragma mark + SPPAgileHubRoomDelegate
 -(void)onJoinedRoom: (NSDictionary *) userDto
 {
-    NSLog(@"***** onJoinedRoom Data:\n%@", userDto);
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidJoinUser:)]) {
-        [roomDelegate agileHubDidJoinUser:userDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onUserJoined
+                                                        object:self
+                                                      userInfo:@{@"userDto": userDto}];
 }
 
 -(void)onLeftRoom: (NSDictionary *) userDto
 {
-    NSLog(@"***** onLeftRoom Data:\n%@", userDto);
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidLeaveUser:)]) {
-        [roomDelegate agileHubDidLeaveUser:userDto];
-    }
-    //}
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onUserLeft
+                                                        object:self
+                                                      userInfo:@{@"userDto": userDto}];
 }
 
 -(void)onRoomStateChanged: (NSDictionary *) roomDto
 {
-    NSLog(@"***** onRoomStateChanged Data:\n%@", roomDto);
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidChangeRoom:)]) {
-        [roomDelegate agileHubDidChangeRoom:roomDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onChanged
+                                                        object:self
+                                                      userInfo:@{@"roomDto": roomDto}];
 }
-#pragma mark - SPPAgileHubRoomDelegate
-
 
 -(void)onUserVoted: (NSDictionary *) userVoteDto
 {
-    NSLog(@"***** onUserVoted Data:\n%@", userVoteDto);
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidUserVote:)]) {
-        [roomDelegate agileHubDidUserVote:userVoteDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onUserVoted
+                                                        object:self
+                                                      userInfo:@{@"userVoteDto": userVoteDto}];
 }
 
 -(void)onVoteFinished: (NSDictionary *) voteDto
 {
-    NSLog(@"***** onVoteFinished Data:\n%@", voteDto);
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidVoteFinish:)]) {
-        [roomDelegate agileHubDidVoteFinish:voteDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onVoteFinished
+                                                        object:self
+                                                      userInfo:@{@"voteDto": voteDto}];
 }
 
 -(void)onVoteItemOpened: (NSDictionary *) voteDto
 {
-    NSLog(@"***** onVoteItemOpened Data:\n%@", voteDto);
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidVoteOpen:)]) {
-        [roomDelegate agileHubDidVoteOpen:voteDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onVoteOpened
+                                                        object:self
+                                                      userInfo:@{@"voteDto": voteDto}];
 }
 
 -(void)onVoteItemClosed: (NSDictionary *) voteDto
 {
-    NSLog(@"***** onVoteItemClosed Data:\n%@", voteDto);
-    if (roomDelegate && [roomDelegate respondsToSelector:@selector(agileHubDidVoteClose:)]) {
-        [roomDelegate agileHubDidVoteClose:voteDto];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onVoteClosed
+                                                        object:self
+                                                      userInfo:@{@"voteDto": voteDto}];
 }
+#pragma mark - event notitifocations
 
 - (void) joinRoom: (NSString *) roomName {
     [hub   invoke:@"JoinRoom"
          withArgs:@[roomName, sessionId]];
+}
+
+-(void) notify_JoinRoom:(NSNotification*) notification {
+    [self joinRoom:notification.userInfo[@"roomName"]];
 }
 
 - (void) leaveRoom: (NSString *) roomName {
@@ -217,9 +198,20 @@
          withArgs:@[roomName, sessionId]];
 }
 
+- (void) notify_LeaveRoom: (NSNotification*) notification {
+    [self leaveRoom:notification.userInfo[@"roomName"]];
+}
+
 - (void) room: (NSString *) roomName withVote: (NSInteger) voteId doVote: (NSInteger) voteValue {
     [hub   invoke:@"VoteForItem"
          withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", voteValue]]];
 }
+
+- (void) notify_Vote: (NSNotification*) notification {
+    [self     room:notification.userInfo[@"roomName"]
+          withVote:[notification.userInfo[@"voteId"] integerValue]
+            doVote:[notification.userInfo[@"voteValue"] integerValue]];
+}
+
 
 @end

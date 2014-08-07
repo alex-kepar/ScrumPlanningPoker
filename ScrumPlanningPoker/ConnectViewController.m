@@ -7,16 +7,15 @@
 //
 
 #import "ConnectViewController.h"
-#import "SPPUser.h"
-#import "SPPRoom.h"
 #import "SelectRoomViewController.h"
+#import "SPPAgileHubNotifications.h"
 
 @implementation ConnectViewController
 {
     SPPConnection *webConnection;
     SPPAgileHub *agileHub;
-    SPPUser *logUser;
-    NSArray *roomListData;
+    NSInteger userId;
+    NSArray *roomListDto;
 }
 
 - (void)viewDidLoad
@@ -26,15 +25,26 @@
     self.navigationItem.title=@"Connection";
     webConnection = [[SPPConnection alloc] init];
     agileHub = [[SPPAgileHub alloc] init];
+
+    webConnection.connectionDelegate = self;
+    agileHub.connectDelegate = self;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHub_UserLogged:) name:SPPAgileHub_onUserLogged object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHub_Connected:) name:SPPAgileHub_onConnected object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHub_ErrorCatched:) name:SPPAgileHub_onErrorCatched object:nil];
+}
+
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    webConnection.connectionDelegate = self;
-    agileHub.connectDelegate = self;
-    agileHub.stateDelegate = nil;
-    agileHub.roomDelegate = nil;
+    //webConnection.connectionDelegate = self;
+    //agileHub.connectDelegate = self;
+    //agileHub.stateDelegate = nil;
+    //agileHub.roomDelegate = nil;
     [agileHub Disconnect];
 }
 
@@ -78,7 +88,7 @@
 
 -(void) connection:(SPPConnection *)connection didReceiveRoomList:(NSArray *)data
 {
-    roomListData = data;
+    roomListDto = data;
     [self unLockView];
     [self performSegueWithIdentifier:@"ShowRooms" sender:self];
 }
@@ -91,23 +101,27 @@
 #pragma mark - SPPConnectionDelegate
 
 #pragma mark + SPPAgileHubConnectDelegate
-
-- (void)agileHubDidOpen:(SPPAgileHub *) agileHub {
-    [webConnection GetRoomList];
+- (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidClose:(SRConnection *) connection {
+    userId = 0;
 }
 
-- (void)agileHubDidClose:(SPPAgileHub *) agileHub {
-    logUser = nil;
-}
-
-- (void)agileHub:(SPPAgileHub *) agileHub didLogUser:(NSDictionary *)userData {
-    logUser = [SPPUser SPPBaseEntityWithDataDictionary:userData];
-}
-
-- (void)agileHub:(SPPAgileHub *) agileHub didReceiveError:(NSString *)error {
+- (void)agileHub: (SPPAgileHub *) agileHub Connection:(SRConnection *) connection didReceiveError:(NSError *)error {
     [self unLockView];
-    [self showMessage:error withTitle:@"Error connection"];
+    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
 }
+
+//- (void)agileHubDidOpen:(SPPAgileHub *) agileHub {
+//    [webConnection GetRoomList];
+//}
+
+//- (void)agileHub:(SPPAgileHub *) agileHub didLogUser:(NSDictionary *)userData {
+//    logUser = [SPPUser SPPBaseEntityWithDataDictionary:userData];
+//}
+
+//- (void)agileHub:(SPPAgileHub *) agileHub didReceiveError:(NSString *)error {
+//    [self unLockView];
+//    [self showMessage:error withTitle:@"Error connection"];
+//}
 #pragma mark - SPPAgileHubConnectDelegate
 
 #pragma mark + segue handling
@@ -115,13 +129,25 @@
     if ([segue.identifier isEqualToString:@"ShowRooms"]) {
         if ([segue.destinationViewController isKindOfClass:[SelectRoomViewController class]]) {
             SelectRoomViewController *selectRoomController = (SelectRoomViewController *)segue.destinationViewController;
-            selectRoomController.agileHub = agileHub;
             selectRoomController.promptRoot = webConnection.server;
             //selectRoomController.roomList = roomList;
-            selectRoomController.roomListData = roomListData;
+            selectRoomController.roomListDto = roomListDto;
+            //selectRoomController.agileHub = agileHub;
         }
     }
 }
 #pragma mark + segue handling
+
+-(void) notifyAgileHub_UserLogged:(NSNotification*) notification {
+    NSDictionary *userDto = notification.userInfo[@"userDto"];
+    userId = [[userDto objectForKey:@"Id"] integerValue];
+}
+-(void) notifyAgileHub_Connected:(NSNotification*) notification {
+    [webConnection GetRoomList];
+}
+-(void) notifyAgileHub_ErrorCatched:(NSNotification*) notification {
+    [self unLockView];
+    [self showMessage:[NSString stringWithFormat: @"%@", notification.userInfo[@"messageDto"]] withTitle:@"Error hub"];
+}
 
 @end

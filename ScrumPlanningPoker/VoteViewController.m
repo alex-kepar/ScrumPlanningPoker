@@ -7,48 +7,30 @@
 //
 
 #import "VoteViewController.h"
-#import "SPPProperties.h"
 
 @interface VoteViewController ()
 {
     NSArray *cardsList;
-    SPPProperties* properties;
 }
 
 @end
 
 @implementation VoteViewController
 
-//@synthesize room;
-@synthesize vote;
+@synthesize voteDto;
 @synthesize promptRoot;
-//@synthesize agileHub;
-
-/*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}*/
+@synthesize voteDelegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     cardsList = @[@0, @1, @2, @3, @5, @8, @13, @21];
 
-    properties = [SPPProperties sharedProperties];
     self.navigationItem.prompt = [NSString stringWithFormat:@"%@/Voting", promptRoot];
 
-    _tvContent.text = vote.content;
+    _tvContent.text = [voteDto valueForKey:@"Content"];
 	// Do any additional setup after loading the view.
 }
-
-//-(void)viewDidAppear:(BOOL)animated
-//{
-//    [_cvCards reloadData];
-//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -73,16 +55,18 @@
     return cell;
 }
 
-/*- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    return nil;
-}*/
 #pragma mark - UICollectionViewDataSource
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [_vlCardsLayout didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
 
 - (IBAction)actVote:(id)sender {
     if (_vlCardsLayout.currentItem < cardsList.count) {
-        //[agileHub vote:vote.entityId doVote:[cardsList[_vlCardsLayout.currentItem] integerValue] forRooom:room.name];
-        [vote doVote:[cardsList[_vlCardsLayout.currentItem] integerValue]];
+        if (voteDelegate && [voteDelegate respondsToSelector:@selector(Vote:doVote:)]) {
+            [voteDelegate Vote:[voteDto valueForKey:@"Id"] doVote:cardsList[_vlCardsLayout.currentItem]];
+        }
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

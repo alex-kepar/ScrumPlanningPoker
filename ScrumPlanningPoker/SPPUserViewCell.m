@@ -7,41 +7,47 @@
 //
 
 #import "SPPUserViewCell.h"
+#import "RoomViewNotifications.h"
+#import "SPPAgileHubNotifications.h"
 
 @implementation SPPUserViewCell {
+    NSInteger userId;
+    NSInteger voteId;
+
     NSInteger voteValue;
-    SPPUser *user;
-    SPPVote *vote;
+    BOOL voteIsOpened;
+    BOOL voteIsFinished;
 }
 
--(void) initializeWithUser:(SPPUser*) initUser andVote:(SPPVote*) initVote {
-    user = initUser;
-    vote = initVote;
-    _userName.text = user.name;
-    voteValue = [self calculateValueOfVote];
-    [self redrawVote];
-}
-
--(NSInteger) calculateValueOfVote {
-    NSInteger newValue = -1;
-    if (vote && user) {
-        for (SPPUserVote *userVote in [vote.votedUsers reverseObjectEnumerator]) {
-            if (userVote.userId == user.entityId) {
-                newValue = userVote.mark;
-                break;
-            }
-        }
-    }
-    return newValue;
+-(void) initializeWithUserDto:(NSDictionary*) initUserDto andVoteDto:(NSDictionary*) initVoteDto {
+    userId = [[initUserDto valueForKey:@"Id"] integerValue];
+    voteId = [[initVoteDto valueForKey:@"Id"] integerValue];
+    _userName.text = [initUserDto valueForKey:@"Name"];
+    [self redrawVote:initVoteDto withVoteValue:-1];
 }
 
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVote:) name:@"SPPRoomDidVoteNotification" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVoteFinish:) name:@"SPPRoomDidVoteFinishNotification" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVoteOpen:) name:@"SPPRoomDidVoteOpenNotification" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidVoteClose:) name:@"SPPRoomDidVoteCloseNotification" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidChangeSelectedVote:) name:@"SPPRoomChangeSelectedVoteNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(roomDidUserVote:)
+                                                     name:SPPAgileHubRoom_onUserVoted
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(roomDidVoteChanged:)
+                                                     name:SPPAgileHubRoom_onVoteFinished
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(roomDidVoteChanged:)
+                                                     name:SPPAgileHubRoom_onVoteOpened
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(roomDidVoteChanged:)
+                                                     name:SPPAgileHubRoom_onVoteClosed
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(roomDidChangeSelectedVote:)
+                                                     name:RoomView_onChangeSelectedVote
+                                                   object:nil];
     }
     return self;
 }
@@ -50,13 +56,30 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(void) redrawVote {
+-(void) redrawVote: (NSDictionary*) voteDto {
+    [self redrawVote:voteDto withVoteValue:voteValue];
+}
+
+-(void) redrawVote: (NSDictionary*) voteDto withVoteValue: (NSInteger) setVoteValue {
     NSString *text = @"no vote";
-    if (vote.isOpened) {
+    if (voteDto != nil) {
+        if (setVoteValue == -1) {
+            for (NSDictionary *userVoteDto in [[voteDto valueForKey:@"VotedUsers"] reverseObjectEnumerator]) {
+                if (userId == [[userVoteDto valueForKey:@"Id"] integerValue]) {
+                    setVoteValue = [[userVoteDto valueForKey:@"OverallMark"] integerValue];
+                    break;
+                }
+            }
+        }
+        voteIsOpened = [[voteDto valueForKey:@"Opened"] boolValue];
+        voteIsFinished = [[voteDto valueForKey:@"Finished"] boolValue];
+    }
+    voteValue = setVoteValue;
+    if (voteIsOpened) {
         if (voteValue<0) {
             text = @"?";
         } else {
-            if (vote.isFinished) {
+            if (voteIsFinished) {
                 text = [NSString stringWithFormat:@"%d", voteValue];
             } else {
                 text = @"voted";
@@ -70,41 +93,25 @@
     _lVote.text = text;
 }
 
--(void) roomDidVote:(NSNotification*) notification {
-    SPPVote *getVote = notification.userInfo[@"vote"];
-    SPPUserVote *getUserVote = notification.userInfo[@"userVote"];
-    if (vote && vote.entityId == getVote.entityId && user.entityId == getUserVote.userId) {
-        voteValue = getUserVote.mark;
-        [self redrawVote];
+-(void) roomDidUserVote:(NSNotification*) notification {
+    NSDictionary *userVoteDto = notification.userInfo[@"userVoteDto"];
+    if (voteId == [[userVoteDto objectForKey:@"VoteItemId"] integerValue] &&
+        userId == [[userVoteDto objectForKey:@"UserId"] integerValue]) {
+        [self redrawVote:nil withVoteValue:[[userVoteDto objectForKey:@"Mark"] integerValue]];
     }
 }
 
--(void) roomDidVoteFinish:(NSNotification*) notification {
-    SPPVote *getVote = notification.userInfo[@"vote"];
-    if (vote && vote.entityId == getVote.entityId) {
-        [self redrawVote];
-    }
-}
-
--(void) roomDidVoteOpen:(NSNotification*) notification {
-    SPPVote *getVote = notification.userInfo[@"vote"];
-    if (vote && vote.entityId == getVote.entityId) {
-        voteValue = -1;
-        [self redrawVote];
-    }
-}
-
--(void) roomDidVoteClose:(NSNotification*) notification {
-    SPPVote *getVote = notification.userInfo[@"vote"];
-    if (vote && vote.entityId == getVote.entityId) {
-        [self redrawVote];
+-(void) roomDidVoteChanged:(NSNotification*) notification {
+    NSDictionary *getVoteDto = notification.userInfo[@"voteDto"];
+    if (voteId == [[getVoteDto objectForKey:@"Id"] integerValue]) {
+        [self redrawVote:getVoteDto];
     }
 }
 
 -(void) roomDidChangeSelectedVote:(NSNotification*) notification {
-    vote = notification.userInfo[@"selectedVote"];
-    voteValue = [self calculateValueOfVote];
-    [self redrawVote];
+    NSDictionary *getVoteDto = notification.userInfo[@"voteDto"];
+    voteId = [[getVoteDto objectForKey:@"Id"] integerValue];
+    [self redrawVote:getVoteDto withVoteValue:-1];
 }
 
 @end

@@ -12,24 +12,9 @@
 #define ZOOM_FACTOR             0.2f
 
 @implementation SPPVoteCardsViewLayout {
-    //NSInteger currentPage;
 }
 
 @synthesize currentItem;
-
-/*-(id)init
-{
-    if (!(self = [super init])) return nil;
-    
-    // Set up our basic properties
-    self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    //self.itemSize = CGSizeMake(180, 180);
-    self.minimumLineSpacing = -60;      // Gets items up close to one another
-    self.minimumInteritemSpacing = 200; // Makes sure we only have 1 row of items in portrait mode
-    
-    return self;
-}*/
-
 
 -(BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
@@ -39,6 +24,7 @@
 -(CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
 {
     CGFloat pageSize = self.itemSize.width + self.minimumInteritemSpacing;
+    //CGFloat pageSize1 = CGRectGetWidth(self.collectionView.bounds) - self.itemSize.width/2;
     NSInteger newItem = round(proposedContentOffset.x / pageSize);
     if (newItem < currentItem) {
         currentItem --;
@@ -46,11 +32,6 @@
         currentItem ++;
     }
     CGFloat xOffset =  currentItem * pageSize;
-    
-    
-    //UICollectionViewLayoutAttributes *attr = [self layoutAttributesForItemAtIndexPath: [NSIndexPath indexPathForItem:currentPage inSection:0]];
-    
-    //attr.alpha=0;
     return CGPointMake(xOffset, proposedContentOffset.y);
 }
 
@@ -102,26 +83,35 @@
     CGFloat distanceFromVisibleRectToItem = CGRectGetMidX(visibleRect) - attributes.center.x;
     CGFloat normalizedDistance = distanceFromVisibleRectToItem / activeDistance;
     //BOOL isLeft = distanceFromVisibleRectToItem > 0;
-    CATransform3D transform = CATransform3DIdentity;
+    //CATransform3D transform = CATransform3DIdentity;
 
+    CGFloat zoom;
     if (fabsf(distanceFromVisibleRectToItem) < activeDistance)
     {
         CGFloat ratioToCenter = (activeDistance - fabsf(distanceFromVisibleRectToItem)) / activeDistance;
 
         attributes.alpha = INACTIVE_GREY_VALUE + ratioToCenter * (1 - INACTIVE_GREY_VALUE);
-
-        CGFloat zoom = 1 + ZOOM_FACTOR*(1 - ABS(normalizedDistance));
-        transform = CATransform3DScale(transform, zoom, zoom, 1);
         attributes.zIndex = 1;
+
+        zoom = 1 - ZOOM_FACTOR*(ABS(normalizedDistance));
+        //transform = CATransform3DScale(transform, zoom, zoom, 1);
         
         //[attributes setValue:[NSNumber numberWithBool:YES] forKey:@"isSelected"];
     } else {
         attributes.alpha = INACTIVE_GREY_VALUE;
-        
         attributes.zIndex = 0;
+
+        zoom = 1 - ZOOM_FACTOR;//*(1 - ABS(normalizedDistance));
+        //transform = CATransform3DScale(transform, zoom, zoom, 1);
+        
         //[attributes setValue:[NSNumber numberWithBool:NO] forKey:@"isSelected"];
     }
-    attributes.transform3D = transform;
+    attributes.transform3D = CATransform3DScale(CATransform3DIdentity, zoom, zoom, 1);
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    CGFloat leftInset = (CGRectGetWidth(self.collectionView.bounds) - self.itemSize.width) / 2;
+    self.sectionInset = UIEdgeInsetsMake(0, leftInset, 0, leftInset);
 }
 
 @end

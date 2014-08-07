@@ -9,64 +9,46 @@
 #import "SelectRoomViewController.h"
 #import "SPPRoomViewCell.h"
 #import "SRVersion.h"
-#import "SPPRoom.h"
 #import "RoomViewController.h"
+#import "SPPAgileHubNotifications.h"
 
 @interface SelectRoomViewController ()
 {
-    //SPPProperties *properties;
-    SPPRoom *selectedRoom;
-    NSMutableArray *roomList;
+    NSDictionary *selectedRoomDto;
 }
 
 @end
 
 @implementation SelectRoomViewController
 
-@synthesize agileHub;
 @synthesize promptRoot;
-//@synthesize roomList;
-@synthesize roomListData;
+@synthesize roomListDto;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    //properties=[SPPProperties sharedProperties];
     self.navigationItem.prompt=promptRoot;
     self.navigationItem.title=@"select room";
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHubRoom_Opened:) name:SPPAgileHubRoom_onOpened object:nil];
+}
 
-    roomList = [[NSMutableArray alloc] initWithCapacity:roomListData.count];
-    for (int i = 0; i < roomListData.count; i++) {
-        roomList[i] = [self _createRoomUseData:roomListData[i]];
-    }
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    agileHub.stateDelegate = self;
-    agileHub.roomDelegate = nil;
-    //agileHub.voteDelegate = nil;
-    if (selectedRoom != nil) {
-        selectedRoom.delegate = nil;
-        //selectedRoom.roomDelegate = nil;
-        [agileHub leaveRoom:selectedRoom.name];
-        selectedRoom = nil;
+    if (selectedRoomDto != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_LeaveRoom
+                                                            object:self
+                                                          userInfo:@{@"roomName": [selectedRoomDto valueForKey:@"Name"]}];
+        selectedRoomDto = nil;
     }
 }
-
-//-(void)viewDidDisappear:(BOOL)animated
-//{
-//    [super viewDidDisappear:animated];
-//    if (properties.agileHub.delegate == self) {
-//        properties.agileHub.delegate=nil;
-//    }
-//    if (properties.connection.connectionDelegate == self) {
-//        properties.connection.connectionDelegate=nil;
-//    }
-//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -76,38 +58,19 @@
 
 #pragma mark + UITableViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellIdentifier = @"RoomCell";
-    SPPRoomViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if(cell==nil)
-    {
-        cell = [[SPPRoomViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
-    SPPRoom* room=[roomList objectAtIndex:indexPath.row];
-    cell.nameLabel.text = room.name;
-    cell.descriptionLabel.text = room.description;
-    cell.statusImage.image = [self imageForRoomStatus: room.isActive];
-    cell.usersCount.text = [NSString stringWithFormat:@"%d", room.connectedUsers.count];
-    return cell;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return roomList.count;
+    return roomListDto.count;
 }
 
--(UIImage *) imageForRoomStatus: (BOOL)isOpened
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(isOpened)
+    SPPRoomViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"RoomCell" forIndexPath:indexPath];
+    if(cell!=nil)
     {
-        return [UIImage imageNamed:@"RoomOpened.png"];
+        [cell initializeWithRoomDto:roomListDto[indexPath.row]];
     }
-    else
-    {
-        return [UIImage imageNamed:@"RoomClosed.png"];
-    }
+    return cell;
 }
 
 #pragma mark - UITableViewDataSource
@@ -115,71 +78,33 @@
 #pragma mark + UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    selectedRoom = roomList[indexPath.row];
+    selectedRoomDto = roomListDto[indexPath.row];
     [self lockView];
-    [agileHub joinRoom:selectedRoom.name];
+    NSString *name = [selectedRoomDto valueForKey:@"Name"];
+    if (name !=nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_JoinRoom
+                                                            object:self
+                                                          userInfo:@{@"roomName": name}];
+    }
 }
 #pragma mark - UITableViewDelegate
 
-#pragma mark + SPPAgileHubStateDelegate
-
-- (SPPRoom*) _createRoomUseData:(NSDictionary*) roomData {
-    SPPRoom *room = [SPPRoom SPPBaseEntityWithDataDictionary:roomData];
-    room.roomDelegate = self;
-    return room;
-}
-
-- (SPPRoom*) _GetRoomUseData:(NSDictionary *) roomData {
-    NSInteger entityId = [[roomData objectForKey:@"Id"] integerValue];
-    NSInteger idx = [roomList indexOfObjectPassingTest:^BOOL(SPPRoom* roomItem, NSUInteger idx, BOOL *stop) {
-        return (roomItem.entityId == entityId);
-    }];
-    SPPRoom *room;
-    if (idx != NSNotFound) {
-        room = roomList[idx];
-        [room updateFromDictionary:roomData];
-    }
-    else {
-        room = [self _createRoomUseData:roomData];
-        [roomList addObject:room];
-    }
-    return room;
-}
-
-- (void)agileHubDidChangeState:(NSDictionary *) roomData
-{
-    [self _GetRoomUseData:roomData];
-    [_tvRooms reloadData];
-}
-
-- (void)agileHubDidOpenRoom: (NSDictionary *) roomData
-{
+-(void) notifyAgileHubRoom_Opened:(NSNotification*) notification {
     [self unLockView];
-    selectedRoom = [self _GetRoomUseData:roomData];
-    agileHub.roomDelegate = selectedRoom;
+    selectedRoomDto = notification.userInfo[@"roomDto"];
     [self performSegueWithIdentifier:@"RoomSegue" sender:self];
 }
-
-#pragma mark - SPPAgileHubStateDelegate
 
 #pragma mark + segue handling
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"RoomSegue"]) {
         if ([segue.destinationViewController isKindOfClass:[RoomViewController class]]) {
             RoomViewController *roomViewController = (RoomViewController *)segue.destinationViewController;
-            roomViewController.room = selectedRoom;
+            roomViewController.roomDto = selectedRoomDto;
             roomViewController.promptRoot = self.navigationItem.prompt;
         }
     }
 }
 #pragma mark - segue handling
-
-#pragma mark + SPPRoomDelegate
-- (void) SPPRoom:(SPPRoom *) room withVote: (SPPVote*) vote doVote: (NSInteger) voteValue {
-    [agileHub room:room.name withVote:vote.entityId doVote:voteValue];
-}
-#pragma mark - SPPRoomDelegate
-
-
 
 @end

@@ -9,16 +9,14 @@
 /* Begin PBXBuildFile section */
 		8809DB47195B0EA600D03238 /* SPPPagedFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809DB46195B0EA600D03238 /* SPPPagedFlowView.m */; };
 		8809DB4A195D873D00D03238 /* SPPVoteCardsViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809DB49195D873D00D03238 /* SPPVoteCardsViewLayout.m */; };
-		8810666B1975286900969385 /* SPPBaseEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8810666A1975286900969385 /* SPPBaseEntity.m */; };
-		8810666E197699F500969385 /* SPPBaseEntity+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 8810666D197699F500969385 /* SPPBaseEntity+Protected.m */; };
 		8812FBD61959D54A005DA858 /* VoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8812FBD51959D54A005DA858 /* VoteViewController.m */; };
 		8812FBD91959D9B8005DA858 /* SPPVoteCardViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8812FBD81959D9B8005DA858 /* SPPVoteCardViewCell.m */; };
 		881F469718DB565D004DF389 /* CALayer+XibConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */; };
 		882C81D218C4B42C0011AD59 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882C81D118C4B42C0011AD59 /* main.storyboard */; };
 		882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C81D418C4C8D00011AD59 /* ConnectViewController.m */; };
+		884ECBDA199103980019A3A9 /* SPPAgileHubNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 884ECBD9199103980019A3A9 /* SPPAgileHubNotifications.m */; };
+		884ECBDD199128FD0019A3A9 /* RoomViewNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 884ECBDC199128FD0019A3A9 /* RoomViewNotifications.m */; };
 		8858A78D18D896DB00A06AD2 /* SPPAgileHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */; };
-		8858A79018D9B85300A06AD2 /* SPPRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A78F18D9B85300A06AD2 /* SPPRoom.m */; };
-		8858A79418D9F5B500A06AD2 /* SPPVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A79318D9F5B500A06AD2 /* SPPVote.m */; };
 		8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */; };
 		885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */; };
 		885FB4E91958510900AB1A21 /* SPPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 885FB4E81958510900AB1A21 /* SPPConnection.m */; };
@@ -26,13 +24,8 @@
 		887B4BDF19533060005CE261 /* SPPRoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 887B4BDE19533060005CE261 /* SPPRoomViewCell.m */; };
 		887B4BE31954546B005CE261 /* RoomClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = 887B4BE11954546B005CE261 /* RoomClosed.png */; };
 		887B4BE41954546B005CE261 /* RoomOpened.png in Resources */ = {isa = PBXBuildFile; fileRef = 887B4BE21954546B005CE261 /* RoomOpened.png */; };
-		88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B5BCB618D1C6DC007918E8 /* SPPProperties.m */; };
-		88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAC18D7583F00B03251 /* SPPUser.m */; };
-		88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD7FAF18D7588100B03251 /* SPPPrivilege.m */; };
 		88C2E93B197913AC00E33A83 /* SPPVoteViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */; };
-		88C2E93E19797C8F00E33A83 /* SPPUserVote.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C2E93D19797C8F00E33A83 /* SPPUserVote.m */; };
 		88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6057D18D3399900A1EB77 /* RoomViewController.m */; };
-		88EDD2F118E5BF810065C6A4 /* TestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EDD2F018E5BF800065C6A4 /* TestController.m */; };
 		B54EA18411124EAF8FC2BD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9419B472B54ED08B208BA4 /* libPods.a */; };
 		C3A4A6E818B24ACD00A5E4EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */; };
 		C3A4A6EA18B24ACD00A5E4EB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A4A6E918B24ACD00A5E4EB /* CoreGraphics.framework */; };
@@ -64,10 +57,6 @@
 		8809DB46195B0EA600D03238 /* SPPPagedFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPPagedFlowView.m; sourceTree = "<group>"; };
 		8809DB48195D873D00D03238 /* SPPVoteCardsViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVoteCardsViewLayout.h; sourceTree = "<group>"; };
 		8809DB49195D873D00D03238 /* SPPVoteCardsViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVoteCardsViewLayout.m; sourceTree = "<group>"; };
-		881066691975286900969385 /* SPPBaseEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPBaseEntity.h; sourceTree = "<group>"; };
-		8810666A1975286900969385 /* SPPBaseEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPBaseEntity.m; sourceTree = "<group>"; };
-		8810666C197699F500969385 /* SPPBaseEntity+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SPPBaseEntity+Protected.h"; sourceTree = "<group>"; };
-		8810666D197699F500969385 /* SPPBaseEntity+Protected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SPPBaseEntity+Protected.m"; sourceTree = "<group>"; };
 		8812FBD41959D54A005DA858 /* VoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteViewController.h; sourceTree = "<group>"; };
 		8812FBD51959D54A005DA858 /* VoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoteViewController.m; sourceTree = "<group>"; };
 		8812FBD71959D9B8005DA858 /* SPPVoteCardViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVoteCardViewCell.h; sourceTree = "<group>"; };
@@ -77,12 +66,12 @@
 		882C81D118C4B42C0011AD59 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		882C81D318C4C8D00011AD59 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		882C81D418C4C8D00011AD59 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
+		884ECBD8199103980019A3A9 /* SPPAgileHubNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPAgileHubNotifications.h; sourceTree = "<group>"; };
+		884ECBD9199103980019A3A9 /* SPPAgileHubNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPAgileHubNotifications.m; sourceTree = "<group>"; };
+		884ECBDB199128FD0019A3A9 /* RoomViewNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewNotifications.h; sourceTree = "<group>"; };
+		884ECBDC199128FD0019A3A9 /* RoomViewNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewNotifications.m; sourceTree = "<group>"; };
 		8858A78B18D896DA00A06AD2 /* SPPAgileHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPAgileHub.h; sourceTree = "<group>"; };
 		8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPAgileHub.m; sourceTree = "<group>"; };
-		8858A78E18D9B85300A06AD2 /* SPPRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPRoom.h; sourceTree = "<group>"; };
-		8858A78F18D9B85300A06AD2 /* SPPRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPRoom.m; sourceTree = "<group>"; };
-		8858A79218D9F5B500A06AD2 /* SPPVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVote.h; sourceTree = "<group>"; };
-		8858A79318D9F5B500A06AD2 /* SPPVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVote.m; sourceTree = "<group>"; };
 		8858A79518DAF4C900A06AD2 /* SPPUserViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUserViewCell.h; sourceTree = "<group>"; };
 		8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUserViewCell.m; sourceTree = "<group>"; };
 		885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPBaseViewController.h; sourceTree = "<group>"; };
@@ -95,21 +84,10 @@
 		887B4BDE19533060005CE261 /* SPPRoomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPRoomViewCell.m; sourceTree = "<group>"; };
 		887B4BE11954546B005CE261 /* RoomClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoomClosed.png; sourceTree = "<group>"; };
 		887B4BE21954546B005CE261 /* RoomOpened.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoomOpened.png; sourceTree = "<group>"; };
-		88B5BCB518D1C6DC007918E8 /* SPPProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPProperties.h; sourceTree = "<group>"; };
-		88B5BCB618D1C6DC007918E8 /* SPPProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPProperties.m; sourceTree = "<group>"; };
-		88BD7FAB18D7583F00B03251 /* SPPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUser.h; sourceTree = "<group>"; };
-		88BD7FAC18D7583F00B03251 /* SPPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUser.m; sourceTree = "<group>"; };
-		88BD7FAE18D7588100B03251 /* SPPPrivilege.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPPrivilege.h; sourceTree = "<group>"; };
-		88BD7FAF18D7588100B03251 /* SPPPrivilege.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPPrivilege.m; sourceTree = "<group>"; };
 		88C2E939197913AC00E33A83 /* SPPVoteViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVoteViewCell.h; sourceTree = "<group>"; };
 		88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVoteViewCell.m; sourceTree = "<group>"; };
-		88C2E93C19797C8F00E33A83 /* SPPUserVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPUserVote.h; sourceTree = "<group>"; };
-		88C2E93D19797C8F00E33A83 /* SPPUserVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUserVote.m; sourceTree = "<group>"; };
-		88C2E93F19813DA100E33A83 /* SPPAgileHubRoomDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPAgileHubRoomDelegate.h; sourceTree = "<group>"; };
 		88C6057C18D3399900A1EB77 /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		88C6057D18D3399900A1EB77 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
-		88EDD2EF18E5BF800065C6A4 /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
-		88EDD2F018E5BF800065C6A4 /* TestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestController.m; sourceTree = "<group>"; };
 		C3A4A6E418B24ACD00A5E4EB /* ScrumPlanningPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPlanningPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3A4A6E718B24ACD00A5E4EB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3A4A6E918B24ACD00A5E4EB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -165,8 +143,8 @@
 				8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */,
 				88C6057C18D3399900A1EB77 /* RoomViewController.h */,
 				88C6057D18D3399900A1EB77 /* RoomViewController.m */,
-				88EDD2EF18E5BF800065C6A4 /* TestController.h */,
-				88EDD2F018E5BF800065C6A4 /* TestController.m */,
+				884ECBDB199128FD0019A3A9 /* RoomViewNotifications.h */,
+				884ECBDC199128FD0019A3A9 /* RoomViewNotifications.m */,
 				8812FBD41959D54A005DA858 /* VoteViewController.h */,
 				8812FBD51959D54A005DA858 /* VoteViewController.m */,
 			);
@@ -178,7 +156,8 @@
 			children = (
 				8858A78B18D896DA00A06AD2 /* SPPAgileHub.h */,
 				8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */,
-				88C2E93F19813DA100E33A83 /* SPPAgileHubRoomDelegate.h */,
+				884ECBD8199103980019A3A9 /* SPPAgileHubNotifications.h */,
+				884ECBD9199103980019A3A9 /* SPPAgileHubNotifications.m */,
 				885FB4E71958510900AB1A21 /* SPPConnection.h */,
 				885FB4E81958510900AB1A21 /* SPPConnection.m */,
 			);
@@ -211,29 +190,6 @@
 				881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */,
 			);
 			name = Support;
-			sourceTree = "<group>";
-		};
-		8858A79118D9B86800A06AD2 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				88B5BCB518D1C6DC007918E8 /* SPPProperties.h */,
-				88B5BCB618D1C6DC007918E8 /* SPPProperties.m */,
-				88BD7FAB18D7583F00B03251 /* SPPUser.h */,
-				88BD7FAC18D7583F00B03251 /* SPPUser.m */,
-				88C2E93C19797C8F00E33A83 /* SPPUserVote.h */,
-				88C2E93D19797C8F00E33A83 /* SPPUserVote.m */,
-				88BD7FAE18D7588100B03251 /* SPPPrivilege.h */,
-				88BD7FAF18D7588100B03251 /* SPPPrivilege.m */,
-				8858A78E18D9B85300A06AD2 /* SPPRoom.h */,
-				8858A78F18D9B85300A06AD2 /* SPPRoom.m */,
-				8858A79218D9F5B500A06AD2 /* SPPVote.h */,
-				8858A79318D9F5B500A06AD2 /* SPPVote.m */,
-				881066691975286900969385 /* SPPBaseEntity.h */,
-				8810666A1975286900969385 /* SPPBaseEntity.m */,
-				8810666C197699F500969385 /* SPPBaseEntity+Protected.h */,
-				8810666D197699F500969385 /* SPPBaseEntity+Protected.m */,
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		887B4BE01954546B005CE261 /* Images */ = {
@@ -289,7 +245,6 @@
 				881F469318DB3C46004DF389 /* View */,
 				881F469218DB3C21004DF389 /* Network */,
 				881F469118DB3BA3004DF389 /* Controller */,
-				8858A79118D9B86800A06AD2 /* Model */,
 				C3A4A6EE18B24ACD00A5E4EB /* Supporting Files */,
 			);
 			path = ScrumPlanningPoker;
@@ -459,27 +414,20 @@
 			files = (
 				881F469718DB565D004DF389 /* CALayer+XibConfiguration.m in Sources */,
 				8858A78D18D896DB00A06AD2 /* SPPAgileHub.m in Sources */,
-				8810666E197699F500969385 /* SPPBaseEntity+Protected.m in Sources */,
 				C3A4A6F818B24ACD00A5E4EB /* AppDelegate.m in Sources */,
 				885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */,
-				88EDD2F118E5BF810065C6A4 /* TestController.m in Sources */,
-				88BD7FB018D7588100B03251 /* SPPPrivilege.m in Sources */,
+				884ECBDA199103980019A3A9 /* SPPAgileHubNotifications.m in Sources */,
 				8812FBD61959D54A005DA858 /* VoteViewController.m in Sources */,
 				882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */,
 				8809DB47195B0EA600D03238 /* SPPPagedFlowView.m in Sources */,
 				8809DB4A195D873D00D03238 /* SPPVoteCardsViewLayout.m in Sources */,
 				887B4BDF19533060005CE261 /* SPPRoomViewCell.m in Sources */,
-				88B5BCB718D1C6DC007918E8 /* SPPProperties.m in Sources */,
 				88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */,
-				8810666B1975286900969385 /* SPPBaseEntity.m in Sources */,
 				C3A4A6F418B24ACD00A5E4EB /* main.m in Sources */,
 				88C2E93B197913AC00E33A83 /* SPPVoteViewCell.m in Sources */,
-				8858A79018D9B85300A06AD2 /* SPPRoom.m in Sources */,
-				88C2E93E19797C8F00E33A83 /* SPPUserVote.m in Sources */,
 				885FB4E91958510900AB1A21 /* SPPConnection.m in Sources */,
 				8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */,
-				8858A79418D9F5B500A06AD2 /* SPPVote.m in Sources */,
-				88BD7FAD18D7583F00B03251 /* SPPUser.m in Sources */,
+				884ECBDD199128FD0019A3A9 /* RoomViewNotifications.m in Sources */,
 				8812FBD91959D9B8005DA858 /* SPPVoteCardViewCell.m in Sources */,
 				8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */,
 			);

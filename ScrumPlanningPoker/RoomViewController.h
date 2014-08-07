@@ -7,15 +7,12 @@
 //
 
 #import "SPPBaseViewController.h"
-#import "SignalR.h"
-#import "SPPAgileHub.h"
-#import "SPPRoom.h"
+#import "VoteViewController.h"
 
-@interface RoomViewController : SPPBaseViewController <SRConnectionDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, SPPBaseEntityDelegate>//, SPPAgileHubRoomDelegate, SPPAgileHubVoteDelegate>//, SPPRoomDelegate>
+@interface RoomViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, VoteViewControllerDelegate>
 
-@property SPPRoom *room;
+@property NSDictionary *roomDto;
 @property NSString *promptRoot;
-//@property SPPAgileHub *agileHub;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *cvUsers;
 @property (weak, nonatomic) IBOutlet UITableView *tvVotes;

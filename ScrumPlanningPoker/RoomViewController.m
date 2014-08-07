@@ -7,25 +7,21 @@
 //
 
 #import "RoomViewController.h"
-#import "SPPProperties.h"
-//#import "SignalR.h"
-#import "SPPUser.h"
-#import "SPPVote.h"
 #import "SPPUserViewCell.h"
 #import "SPPVoteViewCell.h"
-#import "VoteViewController.h"
+#import "RoomViewNotifications.h"
+#import "SPPAgileHubNotifications.h"
 
 @interface RoomViewController ()
 {
-    SPPVote *selectedVote;
+    NSDictionary *selectedVoteDto;
 }
 @end
 
 @implementation RoomViewController
 
-@synthesize room;
+@synthesize roomDto;
 @synthesize promptRoot;
-//@synthesize agileHub;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,49 +36,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //properties = [SPPProperties sharedProperties];
-    //hub = properties.agileHub;
-    self.navigationItem.prompt = [NSString stringWithFormat:@"%@/%@", promptRoot, room.name];
+    self.navigationItem.prompt = [NSString stringWithFormat:@"%@/%@", promptRoot, [roomDto valueForKey:@"Name"]];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    //agileHub.roomDelegate = self;
-    //agileHub.voteDelegate = self;
-    room.delegate = self;
-    //room.roomDelegate = self;
-    //[hub joinRoom:properties.room.name];
-    //[self lockView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    //[agileHub leaveRoom:room.name];
-    //if (room.delegate == self) {
-    //    room.delegate = nil;
-    //}
-    //if (hub.delegate == self) {
-    //    hub.delegate = nil;
-    //}
-}
 
 #pragma mark + UICollectionViewDataSource
-//- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-//{
-//    return 1;
-//}
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return room.connectedUsers.count;
+    return [[roomDto valueForKey:@"ConnectedUsers"] count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -90,32 +51,26 @@
     SPPUserViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserCell" forIndexPath:indexPath];
     if (cell != nil)
     {
-        [cell initializeWithUser:room.connectedUsers[indexPath.row] andVote:selectedVote];
+        [cell initializeWithUserDto:((NSArray*)[roomDto objectForKey:@"ConnectedUsers"])[indexPath.row] andVoteDto:selectedVoteDto];
     }
     return cell;
 }
-
-//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-//{
-//    return nil;
-//}
 #pragma mark - UICollectionViewDataSource
 
 
 #pragma mark + UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[roomDto objectForKey:@"ItemsToVote"] count];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SPPVoteViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"VoteCell" forIndexPath:indexPath];
     if (cell != nil) {
-        cell.vote = [room.itemsToVote objectAtIndex:indexPath.row];
+        [cell initializeWithVoteDto:((NSArray*)[roomDto objectForKey:@"ItemsToVote"])[indexPath.row]];
     }
     return cell;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return room.itemsToVote.count;
 }
 
 #pragma mark - UITableViewDataSource
@@ -123,15 +78,15 @@
 #pragma mark + UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    selectedVote = [self.room.itemsToVote objectAtIndex:indexPath.row];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomChangeSelectedVoteNotification" object:self.room userInfo:@{@"selectedVote": [self.room.itemsToVote objectAtIndex:indexPath.row]}];
+    selectedVoteDto = ((NSArray*)[roomDto valueForKey:@"ItemsToVote"])[indexPath.row];
+    [[NSNotificationCenter defaultCenter] postNotificationName:RoomView_onChangeSelectedVote object:self userInfo:@{@"voteDto": selectedVoteDto}];
 }
 #pragma mark - UITableViewDelegate
 
 #pragma mark + segue handling
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"VoteSeque"]) {
-        NSIndexPath *indexPath;
+        /*NSIndexPath *indexPath;
         if ([sender isKindOfClass:[UIButton class]]) {
             //UITableViewCell *clickedCell = (UITableViewCell*)[sender superview];
             UITableViewCell *clickedCell = (UITableViewCell*)[[[sender superview] superview] superview];
@@ -139,69 +94,28 @@
             //indexPath = [self.tvVotes indexOfAccessibilityElement:sender];
         } else {
             indexPath = [self.tvVotes indexPathForSelectedRow];
-        }
-        if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] && indexPath !=nil) {
+        }*/
+        //if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] && indexPath !=nil) {
+        if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] && selectedVoteDto != nil) {
             //NSIndexPath *indexPath = [self.tvVotes indexPathForSelectedRow];
             VoteViewController *voteController = (VoteViewController *)segue.destinationViewController;
-            //voteController.room = self.room;
-            voteController.vote = [self.room.itemsToVote objectAtIndex:indexPath.row];
             voteController.promptRoot = self.navigationItem.prompt;
-            //voteController.agileHub = self.agileHub;
+            voteController.voteDelegate = self;
+            voteController.voteDto = selectedVoteDto;
         }
-        //UINavigationController *navController = (UI)
     }
 }
 #pragma mark - segue handling
 
-#pragma mark + SPPBaseEntityDelegate
-- (void)entityDidChange: (SPPBaseEntity *) entity {
-    
+
+#pragma mark + VoteViewControllerDelegate
+- (void) Vote:(NSString*) voteId doVote: (NSString*) voteValue {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_Vote
+                                                        object:self
+                                                      userInfo:@{@"roomName":[roomDto valueForKey:@"Name"],
+                                                                 @"voteId":voteId,
+                                                                 @"voteValue": voteValue}];
 }
-
-- (void)entityDidChange: (SPPBaseEntity *) entity list: (NSMutableArray *) list {
-    if (entity == room) {
-        if (list == room.connectedUsers) {
-            [_cvUsers reloadData];
-        } else if (list == room.itemsToVote) {
-            [_tvVotes reloadData];
-        }
-    }
-}
-#pragma mark - SPPBaseEntityDelegate
-
-//#pragma mark + SPPAgileHubRoomDelegate
-//
-//- (void)agileHubDidJoinUser: (NSDictionary *) userData {
-//    [room addUserUseData:userData];
-//}
-//
-//- (void)agileHubDidLeaveUser: (NSDictionary *) userData {
-//    [room removeUserUseData:userData];
-//}
-//
-//- (void)agileHubDidChangeRoom: (NSDictionary *) roomData {
-//    [room updateFromDictionary:roomData];
-//}
-//
-//#pragma makr - SPPAgileHubRoomDelegate
-//
-//#pragma mark + SPPAgileHubVoteDelegate
-//- (void)agileHubDidUserVote: (NSDictionary *) userVoteData {
-//    [room hubDidUserVote:userVoteData];
-//}
-//
-//- (void)agileHubDidVoteFinish: (NSDictionary *) voteData {
-//    [room hubDidVoteFinish:voteData];
-//}
-//
-//- (void)agileHubDidVoteOpen: (NSDictionary *) voteData {
-//    [room hubDidVoteOpen:voteData];
-//}
-//
-//- (void)agileHubDidVoteClose: (NSDictionary *) voteData {
-//    [room hubDidVoteClose:voteData];
-//}
-//#pragma mark - SPPAgileHubVoteDelegate
-
+#pragma mark - VoteViewControllerDelegate
 
 @end
