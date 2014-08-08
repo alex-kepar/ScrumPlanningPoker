@@ -46,6 +46,7 @@
     //agileHub.stateDelegate = nil;
     //agileHub.roomDelegate = nil;
     [agileHub Disconnect];
+    //[self.view layoutSubviews];
 }
 
 - (void) viewDidDisappear:(BOOL)animated
@@ -107,7 +108,14 @@
 
 - (void)agileHub: (SPPAgileHub *) agileHub Connection:(SRConnection *) connection didReceiveError:(NSError *)error {
     [self unLockView];
-    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
+    if (error.code != 0) {
+        [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
+        if (error.code == -1011) {
+            [self.navigationController popToViewController:self animated:YES];
+        }
+        //[self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"1101"];
+    }
+    
 }
 
 //- (void)agileHubDidOpen:(SPPAgileHub *) agileHub {

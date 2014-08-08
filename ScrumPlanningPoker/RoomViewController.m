@@ -84,18 +84,30 @@
 #pragma mark - UITableViewDelegate
 
 #pragma mark + segue handling
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"VoteSeque"]) {
-        /*NSIndexPath *indexPath;
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    if ([identifier isEqualToString:@"VoteSeque"]) {
+        NSIndexPath *indexPath;
         if ([sender isKindOfClass:[UIButton class]]) {
-            //UITableViewCell *clickedCell = (UITableViewCell*)[sender superview];
+            //UITableViewCell *clickedCell = (UITableViewCell*)[[sender superview] superview];
             UITableViewCell *clickedCell = (UITableViewCell*)[[[sender superview] superview] superview];
             indexPath = [self.tvVotes indexPathForCell:clickedCell];
             //indexPath = [self.tvVotes indexOfAccessibilityElement:sender];
-        } else {
-            indexPath = [self.tvVotes indexPathForSelectedRow];
-        }*/
-        //if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] && indexPath !=nil) {
+            //} else {
+            //    indexPath = [self.tvVotes indexPathForSelectedRow];
+        }
+        if (indexPath != nil) {
+            if(indexPath != [self.tvVotes indexPathForSelectedRow]) {
+                [self.tvVotes selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                [self tableView:self.tvVotes didSelectRowAtIndexPath:[self.tvVotes indexPathForSelectedRow]];
+            }
+        }
+    }
+    return selectedVoteDto != nil;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"VoteSeque"]) {
         if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] && selectedVoteDto != nil) {
             //NSIndexPath *indexPath = [self.tvVotes indexPathForSelectedRow];
             VoteViewController *voteController = (VoteViewController *)segue.destinationViewController;

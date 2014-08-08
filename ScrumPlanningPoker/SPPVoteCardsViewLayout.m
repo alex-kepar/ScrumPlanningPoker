@@ -109,9 +109,16 @@
     attributes.transform3D = CATransform3DScale(CATransform3DIdentity, zoom, zoom, 1);
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+
+#pragma mark - Private Custom Methods
+
+-(void)initialize {
     CGFloat leftInset = (CGRectGetWidth(self.collectionView.bounds) - self.itemSize.width) / 2;
     self.sectionInset = UIEdgeInsetsMake(0, leftInset, 0, leftInset);
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self initialize];
 }
 
 @end

@@ -120,6 +120,7 @@
             _lOveralVote.text = @"no vote";
         }
     }
+    self.bVote.enabled = isOpened;
 }
 
 //- (void)entityDidChange: (SPPBaseEntity *) entity {

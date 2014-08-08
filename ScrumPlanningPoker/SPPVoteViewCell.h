@@ -14,7 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lContent;
 @property (weak, nonatomic) IBOutlet UILabel *lState;
 @property (weak, nonatomic) IBOutlet UILabel *lOveralVote;
-//@property SPPVote *vote;
+@property (weak, nonatomic) IBOutlet UIButton *bVote;
 
 -(void) initializeWithVoteDto:(NSDictionary*) initVoteDto;
 

@@ -32,6 +32,12 @@
 	// Do any additional setup after loading the view.
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.vlCardsLayout initialize];
+    //[self.vlCardsLayout invalidateLayout];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

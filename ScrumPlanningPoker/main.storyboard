@@ -338,6 +338,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bVote" destination="S49-zo-lLF" id="mVK-uE-vlW"/>
                                             <outlet property="lContent" destination="FXa-qM-i8J" id="SBs-wt-IkP"/>
                                             <outlet property="lOveralVote" destination="CQo-ey-Pe6" id="zOI-BU-aH4"/>
                                             <outlet property="lState" destination="G7H-aW-CCy" id="sNU-ta-IfK"/>
@@ -384,18 +385,18 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZj-js-fZi">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="310"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WeV-su-evK">
-                                <rect key="frame" x="0.0" y="310" width="320" height="200"/>
+                                <rect key="frame" x="0.0" y="350" width="320" height="160"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="yzg-jI-Vc3"/>
+                                    <constraint firstAttribute="height" constant="160" id="yzg-jI-Vc3"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="20" minimumInteritemSpacing="20" id="XPU-Fs-fQ5" customClass="SPPVoteCardsViewLayout">
                                     <size key="itemSize" width="200" height="145"/>
@@ -405,7 +406,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="redraw" reuseIdentifier="CardCell" id="3Tp-Xg-bHg" customClass="SPPVoteCardViewCell">
-                                        <rect key="frame" x="60" y="28" width="200" height="145"/>
+                                        <rect key="frame" x="60" y="8" width="200" height="145"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="145"/>
@@ -458,15 +459,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LZj-js-fZi" firstAttribute="top" secondItem="B53-4X-jPD" secondAttribute="top" id="0hY-lZ-nHa"/>
                             <constraint firstItem="Rkp-BW-X0E" firstAttribute="top" secondItem="iZK-AY-Zlb" secondAttribute="bottom" constant="20" id="0qh-bY-8le"/>
                             <constraint firstItem="LZj-js-fZi" firstAttribute="leading" secondItem="B53-4X-jPD" secondAttribute="leading" id="Bcd-BJ-HpI"/>
+                            <constraint firstItem="LZj-js-fZi" firstAttribute="top" secondItem="B53-4X-jPD" secondAttribute="top" id="C4o-MQ-WQx"/>
                             <constraint firstAttribute="trailing" secondItem="WeV-su-evK" secondAttribute="trailing" id="LXa-GN-7C9"/>
                             <constraint firstItem="WeV-su-evK" firstAttribute="leading" secondItem="B53-4X-jPD" secondAttribute="leading" id="Uz4-T1-o8T"/>
                             <constraint firstAttribute="centerX" secondItem="iZK-AY-Zlb" secondAttribute="centerX" id="Wgp-e9-CXW"/>
+                            <constraint firstAttribute="trailing" secondItem="LZj-js-fZi" secondAttribute="trailing" id="dSa-ku-Z3e"/>
                             <constraint firstItem="WeV-su-evK" firstAttribute="top" secondItem="LZj-js-fZi" secondAttribute="bottom" id="fB2-AV-Kpv"/>
                             <constraint firstItem="iZK-AY-Zlb" firstAttribute="top" secondItem="WeV-su-evK" secondAttribute="bottom" constant="8" id="jcu-cq-jbK"/>
                             <constraint firstAttribute="trailing" secondItem="LZj-js-fZi" secondAttribute="trailing" id="t6U-dF-HBn"/>
+                            <constraint firstAttribute="trailing" secondItem="LZj-js-fZi" secondAttribute="trailing" id="z34-fN-owL"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="p7O-6t-Rcf"/>
