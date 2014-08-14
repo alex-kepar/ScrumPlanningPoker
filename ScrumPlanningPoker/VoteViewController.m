@@ -17,9 +17,9 @@
 
 @implementation VoteViewController
 
-@synthesize voteDto;
+@synthesize vote;
 @synthesize promptRoot;
-@synthesize voteDelegate;
+//@synthesize voteDelegate;
 
 - (void)viewDidLoad
 {
@@ -28,7 +28,7 @@
 
     self.navigationItem.prompt = [NSString stringWithFormat:@"%@/Voting", promptRoot];
 
-    _tvContent.text = [voteDto valueForKey:@"Content"];
+    _tvContent.text = vote.content;
 	// Do any additional setup after loading the view.
 }
 
@@ -70,9 +70,10 @@
 
 - (IBAction)actVote:(id)sender {
     if (_vlCardsLayout.currentItem < cardsList.count) {
-        if (voteDelegate && [voteDelegate respondsToSelector:@selector(Vote:doVote:)]) {
-            [voteDelegate Vote:[voteDto valueForKey:@"Id"] doVote:cardsList[_vlCardsLayout.currentItem]];
-        }
+        //if (voteDelegate && [voteDelegate respondsToSelector:@selector(Vote:doVote:)]) {
+        //    [voteDelegate Vote:[voteDto valueForKey:@"Id"] doVote:cardsList[_vlCardsLayout.currentItem]];
+        //}
+        [vote doVote:[cardsList[_vlCardsLayout.currentItem] integerValue]];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

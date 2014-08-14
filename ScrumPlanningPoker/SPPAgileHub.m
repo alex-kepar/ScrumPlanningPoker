@@ -33,9 +33,18 @@
 {
     [self Disconnect];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify_JoinRoom:) name:SPPAgileHub_JoinRoom object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify_LeaveRoom:) name:SPPAgileHub_LeaveRoom object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify_Vote:) name:SPPAgileHub_Vote object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notify_JoinRoom:)
+                                                 name:SPPAgileHub_JoinRoom
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notify_LeaveRoom:)
+                                                 name:SPPAgileHub_LeaveRoom
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notify_Vote:)
+                                                 name:SPPAgileHub_Vote
+                                               object:nil];
     
     hubConnection = [SRHubConnection connectionWithURL:[NSString stringWithFormat:@"http://%@", server]];
     [hubConnection setProtocol:[[SRVersion alloc] initWithMajor:1 minor: 2]];
@@ -65,7 +74,7 @@
     [hubConnection start];
 }
 
-#pragma mark + SRConnection Delegate & SPPAgileHubConnectDelegate
+#pragma mark + SRConnection Delegate retranslate to SPPAgileHubConnectDelegate
 - (void)SRConnectionDidOpen:(SRConnection *)connection
 {
     if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:ConnectionDidOpen:)])
@@ -99,6 +108,7 @@
 #pragma mark + event notitifocations
 - (void)onUserLogged: (NSDictionary *) userDto
 {
+    //[{"H":"agileHub","M":"onUserLogged","A":[{"Name":"Admin","IsAdmin":true,"Privileges":[{"Name":"Admin","Description":"Administrator role.","Id":2},{"Name":"User","Description":"Default system user","Id":3},{"Name":"ScrumMaster","Description":"Scrum master role.","Id":1}],"Id":1}]}]
     [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_onUserLogged
                                                         object:self
                                                       userInfo:@{@"userDto": userDto}];
@@ -107,6 +117,7 @@
 - (void)onState: (NSDictionary *) state
 {
     // invoked after onUserLogged and indicate - connection is ok
+    //[{"UserId":1,"SessionId":"dbd8ef85-a4f7-4bba-901e-c382db007d7c"}]
     sessionId = [state objectForKey:@"SessionId"];
     [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_onConnected
                                                         object:self
@@ -120,6 +131,7 @@
                                                       userInfo:@{@"messageDto": messageDto}];
 }
 
+
 -(void)onHubStateChanged: (NSDictionary *) roomDto
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_onRoomChanged
@@ -130,6 +142,13 @@
 -(void)onInitRoom: (NSDictionary *) roomDto
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onOpened
+                                                        object:self
+                                                      userInfo:@{@"roomDto": roomDto}];
+}
+
+-(void)onRoomStateChanged: (NSDictionary *) roomDto
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onChanged
                                                         object:self
                                                       userInfo:@{@"roomDto": roomDto}];
 }
@@ -146,13 +165,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onUserLeft
                                                         object:self
                                                       userInfo:@{@"userDto": userDto}];
-}
-
--(void)onRoomStateChanged: (NSDictionary *) roomDto
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubRoom_onChanged
-                                                        object:self
-                                                      userInfo:@{@"roomDto": roomDto}];
 }
 
 -(void)onUserVoted: (NSDictionary *) userVoteDto
@@ -212,6 +224,5 @@
           withVote:[notification.userInfo[@"voteId"] integerValue]
             doVote:[notification.userInfo[@"voteValue"] integerValue]];
 }
-
 
 @end

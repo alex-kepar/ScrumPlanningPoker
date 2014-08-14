@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "SPPUser.h"
-//#import "SPPVote.h"
+#import "SPPUser.h"
+#import "SPPVote.h"
 
 @interface SPPUserViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (weak, nonatomic) IBOutlet UILabel *lVote;
 
--(void) initializeWithUserDto:(NSDictionary*) initUserDto andVoteDto:(NSDictionary*) initVoteDto;
+-(void) initializeWithUser:(SPPUser*)initUser andVote:(SPPVote*)initVote;
 @end

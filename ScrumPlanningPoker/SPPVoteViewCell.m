@@ -7,10 +7,9 @@
 //
 
 #import "SPPVoteViewCell.h"
-#import "SPPAgileHubNotifications.h"
 
 @implementation SPPVoteViewCell {
-    NSInteger voteId;
+    SPPVote *vote;
     //NSDictionary *voteDto;
 }
 
@@ -44,16 +43,17 @@
 //    return self;
 //}
 
--(void) initializeWithVoteDto:(NSDictionary*) initVoteDto {
-    voteId = [[initVoteDto objectForKey:@"Id"] integerValue];
-    [self redrawVoteDto:initVoteDto];
+-(void) initializeWithVote:(SPPVote*)initVote {
+    vote = initVote;
+    [self redrawCell];
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(agileHub_VoteChanged:) name:SPPAgileHubRoom_onVoteOpened object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(agileHub_VoteChanged:) name:SPPAgileHubRoom_onVoteClosed object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(agileHub_VoteChanged:) name:SPPAgileHubRoom_onVoteFinished object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(notifyVote_onChanged:)
+                                                     name:SPPVote_onChanged
+                                                   object:nil];
     }
     return self;
 }
@@ -97,30 +97,32 @@
 //    }
 //}
 
-- (void) redrawVoteDto: (NSDictionary*) voteDto {
-    _lContent.text = [voteDto objectForKey:@"Content"];
-    BOOL isOpened = [[voteDto objectForKey:@"Opened"] boolValue];
-    BOOL isFinished = [[voteDto objectForKey:@"Finished"] boolValue];
-    if (isOpened) {
-        _lState.text = @"Opened";
-    } else {
-        _lState.text = @"Closed";
-    }
-    if (isFinished) {
-        if (isOpened) {
-            _lOveralVote.text = @"?";
+- (void) redrawCell {
+    self.lContent.text = vote.content;
+    if (vote.isOpened) {
+        if (vote.isFinished) {
+            self.lState.text = @"Finished";
         } else {
-            _lOveralVote.text = [NSString stringWithFormat:@"%d", [[voteDto objectForKey:@"OverallMark"] integerValue]];
+            self.lState.text = @"Opened";
+        }
+    } else {
+        self.lState.text = @"Closed";
+    }
+    if (vote.isFinished) {
+        if (vote.isOpened) {
+            self.lOveralVote.text = @"?";
+        } else {
+            self.lOveralVote.text = [NSString stringWithFormat:@"%d", vote.overallMark];
         }
         
     } else {
-        if (isOpened) {
-            _lOveralVote.text = @"voting";
+        if (vote.isOpened) {
+            self.lOveralVote.text = @"voting";
         } else {
-            _lOveralVote.text = @"no vote";
+            self.lOveralVote.text = @"no vote";
         }
     }
-    self.bVote.enabled = isOpened;
+    self.bVote.enabled = vote.isOpened && !vote.isFinished;
 }
 
 //- (void)entityDidChange: (SPPBaseEntity *) entity {
@@ -135,11 +137,13 @@
 //    }
 //}
 
--(void) agileHub_VoteChanged:(NSNotification*) notification {
-    NSDictionary *voteDto = notification.userInfo[@"voteDto"];
-    if (voteId == [[voteDto objectForKey:@"Id"] integerValue]) {
-        [self redrawVoteDto:voteDto];
+-(void) notifyVote_onChanged:(NSNotification*) notification {
+    SPPVote *getVote = notification.object;
+    if (vote != nil && getVote != nil && getVote.entityId == vote.entityId) {
+        vote = getVote;
+        [self redrawCell];
     }
+
 }
 
 @end

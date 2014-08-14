@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "SPPVote.h"
+#import "SPPVote.h"
 
-@interface SPPVoteViewCell : UITableViewCell// <SPPBaseEntityDelegate>
+@interface SPPVoteViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lContent;
 @property (weak, nonatomic) IBOutlet UILabel *lState;
 @property (weak, nonatomic) IBOutlet UILabel *lOveralVote;
 @property (weak, nonatomic) IBOutlet UIButton *bVote;
 
--(void) initializeWithVoteDto:(NSDictionary*) initVoteDto;
+-(void) initializeWithVote:(SPPVote*) initVote;
 
 @end

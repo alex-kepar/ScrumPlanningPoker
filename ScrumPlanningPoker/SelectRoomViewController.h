@@ -7,12 +7,14 @@
 //
 
 #import "SPPBaseViewController.h"
+#import "SPPAgileHubFacade.h"
 
 @interface SelectRoomViewController : SPPBaseViewController <UITableViewDataSource, UITableViewDelegate>
 
 //@property SPPAgileHub *agileHub;
 @property NSString *promptRoot;
-@property NSArray *roomListDto;
+//@property NSArray *roomListDto;
+@property SPPAgileHubFacade *agileHubFacade;
 
 @property (weak, nonatomic) IBOutlet UITableView *tvRooms;
 @end

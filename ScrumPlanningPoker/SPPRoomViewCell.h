@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SPPRoom.h"
 
 @interface SPPRoomViewCell : UITableViewCell
 
@@ -15,6 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *statusImage;
 @property (weak, nonatomic) IBOutlet UILabel *usersCount;
 
--(void) initializeWithRoomDto:(NSDictionary*) initRoomDto;
+-(void) initializeWithRoom:(SPPRoom*) initRoom;
 
 @end

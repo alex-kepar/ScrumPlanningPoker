@@ -9,18 +9,19 @@
 #import "SPPBaseViewController.h"
 #import "SPPVoteCardsViewLayout.h"
 #import "SPPVoteCardViewCell.h"
+#import "SPPVote.h"
 
-@protocol VoteViewControllerDelegate<NSObject>
-@optional
-- (void) Vote:(NSString*) voteId doVote: (NSString*) voteValue;
-@end
+//@protocol VoteViewControllerDelegate<NSObject>
+//@optional
+//- (void) Vote:(NSString*) voteId doVote: (NSString*) voteValue;
+//@end
 
 @interface VoteViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
-@property NSDictionary *voteDto;
+@property SPPVote *vote;
 @property NSString *promptRoot;
 
-@property (nonatomic, assign) id <VoteViewControllerDelegate> voteDelegate;
+//@property (nonatomic, assign) id <VoteViewControllerDelegate> voteDelegate;
 
 @property (weak, nonatomic) IBOutlet SPPVoteCardViewCell *cvCards;
 @property (weak, nonatomic) IBOutlet SPPVoteCardsViewLayout *vlCardsLayout;

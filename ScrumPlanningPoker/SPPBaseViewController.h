@@ -11,7 +11,7 @@
 @interface SPPBaseViewController : UIViewController
 
 -(void) lockView;
--(void) unLockView;
+-(void) unlockView;
 -(void) showMessage: (NSString*) message withTitle: (NSString*) title;
 
 @end

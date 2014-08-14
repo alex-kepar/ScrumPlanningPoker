@@ -90,13 +90,13 @@
 -(void) connection:(SPPConnection *)connection didReceiveRoomList:(NSArray *)data
 {
     roomListDto = data;
-    [self unLockView];
+    [self unlockView];
     [self performSegueWithIdentifier:@"ShowRooms" sender:self];
 }
 
 -(void) connection:(SPPConnection *)connection didReceiveError:(NSError *)error
 {
-    [self unLockView];
+    [self unlockView];
     [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
 }
 #pragma mark - SPPConnectionDelegate
@@ -106,16 +106,19 @@
     userId = 0;
 }
 
-- (void)agileHub: (SPPAgileHub *) agileHub Connection:(SRConnection *) connection didReceiveError:(NSError *)error {
-    [self unLockView];
-    if (error.code != 0) {
-        [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
-        if (error.code == -1011) {
-            [self.navigationController popToViewController:self animated:YES];
-        }
-        //[self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"1101"];
-    }
+- (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidOpen:(SRConnection *) connection {
     
+}
+
+- (void)agileHub: (SPPAgileHub *) agileHub Connection:(SRConnection *) connection didReceiveError:(NSError *)error {
+    [self unlockView];
+    //if (error.code != 0) {
+    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
+    if (error.code != 0) {
+        [self.navigationController popToViewController:self animated:YES];
+    }
+        //[self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"1101"];
+    //}
 }
 
 //- (void)agileHubDidOpen:(SPPAgileHub *) agileHub {
@@ -139,8 +142,9 @@
             SelectRoomViewController *selectRoomController = (SelectRoomViewController *)segue.destinationViewController;
             selectRoomController.promptRoot = webConnection.server;
             //selectRoomController.roomList = roomList;
-            selectRoomController.roomListDto = roomListDto;
+            //selectRoomController.roomListDto = roomListDto;
             //selectRoomController.agileHub = agileHub;
+            selectRoomController.agileHubFacade = [SPPAgileHubFacade SPPAgileHubFacadeWithAgileHub:agileHub roomList:roomListDto];
         }
     }
 }
@@ -154,7 +158,7 @@
     [webConnection GetRoomList];
 }
 -(void) notifyAgileHub_ErrorCatched:(NSNotification*) notification {
-    [self unLockView];
+    [self unlockView];
     [self showMessage:[NSString stringWithFormat: @"%@", notification.userInfo[@"messageDto"]] withTitle:@"Error hub"];
 }
 

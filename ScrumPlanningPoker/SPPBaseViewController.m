@@ -43,10 +43,10 @@
         if (lockIndicator == nil)
         {
             lockIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            lockIndicator.center = self.view.center;
             lockIndicator.hidesWhenStopped = YES;
             [self.view addSubview:lockIndicator];
         }
+        lockIndicator.center = self.view.center;
         [lockIndicator startAnimating];
         [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
         [self.view endEditing:YES];
@@ -56,7 +56,7 @@
     });
 }
 
-- (void)unLockView
+- (void)unlockView
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (lockIndicator != nil)

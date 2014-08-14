@@ -8,46 +8,39 @@
 
 #import "SPPUserViewCell.h"
 #import "RoomViewNotifications.h"
-#import "SPPAgileHubNotifications.h"
+#import "SPPUserVote.h"
 
 @implementation SPPUserViewCell {
-    NSInteger userId;
-    NSInteger voteId;
-
-    NSInteger voteValue;
-    BOOL voteIsOpened;
-    BOOL voteIsFinished;
+    SPPUser *user;
+    SPPVote *vote;
+    CATransition *animation;
+//    NSInteger voteValue;
 }
 
--(void) initializeWithUserDto:(NSDictionary*) initUserDto andVoteDto:(NSDictionary*) initVoteDto {
-    userId = [[initUserDto valueForKey:@"Id"] integerValue];
-    voteId = [[initVoteDto valueForKey:@"Id"] integerValue];
-    _userName.text = [initUserDto valueForKey:@"Name"];
-    [self redrawVote:initVoteDto withVoteValue:-1];
+-(void) initializeWithUser:(SPPUser*)initUser andVote:(SPPVote*)initVote {
+    user = initUser;
+    vote = initVote;
+    [self redrawCellWithAnimation:NO];
 }
 
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(roomDidUserVote:)
-                                                     name:SPPAgileHubRoom_onUserVoted
+                                                 selector:@selector(notifyUser_onChanged:)
+                                                     name:SPPUser_onChanged
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(roomDidVoteChanged:)
-                                                     name:SPPAgileHubRoom_onVoteFinished
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(roomDidVoteChanged:)
-                                                     name:SPPAgileHubRoom_onVoteOpened
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(roomDidVoteChanged:)
-                                                     name:SPPAgileHubRoom_onVoteClosed
+                                                 selector:@selector(notifyVote_onChanged:)
+                                                     name:SPPVote_onChanged
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(roomDidChangeSelectedVote:)
                                                      name:RoomView_onChangeSelectedVote
                                                    object:nil];
+        animation = [CATransition animation];
+        animation.duration = 1.0;
+        animation.type = kCATransitionPush;
+        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     }
     return self;
 }
@@ -56,62 +49,60 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(void) redrawVote: (NSDictionary*) voteDto {
-    [self redrawVote:voteDto withVoteValue:voteValue];
+-(void) notifyUser_onChanged:(NSNotification*) notification {
+    SPPUser *getUser = notification.object;
+    if (user != nil && getUser != nil && getUser.entityId == user.entityId) {
+        user = getUser;
+        [self redrawCellWithAnimation:NO];
+    }
 }
 
--(void) redrawVote: (NSDictionary*) voteDto withVoteValue: (NSInteger) setVoteValue {
+-(void) notifyVote_onChanged:(NSNotification*) notification {
+    SPPVote *getVote = notification.object;
+    if (vote != nil && getVote != nil && getVote.entityId == vote.entityId) {
+        vote = getVote;
+        [self redrawCellWithAnimation:YES];
+    }
+}
+
+-(void) redrawCellWithAnimation:(BOOL)isAnimate  {
     NSString *text = @"no vote";
-    if (voteDto != nil) {
-        if (setVoteValue == -1) {
-            for (NSDictionary *userVoteDto in [[voteDto valueForKey:@"VotedUsers"] reverseObjectEnumerator]) {
-                if (userId == [[userVoteDto valueForKey:@"Id"] integerValue]) {
-                    setVoteValue = [[userVoteDto valueForKey:@"OverallMark"] integerValue];
-                    break;
+    NSInteger voteValue = -1;
+    if (vote != nil && user != nil) {
+        for (SPPUserVote *userVote in [vote.votedUsers reverseObjectEnumerator]) {
+            if (user.entityId == userVote.userId) {
+                voteValue = userVote.mark;
+                break;
+            }
+        }
+        if (vote.isOpened) {
+            if (voteValue<0) {
+                text = @"?";
+            } else {
+                if (vote.isFinished) {
+                    text = [NSString stringWithFormat:@"%d", voteValue];
+                } else {
+                    text = @"voted";
                 }
             }
-        }
-        voteIsOpened = [[voteDto valueForKey:@"Opened"] boolValue];
-        voteIsFinished = [[voteDto valueForKey:@"Finished"] boolValue];
-    }
-    voteValue = setVoteValue;
-    if (voteIsOpened) {
-        if (voteValue<0) {
-            text = @"?";
         } else {
-            if (voteIsFinished) {
+            if (voteValue>=0) {
                 text = [NSString stringWithFormat:@"%d", voteValue];
-            } else {
-                text = @"voted";
             }
         }
-    } else {
-        if (voteValue>=0) {
-            text = [NSString stringWithFormat:@"%d", voteValue];
+    }
+    if (![self.lVote.text isEqualToString:text]) {
+        if (isAnimate) {
+            [self.lVote.layer addAnimation:animation forKey:@"kCATransitionFade"];
         }
+        self.lVote.text = text;
     }
-    _lVote.text = text;
-}
-
--(void) roomDidUserVote:(NSNotification*) notification {
-    NSDictionary *userVoteDto = notification.userInfo[@"userVoteDto"];
-    if (voteId == [[userVoteDto objectForKey:@"VoteItemId"] integerValue] &&
-        userId == [[userVoteDto objectForKey:@"UserId"] integerValue]) {
-        [self redrawVote:nil withVoteValue:[[userVoteDto objectForKey:@"Mark"] integerValue]];
-    }
-}
-
--(void) roomDidVoteChanged:(NSNotification*) notification {
-    NSDictionary *getVoteDto = notification.userInfo[@"voteDto"];
-    if (voteId == [[getVoteDto objectForKey:@"Id"] integerValue]) {
-        [self redrawVote:getVoteDto];
-    }
+    self.userName.text = user.name;
 }
 
 -(void) roomDidChangeSelectedVote:(NSNotification*) notification {
-    NSDictionary *getVoteDto = notification.userInfo[@"voteDto"];
-    voteId = [[getVoteDto objectForKey:@"Id"] integerValue];
-    [self redrawVote:getVoteDto withVoteValue:-1];
+    vote = notification.userInfo[@"vote"];
+    [self redrawCellWithAnimation:NO];
 }
 
 @end
