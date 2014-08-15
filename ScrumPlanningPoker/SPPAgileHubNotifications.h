@@ -23,6 +23,6 @@ FOUNDATION_EXPORT NSString *const SPPAgileHubRoom_onVoteOpened;
 FOUNDATION_EXPORT NSString *const SPPAgileHubRoom_onVoteClosed;
 
 // Methods:
-FOUNDATION_EXPORT NSString *const SPPAgileHub_JoinRoom;
-FOUNDATION_EXPORT NSString *const SPPAgileHub_LeaveRoom;
-FOUNDATION_EXPORT NSString *const SPPAgileHub_Vote;
+//FOUNDATION_EXPORT NSString *const SPPAgileHub_JoinRoom;
+//FOUNDATION_EXPORT NSString *const SPPAgileHub_LeaveRoom;
+//FOUNDATION_EXPORT NSString *const SPPAgileHub_Vote;

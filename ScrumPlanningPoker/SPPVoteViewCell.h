@@ -12,10 +12,12 @@
 @interface SPPVoteViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lContent;
-@property (weak, nonatomic) IBOutlet UILabel *lState;
+//@property (weak, nonatomic) IBOutlet UILabel *lState;
 @property (weak, nonatomic) IBOutlet UILabel *lOveralVote;
 @property (weak, nonatomic) IBOutlet UIButton *bVote;
+@property (weak, nonatomic) IBOutlet UISwitch *swOpened;
+- (IBAction)actChangeVoteState:(UISwitch *)sender;
 
--(void) initializeWithVote:(SPPVote*) initVote;
+- (void)initializeWithVote:(SPPVote*)initVote;
 
 @end

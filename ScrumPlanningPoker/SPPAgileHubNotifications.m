@@ -23,6 +23,6 @@ NSString *const SPPAgileHubRoom_onVoteFinished = @"SPPAgileHubRoom_onVoteFinishe
 NSString *const SPPAgileHubRoom_onVoteOpened = @"SPPAgileHubRoom_onVoteOpened";
 NSString *const SPPAgileHubRoom_onVoteClosed = @"SPPAgileHubRoom_onVoteClosed";
 
-NSString *const SPPAgileHub_JoinRoom = @"SPPAgileHub_JoinRoom";
-NSString *const SPPAgileHub_LeaveRoom = @"SPPAgileHub_LeaveRoom";
-NSString *const SPPAgileHub_Vote = @"SPPAgileHub_Vote";
+//NSString *const SPPAgileHub_JoinRoom = @"SPPAgileHub_JoinRoom";
+//NSString *const SPPAgileHub_LeaveRoom = @"SPPAgileHub_LeaveRoom";
+//NSString *const SPPAgileHub_Vote = @"SPPAgileHub_Vote";

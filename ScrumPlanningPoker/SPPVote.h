@@ -14,7 +14,9 @@ FOUNDATION_EXPORT NSString *const SPPVote_onChanged;
 @class SPPVote;
 @protocol SPPVoteDelegate<NSObject>
 @optional
-- (void)SPPVote:(SPPVote*) vote doVote: (NSInteger) voteValue;
+- (void)SPPVote:(SPPVote*)vote doVote: (NSInteger)voteValue;
+- (void)SPPVoteOpen:(SPPVote*)vote;
+- (void)SPPVoteClose:(SPPVote*)vote withOveralValue:(NSInteger)overalValue;
 @end
 
 @interface SPPVote : SPPBaseEntity
@@ -30,7 +32,8 @@ FOUNDATION_EXPORT NSString *const SPPVote_onChanged;
 
 @property (nonatomic, assign) id <SPPVoteDelegate> voteDelegate;
 
-- (SPPUserVote*) userDidVoteWithData:(NSDictionary*)userVoteData;
-- (void) doVote: (NSInteger) voteValue;
-
+- (SPPUserVote*)userDidVoteWithData:(NSDictionary*)userVoteData;
+- (void)doVote:(NSInteger)voteValue;
+- (void)open;
+- (void)closeWithOveralValue:(NSInteger)overalValue;
 @end

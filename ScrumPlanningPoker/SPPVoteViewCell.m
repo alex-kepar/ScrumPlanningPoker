@@ -43,6 +43,17 @@
 //    return self;
 //}
 
+- (IBAction)actChangeVoteState:(UISwitch *)sender {
+    if (sender.isOn) {
+        
+    } else {
+        //[self p performSegueWithIdentifier:@"ShowRooms" sender:self];
+    }
+}
+
+- (IBAction)actDidEndOnExit:(UISwitch *)sender {
+}
+
 -(void) initializeWithVote:(SPPVote*)initVote {
     vote = initVote;
     [self redrawCell];
@@ -99,7 +110,7 @@
 
 - (void) redrawCell {
     self.lContent.text = vote.content;
-    if (vote.isOpened) {
+    /*if (vote.isOpened) {
         if (vote.isFinished) {
             self.lState.text = @"Finished";
         } else {
@@ -107,21 +118,21 @@
         }
     } else {
         self.lState.text = @"Closed";
-    }
-    if (vote.isFinished) {
-        if (vote.isOpened) {
-            self.lOveralVote.text = @"?";
+    }*/
+    if (vote.isOpened) {
+        if (vote.isFinished) {
+            self.lOveralVote.text = @"finished";
         } else {
-            self.lOveralVote.text = [NSString stringWithFormat:@"%d", vote.overallMark];
-        }
-        
-    } else {
-        if (vote.isOpened) {
             self.lOveralVote.text = @"voting";
+        }
+    } else {
+        if (vote.isFinished) {
+            self.lOveralVote.text = [NSString stringWithFormat:@"%d", vote.overallMark];
         } else {
             self.lOveralVote.text = @"no vote";
         }
     }
+    self.swOpened.on = vote.isOpened;
     self.bVote.enabled = vote.isOpened && !vote.isFinished;
 }
 

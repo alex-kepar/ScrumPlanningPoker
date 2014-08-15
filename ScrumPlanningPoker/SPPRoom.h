@@ -15,7 +15,9 @@ FOUNDATION_EXPORT NSString *const SPPRoom_onChanged;
 
 @protocol SPPRoomDelegate<NSObject>
 @optional
-- (void) SPPRoom:(SPPRoom *) room withVote: (SPPVote*) vote doVote: (NSInteger) voteValue;
+- (void)SPPRoom:(SPPRoom*)room withVote:(SPPVote*)vote doVote:(NSInteger)voteValue;
+- (void)SPPRoom:(SPPRoom*)room openVote:(SPPVote*)vote;
+- (void)SPPRoom:(SPPRoom*)room closeVote:(SPPVote*)vote withOveralValue:(NSInteger)overalValue;
 @end
 
 @interface SPPRoom : SPPBaseEntity //<SPPAgileHubRoomDelegate>

@@ -170,6 +170,18 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
             doVote:voteValue];
 }
 
+- (void)SPPRoom:(SPPRoom*)room openVote:(SPPVote*)vote {
+    [agileHub room:room.name
+          openVote:vote.entityId];
+}
+
+- (void)SPPRoom:(SPPRoom*)room closeVote:(SPPVote*)vote withOveralValue:(NSInteger)overalValue {
+    [agileHub room:room.name
+         closeVote:vote.entityId
+   withOveralValue:overalValue];
+}
+
+
 // internal methods:
 - (SPPRoom*) _createRoomUseData:(NSDictionary*) roomDto {
     SPPRoom *room = [SPPRoom SPPBaseEntityWithDataDictionary:roomDto];

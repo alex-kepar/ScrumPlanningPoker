@@ -33,7 +33,7 @@
 {
     [self Disconnect];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    /*[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notify_JoinRoom:)
                                                  name:SPPAgileHub_JoinRoom
                                                object:nil];
@@ -45,7 +45,7 @@
                                              selector:@selector(notify_Vote:)
                                                  name:SPPAgileHub_Vote
                                                object:nil];
-    
+    */
     hubConnection = [SRHubConnection connectionWithURL:[NSString stringWithFormat:@"http://%@", server]];
     [hubConnection setProtocol:[[SRVersion alloc] initWithMajor:1 minor: 2]];
     //[hubConnection setReceived:(onReceived)received]
@@ -201,28 +201,32 @@
          withArgs:@[roomName, sessionId]];
 }
 
--(void) notify_JoinRoom:(NSNotification*) notification {
-    [self joinRoom:notification.userInfo[@"roomName"]];
-}
-
+//-(void) notify_JoinRoom:(NSNotification*) notification {
+//    [self joinRoom:notification.userInfo[@"roomName"]];
+//}
+//
 - (void) leaveRoom: (NSString *) roomName {
     [hub   invoke:@"LeaveRoom"
          withArgs:@[roomName, sessionId]];
 }
 
-- (void) notify_LeaveRoom: (NSNotification*) notification {
-    [self leaveRoom:notification.userInfo[@"roomName"]];
-}
+//- (void) notify_LeaveRoom: (NSNotification*) notification {
+//    [self leaveRoom:notification.userInfo[@"roomName"]];
+//}
 
-- (void) room: (NSString *) roomName withVote: (NSInteger) voteId doVote: (NSInteger) voteValue {
+- (void) room:(NSString*)roomName withVote:(NSInteger)voteId doVote:(NSInteger)voteValue {
     [hub   invoke:@"VoteForItem"
          withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", voteValue]]];
 }
 
-- (void) notify_Vote: (NSNotification*) notification {
-    [self     room:notification.userInfo[@"roomName"]
-          withVote:[notification.userInfo[@"voteId"] integerValue]
-            doVote:[notification.userInfo[@"voteValue"] integerValue]];
+- (void)room:(NSString*)roomName openVote:(NSInteger)voteId {
+    [hub invoke:@"OpenVoteItem"
+       withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId]]];
+}
+
+- (void)room:(NSString*)roomName closeVote:(NSInteger)voteId withOveralValue:(NSInteger)overalValue {
+    [hub invoke:@"CloseVoteItem"
+       withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", overalValue]]];
 }
 
 @end

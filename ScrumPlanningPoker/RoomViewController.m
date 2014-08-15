@@ -11,7 +11,6 @@
 #import "SPPVoteViewCell.h"
 #import "SPPVote.h"
 #import "RoomViewNotifications.h"
-#import "VoteViewController.h"
 
 @interface RoomViewController ()
 {
@@ -92,35 +91,51 @@
 
 #pragma mark + segue handling
 
+- (id) _findSuperviewForObject:(id)obj KindOfClass:(Class)classResult {
+    id superview = [obj superview];
+    if ([superview isKindOfClass:classResult] ||
+        superview == nil) {
+        return superview;
+    }
+    return [self _findSuperviewForObject:superview KindOfClass:classResult];
+}
+
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
-    if ([identifier isEqualToString:@"VoteSeque"]) {
-        NSIndexPath *indexPath;
-        if ([sender isKindOfClass:[UIButton class]]) {
-            //UITableViewCell *clickedCell = (UITableViewCell*)[[sender superview] superview];
-            UITableViewCell *clickedCell = (UITableViewCell*)[[[sender superview] superview] superview];
-            indexPath = [self.tvVotes indexPathForCell:clickedCell];
-            //indexPath = [self.tvVotes indexOfAccessibilityElement:sender];
-            //} else {
-            //    indexPath = [self.tvVotes indexPathForSelectedRow];
+    //if ([identifier isEqualToString:@"VoteSeque"]) {
+    NSIndexPath *indexPath;
+    //if ([sender isKindOfClass:[UIButton class]]) {
+    UITableViewCell *clickedCell = [self _findSuperviewForObject:sender KindOfClass:[UITableViewCell class]];
+    //UITableViewCell *clickedCell = (UITableViewCell*)[[[sender superview] superview] superview];
+    indexPath = [self.tvVotes indexPathForCell:clickedCell];
+    //}
+    if (indexPath != nil) {
+        if(indexPath != [self.tvVotes indexPathForSelectedRow]) {
+            [self.tvVotes selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self tableView:self.tvVotes didSelectRowAtIndexPath:[self.tvVotes indexPathForSelectedRow]];
         }
-        if (indexPath != nil) {
-            if(indexPath != [self.tvVotes indexPathForSelectedRow]) {
-                [self.tvVotes selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                [self tableView:self.tvVotes didSelectRowAtIndexPath:[self.tvVotes indexPathForSelectedRow]];
-            }
+    }
+    //}
+    if (selectedVote != nil &&
+        [identifier isEqualToString:@"ChangeVoteStateSeque"]) {
+        if (!selectedVote.isOpened) {
+            [selectedVote open];
+            return NO;
+        } else if (!selectedVote.isFinished) {
+            [selectedVote closeWithOveralValue:-1];
+            return NO;
         }
     }
     return selectedVote != nil;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"VoteSeque"]) {
+    if ([segue.identifier isEqualToString:@"VoteSeque"] ||
+        [segue.identifier isEqualToString:@"ChangeVoteStateSeque"]) {
         if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] && selectedVote != nil) {
-            //NSIndexPath *indexPath = [self.tvVotes indexPathForSelectedRow];
             VoteViewController *voteController = (VoteViewController *)segue.destinationViewController;
             voteController.promptRoot = self.navigationItem.prompt;
-            //voteController.voteDelegate = self;
-            voteController.vote = selectedVote;
+            voteController.voteDelegate = self;
+            voteController.segueIdentifier = segue.identifier;
         }
     }
 }
@@ -136,4 +151,13 @@
         }
     }
 }
+
+- (void) VoteViewDoVote:(NSInteger)voteValue forSegueIdentifier:(NSString*)segueIdentifier {
+    if ([segueIdentifier isEqualToString:@"VoteSeque"]) {
+        [selectedVote doVote:voteValue];
+    } else {
+        [selectedVote closeWithOveralValue:voteValue];
+    }
+}
+
 @end

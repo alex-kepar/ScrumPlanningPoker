@@ -26,9 +26,11 @@
 - (void) ConnectTo:(NSString *) server;
 - (void) Disconnect;
 
-- (void) joinRoom: (NSString *) roomName;
-- (void) leaveRoom: (NSString *) roomName;
+- (void)joinRoom:(NSString*)roomName;
+- (void)leaveRoom:(NSString*)roomName;
 
-- (void) room: (NSString *) roomName withVote: (NSInteger) voteId doVote: (NSInteger) voteValue;
+- (void)room:(NSString*)roomName withVote:(NSInteger)voteId doVote:(NSInteger)voteValue;
+- (void)room:(NSString*)roomName openVote:(NSInteger)voteId;
+- (void)room:(NSString*)roomName closeVote:(NSInteger)voteId withOveralValue:(NSInteger)overalValue;
 
 @end

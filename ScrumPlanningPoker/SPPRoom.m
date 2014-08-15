@@ -197,11 +197,24 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 */
 
 #pragma mark + SPPVoteDelegate
-- (void)SPPVote:(SPPVote*) vote doVote: (NSInteger) voteValue {
+- (void)SPPVote:(SPPVote*)vote doVote: (NSInteger) voteValue {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:withVote:doVote:)]) {
-            [roomDelegate SPPRoom:self withVote:vote doVote:voteValue];
+        [roomDelegate SPPRoom:self withVote:vote doVote:voteValue];
     }
 }
+
+- (void)SPPVoteOpen:(SPPVote*)vote {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:openVote:)]) {
+        [roomDelegate SPPRoom:self openVote:vote];
+    }
+}
+
+- (void)SPPVoteClose:(SPPVote*)vote withOveralValue:(NSInteger)overalValue {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:closeVote:withOveralValue:)]) {
+        [roomDelegate SPPRoom:self closeVote:vote withOveralValue:overalValue];
+    }
+}
+
 #pragma mark - SPPVoteDelegate
 
 @end

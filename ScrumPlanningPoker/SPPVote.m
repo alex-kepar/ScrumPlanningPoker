@@ -156,4 +156,16 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
     }
 }
 
+- (void)open {
+    if (voteDelegate && [voteDelegate respondsToSelector:@selector(SPPVoteOpen:)]) {
+        [voteDelegate SPPVoteOpen:self];
+    }
+}
+
+- (void)closeWithOveralValue:(NSInteger)overalValue {
+    if (voteDelegate && [voteDelegate respondsToSelector:@selector(SPPVoteClose:withOveralValue:)]) {
+        [voteDelegate SPPVoteClose:self withOveralValue:overalValue];
+    }
+}
+
 @end
