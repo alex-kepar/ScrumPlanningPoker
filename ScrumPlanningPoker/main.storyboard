@@ -291,14 +291,14 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Vote"/>
                                                     <connections>
-                                                        <segue destination="T6X-Fq-gO7" kind="push" identifier="VoteSeque" id="cWC-Uv-hMI"/>
+                                                        <action selector="actVote:" destination="vER-B5-gmR" eventType="touchUpInside" id="OuF-qg-4tR"/>
                                                     </connections>
                                                 </button>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mFI-WE-vFp">
                                                     <rect key="frame" x="5" y="6" width="51" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
-                                                        <segue destination="T6X-Fq-gO7" kind="push" identifier="ChangeVoteStateSeque" id="q8l-fA-hl7"/>
+                                                        <action selector="actChangeState:" destination="vER-B5-gmR" eventType="valueChanged" id="rlc-bj-yum"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="197" translatesAutoresizingMaskIntoConstraints="NO" id="O45-Pa-glo">
@@ -339,6 +339,8 @@
                     <connections>
                         <outlet property="cvUsers" destination="1dW-oX-11j" id="luG-Gp-NHK"/>
                         <outlet property="tvVotes" destination="PIu-el-12F" id="rrq-6B-mxi"/>
+                        <segue destination="T6X-Fq-gO7" kind="push" identifier="ChangeVoteStateSeque" id="W3m-BT-Edk"/>
+                        <segue destination="T6X-Fq-gO7" kind="push" identifier="VoteSeque" id="7ti-r8-RLd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3F-Es-q6p" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -482,6 +484,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="q8l-fA-hl7"/>
+        <segue reference="W3m-BT-Edk"/>
     </inferredMetricsTieBreakers>
 </document>

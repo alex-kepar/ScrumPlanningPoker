@@ -21,8 +21,7 @@
 @synthesize promptRoot;
 @synthesize content;
 //@synthesize isOveralVote;
-@synthesize voteDelegate;
-
+@synthesize action;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -72,9 +71,12 @@
 
 - (IBAction)actVote:(id)sender {
     if (_vlCardsLayout.currentItem < cardsList.count) {
-        if (voteDelegate && [voteDelegate respondsToSelector:@selector(VoteViewDoVote:forSegueIdentifier:)]) {
-            [voteDelegate VoteViewDoVote:[cardsList[_vlCardsLayout.currentItem] integerValue] forSegueIdentifier:_segueIdentifier];
+        if (action) {
+            action([cardsList[_vlCardsLayout.currentItem] integerValue]);
         }
+        /*if (voteDelegate && [voteDelegate respondsToSelector:@selector(VoteViewDoVote:forSegueIdentifier:)]) {
+            [voteDelegate VoteViewDoVote:[cardsList[_vlCardsLayout.currentItem] integerValue] forSegueIdentifier:_segueIdentifier];
+        }*/
         //[vote doVote:[cardsList[_vlCardsLayout.currentItem] integerValue]];
         [self.navigationController popViewControllerAnimated:YES];
     }

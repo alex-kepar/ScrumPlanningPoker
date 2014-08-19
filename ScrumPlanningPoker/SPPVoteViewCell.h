@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SPPVote.h"
 
+typedef void(^SPPVoteViewCellVoteAction)(SPPVote *vote);
+
 @interface SPPVoteViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lContent;
@@ -16,7 +18,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *lOveralVote;
 @property (weak, nonatomic) IBOutlet UIButton *bVote;
 @property (weak, nonatomic) IBOutlet UISwitch *swOpened;
-- (IBAction)actChangeVoteState:(UISwitch *)sender;
+- (IBAction)actVote:(UIButton *)sender;
+- (IBAction)actChangeState:(UISwitch *)sender;
+@property (nonatomic, copy) SPPVoteViewCellVoteAction voteAction;
+@property (nonatomic, copy) SPPVoteViewCellVoteAction changeStateAction;
 
 - (void)initializeWithVote:(SPPVote*)initVote;
 

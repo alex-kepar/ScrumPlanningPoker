@@ -15,6 +15,7 @@
 //@synthesize delegate;
 @synthesize entityId = _entityId;
 
+
 + (instancetype)SPPBaseEntityWithDataDictionary: (NSDictionary*) initData
 {
     return [[self alloc] initWithDataDictionary:initData];

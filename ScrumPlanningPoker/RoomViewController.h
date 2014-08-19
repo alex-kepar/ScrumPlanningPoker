@@ -7,10 +7,9 @@
 //
 
 #import "SPPBaseViewController.h"
-#import "VoteViewController.h"
 #import "SPPRoom.h"
 
-@interface RoomViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, VoteViewControllerDelegate>
+@interface RoomViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property SPPRoom *room;
 @property NSString *promptRoot;

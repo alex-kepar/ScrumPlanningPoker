@@ -10,49 +10,10 @@
 
 @implementation SPPVoteViewCell {
     SPPVote *vote;
-    //NSDictionary *voteDto;
 }
 
-//@synthesize vote = _vote;
-
-//- (void) setVote:(SPPVote *)vote {
-//    if (_vote != vote) {
-//        if (_vote) {
-//            if (_vote.delegate == self) {
-//                _vote.delegate = nil;
-//            }
-//        }
-//        _vote = vote;
-//        if (_vote) {
-//            _vote.delegate = self;
-//            [self redrawVote];
-//        }
-//    }
-//}
-//
-//- (SPPVote *) vote {
-//    return _vote;
-//}
-
-//- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-//{
-//    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-//    if (self) {
-//        // Initialization code
-//    }
-//    return self;
-//}
-
-- (IBAction)actChangeVoteState:(UISwitch *)sender {
-    if (sender.isOn) {
-        
-    } else {
-        //[self p performSegueWithIdentifier:@"ShowRooms" sender:self];
-    }
-}
-
-- (IBAction)actDidEndOnExit:(UISwitch *)sender {
-}
+@synthesize voteAction;
+@synthesize changeStateAction;
 
 -(void) initializeWithVote:(SPPVote*)initVote {
     vote = initVote;
@@ -80,45 +41,8 @@
     // Configure the view for the selected state
 }
 
-//- (void) removeFromSuperview {
-//    [super removeFromSuperview];
-//    self.vote = nil;
-//}
-
-//- (void) redrawVote {
-//    _lContent.text = self.vote.content;
-//    if (self.vote.isOpened) {
-//        _lState.text = @"Opened";
-//    } else {
-//        _lState.text = @"Closed";
-//    }
-//    if (self.vote.isFinished) {
-//        if (self.vote.isOpened) {
-//            _lOveralVote.text = @"?";
-//        } else {
-//            _lOveralVote.text = [NSString stringWithFormat:@"%d", self.vote.overallMark];
-//        }
-//        
-//    } else {
-//        if (self.vote.isOpened) {
-//            _lOveralVote.text = @"voting";
-//        } else {
-//            _lOveralVote.text = @"no vote";
-//        }
-//    }
-//}
-
 - (void) redrawCell {
     self.lContent.text = vote.content;
-    /*if (vote.isOpened) {
-        if (vote.isFinished) {
-            self.lState.text = @"Finished";
-        } else {
-            self.lState.text = @"Opened";
-        }
-    } else {
-        self.lState.text = @"Closed";
-    }*/
     if (vote.isOpened) {
         if (vote.isFinished) {
             self.lOveralVote.text = @"finished";
@@ -136,18 +60,6 @@
     self.bVote.enabled = vote.isOpened && !vote.isFinished;
 }
 
-//- (void)entityDidChange: (SPPBaseEntity *) entity {
-//    if (entity == self.vote) {
-//        [self redrawVote];
-//    }
-//}
-//
-//- (void)entityDidChange: (SPPBaseEntity *) entity list: (NSMutableArray *) list {
-//    if (entity == self.vote) {
-//        [self redrawVote];
-//    }
-//}
-
 -(void) notifyVote_onChanged:(NSNotification*) notification {
     SPPVote *getVote = notification.object;
     if (vote != nil && getVote != nil && getVote.entityId == vote.entityId) {
@@ -157,4 +69,16 @@
 
 }
 
+- (IBAction)actVote:(UIButton *)sender {
+    if (voteAction) {
+        voteAction(vote);
+    }
+}
+
+- (IBAction)actChangeState:(UISwitch *)sender {
+    [self.swOpened setOn:vote.isOpened];
+    if (changeStateAction) {
+        changeStateAction(vote);
+    }
+}
 @end

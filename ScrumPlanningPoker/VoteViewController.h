@@ -11,18 +11,15 @@
 #import "SPPVoteCardViewCell.h"
 #import "SPPVote.h"
 
-@protocol VoteViewControllerDelegate<NSObject>
-@optional
-- (void) VoteViewDoVote:(NSInteger)voteValue forSegueIdentifier:(NSString*)segueIdentifier;
-@end
+
+typedef void(^VoteViewControllerAction)(NSInteger voteValue);
 
 @interface VoteViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 //@property SPPVote *vote;
 @property NSString *promptRoot;
 @property NSString *content;
-@property NSString *segueIdentifier;
-@property (nonatomic, assign) id <VoteViewControllerDelegate> voteDelegate;
+@property (nonatomic, copy) VoteViewControllerAction action;
 
 @property (weak, nonatomic) IBOutlet SPPVoteCardViewCell *cvCards;
 @property (weak, nonatomic) IBOutlet SPPVoteCardsViewLayout *vlCardsLayout;
