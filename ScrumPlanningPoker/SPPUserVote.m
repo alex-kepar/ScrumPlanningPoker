@@ -18,6 +18,10 @@ NSString *const SPPUserVote_onChanged = @"SPPUserVote_onChanged";
 @synthesize mark = _mark;
 @synthesize userId = _userId;
 
+- (void)dealloc {
+    NSLog(@"********** UserVote for user '%d' deallocated.", self.userId);
+}
+
 - (void) setMark:(NSInteger)mark {
     if (_mark != mark) {
         isPropertiesChanged = YES;

@@ -12,6 +12,8 @@
     SPPRoom *room;
 }
 
+@synthesize changeStateAction;
+
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -26,9 +28,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(UIImage *) imageForRoomStatus: (BOOL)isOpened
+-(UIImage *) imageForRoomStatus: (BOOL)isActive
 {
-    if(isOpened)
+    if(isActive)
     {
         return [UIImage imageNamed:@"RoomOpened.png"];
     }
@@ -41,8 +43,8 @@
 - (void) redrawCell {
     _nameLabel.text = room.name;;
     _descriptionLabel.text = room.description;
-    _statusImage.image = [self imageForRoomStatus: room.isActive];
     _usersCount.text = [NSString stringWithFormat:@"%d", room.connectedUsers.count];
+    [_bState setImage:[self imageForRoomStatus:room.isActive] forState:UIControlStateNormal];
 }
 
 -(void) initializeWithRoom:(SPPRoom*) initRoom {
@@ -57,4 +59,9 @@
     }
 }
 
+- (IBAction)actChangeState:(UIButton *)sender {
+    if (changeStateAction) {
+        changeStateAction(room);
+    }
+}
 @end

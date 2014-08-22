@@ -34,9 +34,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHub_ErrorCatched:) name:SPPAgileHub_onErrorCatched object:nil];
 }
 
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+//-(void) dealloc {
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 
 - (void)viewDidAppear:(BOOL)animated
 {

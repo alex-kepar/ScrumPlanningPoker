@@ -59,12 +59,12 @@
 }
 
 #pragma mark + list handling
-- (BOOL) _changeList: (NSMutableArray*) list fromItemData:(NSDictionary*) itemData useItemConstructor:(SPPListItemConstructor) itemConstructor {
+- (BOOL) _changeList: (NSMutableArray*) list fromItemData:(NSDictionary*) itemData useItemConstructor:(SPPListItemConstructorBlock) itemConstructor {
     SPPBaseEntity *itemWasChanged;
     return [self _changeList:list fromItemData:itemData useItemConstructor:itemConstructor itemWasChanged:&itemWasChanged];
 }
 
-- (BOOL) _changeList: (NSMutableArray*) list fromItemData:(NSDictionary*) itemData useItemConstructor:(SPPListItemConstructor) itemConstructor itemWasChanged:(SPPBaseEntity**) itemWasChanged {
+- (BOOL) _changeList: (NSMutableArray*) list fromItemData:(NSDictionary*) itemData useItemConstructor:(SPPListItemConstructorBlock) itemConstructor itemWasChanged:(SPPBaseEntity**) itemWasChanged {
     BOOL isListChanged = NO;
     *itemWasChanged = nil;
     NSInteger itemId = [[itemData objectForKey:@"Id"] integerValue];
@@ -94,7 +94,7 @@
     }];
 }
 
-- (NSMutableArray*) initializeListFromData:(NSArray*) listData useItemConstructor:(SPPListItemConstructor) itemConstructor {
+- (NSMutableArray*) initializeListFromData:(NSArray*) listData useItemConstructor:(SPPListItemConstructorBlock) itemConstructor {
     NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:listData.count];
     for (int i = 0; i<listData.count; i++) {
         list[i]=itemConstructor(self, listData[i]);
@@ -104,7 +104,7 @@
     return list;
 }
 
-- (void) synchronizeList:(NSMutableArray*) list fromListData:(NSArray*) listData useItemConstructor:(SPPListItemConstructor) itemConstructor {
+- (void) synchronizeList:(NSMutableArray*) list fromListData:(NSArray*) listData useItemConstructor:(SPPListItemConstructorBlock) itemConstructor {
     if (list == nil) {
         return ;
     }
@@ -132,7 +132,7 @@
     }
 }
 
-- (SPPBaseEntity*) insertUpdateItemInList:(NSMutableArray*) list useItemData:(NSDictionary*) itemData useItemConstructor:(SPPListItemConstructor) itemConstructor {
+- (SPPBaseEntity*) insertUpdateItemInList:(NSMutableArray*) list useItemData:(NSDictionary*) itemData useItemConstructor:(SPPListItemConstructorBlock) itemConstructor {
     if (list == nil) {
         return nil;
     }

@@ -37,6 +37,12 @@
 //    // Dispose of any resources that can be recreated.
 //}
 
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    NSLog(@"********** Controller '%@' deallocated.", [self class]);
+
+}
+
 - (void)lockView
 {
     dispatch_async(dispatch_get_main_queue(), ^{

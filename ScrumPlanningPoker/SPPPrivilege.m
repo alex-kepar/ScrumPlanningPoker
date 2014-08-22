@@ -18,6 +18,10 @@ NSString *const SPPPrivilege_onChanged = @"SPPPrivilege_onChanged";
 @synthesize name = _name;
 @synthesize description = _description;
 
+- (void)dealloc {
+    NSLog(@"********** Privelege '%@' (id=%d) deallocated.", self.name, self.entityId);
+}
+
 - (void) setName:(NSString *)name {
     if (![_name isEqualToString:name]) {
         isPropertiesChanged = YES;

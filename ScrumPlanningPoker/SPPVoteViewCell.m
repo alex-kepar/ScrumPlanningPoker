@@ -10,6 +10,7 @@
 
 @implementation SPPVoteViewCell {
     SPPVote *vote;
+//    SPPVoteViewCellVoteAction voteAction;
 }
 
 @synthesize voteAction;
@@ -31,6 +32,9 @@
 }
 
 -(void) dealloc {
+    //voteAction = Nil;
+    //changeStateAction = Nil;
+    //[voteAction release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -81,4 +85,9 @@
         changeStateAction(vote);
     }
 }
+
+//- (void)setVoteAction:(SPPVoteViewCellVoteAction)newVoteAction {
+//    voteAction = newVoteAction;
+//}
+
 @end

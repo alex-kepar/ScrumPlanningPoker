@@ -85,7 +85,7 @@
 
 - (void)SRConnection:(SRConnection *)connection didReceiveData:(id)data
 {
-    NSLog(@"***** SRHubConnection did receive data invoked Data:\n%@", data);
+    //NSLog(@"***** SRHubConnection did receive data invoked Data:\n%@", data);
 }
 
 - (void)SRConnectionDidClose:(SRConnection *)connection
@@ -227,6 +227,11 @@
 - (void)room:(NSString*)roomName closeVote:(NSInteger)voteId withOveralValue:(NSInteger)overalValue {
     [hub invoke:@"CloseVoteItem"
        withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", overalValue]]];
+}
+
+- (void)room:(NSString*)roomName changeState:(BOOL)newState {
+    [hub invoke:@"ChangeRoomState"
+       withArgs:@[roomName, [NSString stringWithFormat:@"%@", newState?@"true":@"false"]]];
 }
 
 @end

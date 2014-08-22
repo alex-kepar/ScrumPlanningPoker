@@ -12,6 +12,8 @@
 #define ZOOM_FACTOR             0.2f
 
 @implementation SPPVoteCardsViewLayout {
+    //BOOL isPortraitOrientation;
+    CGFloat pageSize;
 }
 
 @synthesize currentItem;
@@ -23,18 +25,14 @@
 
 -(CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
 {
-    CGFloat pageSize = self.itemSize.width + self.minimumInteritemSpacing;
-    //CGFloat pageSize1 = CGRectGetWidth(self.collectionView.bounds) - self.itemSize.width/2;
     NSInteger newItem = round(proposedContentOffset.x / pageSize);
     if (newItem < currentItem) {
         currentItem --;
     } else if (newItem > currentItem) {
         currentItem ++;
     }
-    CGFloat xOffset =  currentItem * pageSize;
-    return CGPointMake(xOffset, proposedContentOffset.y);
+    return CGPointMake(currentItem * pageSize, proposedContentOffset.y);
 }
-
 
 -(UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -59,9 +57,9 @@
     return layoutAttributesArray;
 }
 
-
-
 #pragma mark + Private Custom Methods
+
+
 
 -(void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)attributes
 {
@@ -112,13 +110,32 @@
 
 #pragma mark - Private Custom Methods
 
--(void)initialize {
+-(void)initializeWithStartItem:(NSInteger)startItem {
     CGFloat leftInset = (CGRectGetWidth(self.collectionView.bounds) - self.itemSize.width) / 2;
     self.sectionInset = UIEdgeInsetsMake(0, leftInset, 0, leftInset);
+    pageSize = self.itemSize.width + self.minimumInteritemSpacing;
+    if (startItem > 0) {
+        [self setCurrentItem:startItem animated:NO];
+    }
+}
+
+- (void)setCurrentItem:(NSInteger)newCurrentItem animated:(BOOL)isAnimated {
+    CGPoint contentOffset = CGPointMake(newCurrentItem * pageSize, 0);
+    if (contentOffset.x > self.collectionViewContentSize.width) {
+        // corrention offset
+        contentOffset.x = self.collectionViewContentSize.width;
+        newCurrentItem = round(contentOffset.x / pageSize);
+        contentOffset.x = newCurrentItem * pageSize;
+    }
+    if (currentItem != newCurrentItem) {
+        currentItem = newCurrentItem;
+        [self.collectionView setContentOffset:contentOffset animated:isAnimated];
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [self initialize];
+    //isPortraitOrientation = UIInterfaceOrientationIsPortrait(fromInterfaceOrientation);
+    [self initializeWithStartItem:-1];
 }
 
 @end

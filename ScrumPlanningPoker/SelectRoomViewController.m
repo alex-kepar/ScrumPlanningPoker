@@ -32,7 +32,7 @@
 	// Do any additional setup after loading the view.
     
     self.navigationItem.prompt=promptRoot;
-    self.navigationItem.title=@"select room";
+    self.navigationItem.title=@"Rooms";
     //agileHubFacade.delegate = self;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notifyAgileHubFacade_onChanged:)
@@ -44,9 +44,9 @@
                                                object:nil];
 }
 
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+//-(void) dealloc {
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -79,6 +79,9 @@
     if(cell!=nil)
     {
         [cell initializeWithRoom:agileHubFacade.rooms[indexPath.row]];
+        cell.changeStateAction = ^(SPPRoom *room){
+            [room changeState:!room.isActive];
+        };
     }
     return cell;
 }

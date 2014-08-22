@@ -20,6 +20,10 @@ NSString *const SPPUser_onChanged = @"SPPUser_onChanged";
 @synthesize isAdmin = _isAdmin;
 @synthesize privileges;
 
+- (void)dealloc {
+    NSLog(@"********** User '%@' (id=%d) deallocated.", self.name, self.entityId);
+}
+
 - (void) setName:(NSString *)name {
     if (![_name isEqualToString:name]) {
         isPropertiesChanged = YES;
@@ -43,7 +47,7 @@ NSString *const SPPUser_onChanged = @"SPPUser_onChanged";
 }
 
 - (void) doUpdateFromDictionary:(NSDictionary*) data propertyIsChanged: (BOOL *) isChanged {
-    SPPListItemConstructor privelegeItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
+    SPPListItemConstructorBlock privelegeItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
         return [SPPPrivilege SPPBaseEntityWithDataDictionary:initData];
     };
 

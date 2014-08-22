@@ -15,8 +15,8 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 
 @implementation SPPRoom {
     BOOL isPropertiesChanged;
-    SPPListItemConstructor _userItemConstructor;
-    SPPListItemConstructor _voteItemConstructor;
+    SPPListItemConstructorBlock _userItemConstructor;
+    SPPListItemConstructorBlock _voteItemConstructor;
 }
 
 @synthesize name = _name;
@@ -27,11 +27,15 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 
 @synthesize roomDelegate;
 
+- (void)dealloc {
+    NSLog(@"********** Room '%@' (id=%d) deallocated.", self.name, self.entityId);
+}
+
 + (instancetype) SPPRoomWithDataDictionary: (NSDictionary*) initData {
     return [SPPRoom SPPBaseEntityWithDataDictionary:initData];
 }
 
-- (SPPListItemConstructor) userItemConstructor {
+- (SPPListItemConstructorBlock) userItemConstructor {
     if (_userItemConstructor == nil) {
         _userItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
             return [SPPUser SPPBaseEntityWithDataDictionary:initData];
@@ -40,7 +44,7 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
     return _userItemConstructor;
 }
 
-- (SPPListItemConstructor) voteItemConstructor {
+- (SPPListItemConstructorBlock) voteItemConstructor {
     if (_voteItemConstructor == nil) {
         _voteItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
             SPPVote *vote = [SPPVote SPPBaseEntityWithDataDictionary:initData];
@@ -112,16 +116,6 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 - (NSString*) getNotificationName {
     return SPPRoom_onChanged;
 }
-/*- (void) onDidChangeWithList: (NSArray *) list {
-    if (list) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SPPRoom_onChanged
-                                                            object:self
-                                                          userInfo:@{@"list": list}];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SPPRoom_onChanged
-                                                            object:self];
-    }
-}*/
 
 - (void) updateUser:(NSDictionary*)userDto {
     [self insertUpdateItemInList:connectedUsers useItemData:userDto useItemConstructor:self.userItemConstructor];
@@ -138,9 +132,7 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
     }];
     if (idx != NSNotFound) {
         SPPVote *vote = self.itemsToVote[idx];
-        //SPPUserVote *userVote =
         [vote userDidVoteWithData:userVoteDto];
-        //[self onDidVote:vote withUserVote:userVote];
     }
 }
 
@@ -148,54 +140,6 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
     [self insertUpdateItemInList:itemsToVote useItemData:voteDto useItemConstructor:self.voteItemConstructor];
 }
      
-//- (void) addVoteUseData:(NSDictionary*)voteData {
-//    [self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
-//}
-
-/*- (void) agileHubDidUserVote:(NSDictionary*)userVoteData {
-    NSInteger voteId=[[userVoteData objectForKey:@"VoteItemId"] integerValue];
-    NSInteger idx = [self.itemsToVote indexOfObjectPassingTest:^BOOL(SPPBaseEntity* item, NSUInteger idx, BOOL *stop) {
-        return (item.entityId == voteId);
-    }];
-    if (idx != NSNotFound) {
-        SPPVote *vote = self.itemsToVote[idx];
-        SPPUserVote *userVote = [vote userDidVoteWithData:userVoteData];
-        [self onDidVote:vote withUserVote:userVote];
-    }
-}
-
-- (void) agileHubDidVoteFinish: (NSDictionary *) voteData {
-    SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
-    [self onDidVoteFinish:vote];
-}
-
-- (void) agileHubDidVoteOpen: (NSDictionary *) voteData {
-    SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
-    [self onDidVoteOpen:vote];
-}
-
-- (void) agileHubDidVoteClose: (NSDictionary *) voteData {
-    SPPVote *vote = (SPPVote *)[self insertUpdateItemInList:itemsToVote useItemData:voteData useItemConstructor:self.voteItemConstructor];
-    [self onDidVoteClose:vote];
-}
-
-- (void) onDidVote: (SPPVote*) vote withUserVote: (SPPUserVote*) userVote {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteNotification" object:self userInfo:@{@"vote": vote, @"userVote": userVote}];
-}
-
-- (void) onDidVoteFinish: (SPPVote*) vote {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteFinishNotification" object:self userInfo:@{@"vote": vote}];
-}
-
-- (void) onDidVoteOpen: (SPPVote*) vote {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteOpenNotification" object:self userInfo:@{@"vote": vote}];
-}
-
-- (void) onDidVoteClose: (SPPVote*) vote {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPPRoomDidVoteCloseNotification" object:self userInfo:@{@"vote": vote}];
-}
-*/
-
 #pragma mark + SPPVoteDelegate
 - (void)SPPVote:(SPPVote*)vote doVote: (NSInteger) voteValue {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:withVote:doVote:)]) {
@@ -216,5 +160,11 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 }
 
 #pragma mark - SPPVoteDelegate
+
+- (void)changeState:(BOOL)newState {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:changeState:)]) {
+        [roomDelegate SPPRoom:self changeState:newState];
+    }
+}
 
 @end

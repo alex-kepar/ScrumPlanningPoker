@@ -11,18 +11,20 @@
 #import "SPPVoteCardViewCell.h"
 #import "SPPVote.h"
 
-
-typedef void(^VoteViewControllerAction)(NSInteger voteValue);
+typedef void(^VoteViewControllerActionBlock)(SPPVote *vote, NSInteger voteValue);
 
 @interface VoteViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 //@property SPPVote *vote;
 @property NSString *promptRoot;
-@property NSString *content;
-@property (nonatomic, copy) VoteViewControllerAction action;
+@property SPPVote *vote;
+@property NSString *title;
+@property double defaultValue;
+@property (copy, nonatomic) VoteViewControllerActionBlock action;
 
-@property (weak, nonatomic) IBOutlet SPPVoteCardViewCell *cvCards;
+//@property (weak, nonatomic) IBOutlet SPPVoteCardViewCell *cvCards;
 @property (weak, nonatomic) IBOutlet SPPVoteCardsViewLayout *vlCardsLayout;
 @property (weak, nonatomic) IBOutlet UITextView *tvContent;
+@property (weak, nonatomic) IBOutlet UICollectionView *cvCardsList;
 - (IBAction)actVote:(id)sender;
 @end

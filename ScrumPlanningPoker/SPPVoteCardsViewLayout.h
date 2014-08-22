@@ -10,8 +10,9 @@
 
 @interface SPPVoteCardsViewLayout : UICollectionViewFlowLayout
 
-@property NSInteger currentItem;
+@property (readonly)NSInteger currentItem;
 
-- (void)initialize;
+- (void)initializeWithStartItem:(NSInteger)startItem;
+- (void)setCurrentItem:(NSInteger)newCurrentItem animated:(BOOL)isAnimated;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 @end

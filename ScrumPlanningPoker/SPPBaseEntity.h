@@ -12,7 +12,7 @@
 
 @class SPPBaseEntity;
 
-typedef SPPBaseEntity* (^SPPListItemConstructor)(NSObject *owner, NSDictionary *initData);
+typedef SPPBaseEntity* (^SPPListItemConstructorBlock)(NSObject *owner, NSDictionary *initData);
 
 @protocol SPPBaseEntityNotification<NSObject>
 @required
@@ -22,16 +22,15 @@ typedef SPPBaseEntity* (^SPPListItemConstructor)(NSObject *owner, NSDictionary *
 
 @interface SPPBaseEntity : NSObject <SPPBaseEntityNotification>
 
-//@property (nonatomic, assign)id <SPPBaseEntityDelegate> delegate;
 @property (readonly) NSInteger entityId;
 
-+ (instancetype) SPPBaseEntityWithDataDictionary: (NSDictionary*) initData;
-- (instancetype) initWithDataDictionary:(NSDictionary *) initData;
++ (instancetype) SPPBaseEntityWithDataDictionary:(NSDictionary*)initData;
+- (instancetype) initWithDataDictionary:(NSDictionary*)initData;
 
-- (void) updateFromDictionary:(NSDictionary*) data;
+- (void) updateFromDictionary:(NSDictionary*)data;
 
-- (NSMutableArray*) initializeListFromData:(NSArray*) listData useItemConstructor:(SPPListItemConstructor) itemConstructor;
-- (void) synchronizeList:(NSMutableArray*) list fromListData:(NSArray*) listData useItemConstructor:(SPPListItemConstructor) itemConstructor;
-- (SPPBaseEntity*) insertUpdateItemInList:(NSMutableArray*) list useItemData:(NSDictionary*) itemData useItemConstructor:(SPPListItemConstructor) itemConstructor;
-- (SPPBaseEntity*) deleteItemInList:(NSMutableArray*) list useItemData:(NSDictionary*) itemData;
+- (NSMutableArray*)initializeListFromData:(NSArray*)listData useItemConstructor:(SPPListItemConstructorBlock)itemConstructor;
+- (void)synchronizeList:(NSMutableArray*)list fromListData:(NSArray*)listData useItemConstructor:(SPPListItemConstructorBlock)itemConstructor;
+- (SPPBaseEntity*)insertUpdateItemInList:(NSMutableArray*)list useItemData:(NSDictionary*)itemData useItemConstructor:(SPPListItemConstructorBlock)itemConstructor;
+- (SPPBaseEntity*)deleteItemInList:(NSMutableArray*)list useItemData:(NSDictionary*)itemData;
 @end

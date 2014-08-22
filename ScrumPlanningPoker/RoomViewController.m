@@ -14,9 +14,6 @@
 #import "RoomViewNotifications.h"
 
 @interface RoomViewController ()
-{
-    //SPPVote *selectedVote;
-}
 @end
 
 @implementation RoomViewController
@@ -38,11 +35,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.prompt = [NSString stringWithFormat:@"%@/%@", promptRoot, room.name];
+    self.navigationItem.title=@"Votes";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notifyRoom_onChanged:)
                                                  name:SPPRoom_onChanged
                                                object:nil];
 }
+
+//-(void) dealloc {
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 
 
 #pragma mark + UICollectionViewDataSource
@@ -74,18 +76,27 @@
     SPPVoteViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"VoteCell" forIndexPath:indexPath];
     if (cell != nil) {
         [cell initializeWithVote:room.itemsToVote[indexPath.row]];
+        __weak RoomViewController *weakSelf = self;
         cell.voteAction = ^(SPPVote *vote) {
-            [self selectVote:vote];
-            [self performSegueWithIdentifier:@"VoteSeque" sender:vote];
+            RoomViewController *strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            [strongSelf selectVote:vote];
+            [strongSelf performSegueWithIdentifier:@"VoteSeque" sender:vote];
         };
         cell.changeStateAction = ^(SPPVote *vote) {
-            [self selectVote:vote];
+            RoomViewController *strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            [strongSelf selectVote:vote];
             if (!vote.isOpened) {
                 [vote open];
             } else if (!vote.isFinished) {
                 [vote closeWithOveralValue:-1];
             } else if (vote) {
-                [self performSegueWithIdentifier:@"ChangeVoteStateSeque" sender:vote];
+                [strongSelf performSegueWithIdentifier:@"ChangeVoteStateSeque" sender:vote];
             }
         };
     }
@@ -93,7 +104,7 @@
 }
 
 - (void)selectVote:(SPPVote*)vote {
-    NSInteger row = [room.itemsToVote indexOfObjectPassingTest:^BOOL(SPPVote* item, NSUInteger idx, BOOL *stop) {
+    /*NSInteger row = [room.itemsToVote indexOfObjectPassingTest:^BOOL(SPPVote* item, NSUInteger idx, BOOL *stop) {
         return (item.entityId == vote.entityId);
     }];
     if (row != NSNotFound) {
@@ -102,7 +113,7 @@
             [self.tvVotes selectRowAtIndexPath:index animated:NO scrollPosition:UITableViewScrollPositionNone];
             [self tableView:self.tvVotes didSelectRowAtIndexPath:[self.tvVotes indexPathForSelectedRow]];
         }
-    }
+    }*/
 }
 
 #pragma mark - UITableViewDataSource
@@ -138,13 +149,20 @@
             SPPVote *vote = sender;
             VoteViewController *voteController = (VoteViewController *)segue.destinationViewController;
             voteController.promptRoot = self.navigationItem.prompt;
-            voteController.content = vote.content;
+            voteController.vote = vote;
             if (voteSegue) {
-                voteController.action = ^(NSInteger voteValue) {
+                voteController.title = @"Vote";
+                voteController.action = ^(SPPVote *vote, NSInteger voteValue) {
                     [vote doVote:voteValue];
                 };
             } else {
-                voteController.action = ^(NSInteger voteValue) {
+                NSInteger sumValue = 0;
+                for (SPPUserVote *userVote in vote.votedUsers) {
+                    sumValue += userVote.mark;
+                }
+                voteController.defaultValue = sumValue / vote.votedUsers.count;
+                voteController.title = @"Overall vote";
+                voteController.action = ^(SPPVote *vote, NSInteger voteValue) {
                     [vote closeWithOveralValue:voteValue];
                 };
             }
@@ -154,12 +172,17 @@
 #pragma mark - segue handling
 
 -(void) notifyRoom_onChanged:(NSNotification*) notification {
-    if (notification.object == room && notification.userInfo) {
-        id list = [notification.userInfo valueForKey:@"list"];
-        if (list == room.connectedUsers) {
-            [self.cvUsers reloadData];
-        } else if (list == room.itemsToVote) {
-            [self.tvVotes reloadData];
+    if (notification.object == room) {
+        if (notification.userInfo) {
+            id list = [notification.userInfo valueForKey:@"list"];
+            if (list == room.connectedUsers) {
+                [self.cvUsers reloadData];
+            } else if (list == room.itemsToVote) {
+                [self.tvVotes reloadData];
+            }
+        } else if (!room.isActive) {
+            [self showMessage:@"Room has been closed." withTitle:room.name];
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
 }

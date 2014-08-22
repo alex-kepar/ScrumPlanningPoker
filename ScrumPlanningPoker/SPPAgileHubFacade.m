@@ -93,6 +93,7 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
 
 -(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    NSLog(@"********** SPPAgileHubFacade deallocated.");
 }
 
 // notify handling
@@ -181,6 +182,10 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
    withOveralValue:overalValue];
 }
 
+- (void)SPPRoom:(SPPRoom *)room changeState:(BOOL)newState {
+    [agileHub room:room.name
+         changeState:newState];
+}
 
 // internal methods:
 - (SPPRoom*) _createRoomUseData:(NSDictionary*) roomDto {

@@ -11,6 +11,7 @@
 @interface VoteViewController ()
 {
     NSArray *cardsList;
+    int minItem;
 }
 
 @end
@@ -19,24 +20,36 @@
 
 //@synthesize vote;
 @synthesize promptRoot;
-@synthesize content;
-//@synthesize isOveralVote;
+@synthesize vote;
+@synthesize title;
 @synthesize action;
+@synthesize defaultValue;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     cardsList = @[@0, @1, @2, @3, @5, @8, @13, @21];
 
     self.navigationItem.prompt = [NSString stringWithFormat:@"%@/Voting", promptRoot];
+    self.navigationItem.title = title;
+    _tvContent.text = vote.content;
+    minItem = 0;
+    for (int curItem=1; curItem<cardsList.count; curItem++) {
+        if (fabs(defaultValue - [cardsList[curItem] integerValue]) <
+            fabs(defaultValue - [cardsList[minItem] integerValue])) {
+            minItem = curItem;
+        }
+    }
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureRecognizer:)];
+    [self.cvCardsList addGestureRecognizer:tapGestureRecognizer];
 
-    _tvContent.text = content;//vote.content;
+    //vote.content;
 	// Do any additional setup after loading the view.
 }
 
--(void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self.vlCardsLayout initialize];
-    //[self.vlCardsLayout invalidateLayout];
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.vlCardsLayout initializeWithStartItem:minItem];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,6 +77,18 @@
 
 #pragma mark - UICollectionViewDataSource
 
+
+-(void)handleTapGestureRecognizer:(UITapGestureRecognizer *)recognizer
+{
+    if (recognizer.state != UIGestureRecognizerStateRecognized) return;
+    
+    NSIndexPath *indexPath = [self.cvCardsList indexPathForItemAtPoint:[recognizer locationInView:self.cvCardsList]];
+    if (indexPath) {
+        [self.vlCardsLayout setCurrentItem:indexPath.row animated:YES];
+    }
+}
+
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [_vlCardsLayout didRotateFromInterfaceOrientation:fromInterfaceOrientation];
@@ -72,12 +97,8 @@
 - (IBAction)actVote:(id)sender {
     if (_vlCardsLayout.currentItem < cardsList.count) {
         if (action) {
-            action([cardsList[_vlCardsLayout.currentItem] integerValue]);
+            action(vote, [cardsList[_vlCardsLayout.currentItem] integerValue]);
         }
-        /*if (voteDelegate && [voteDelegate respondsToSelector:@selector(VoteViewDoVote:forSegueIdentifier:)]) {
-            [voteDelegate VoteViewDoVote:[cardsList[_vlCardsLayout.currentItem] integerValue] forSegueIdentifier:_segueIdentifier];
-        }*/
-        //[vote doVote:[cardsList[_vlCardsLayout.currentItem] integerValue]];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

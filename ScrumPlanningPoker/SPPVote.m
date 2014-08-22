@@ -13,7 +13,7 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
 
 @implementation SPPVote {
     BOOL isPropertiesChanged;
-    SPPListItemConstructor _voteUserItemConstructor;
+    SPPListItemConstructorBlock _voteUserItemConstructor;
 }
 
 //@synthesize voteDelegate;
@@ -27,6 +27,10 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
 @synthesize votedUsers;
 
 @synthesize voteDelegate;
+
+- (void)dealloc {
+    NSLog(@"********** Vote '%@' deallocated.", self.content);
+}
 
 - (void) setContent:(NSString *)content {
     if (![_content isEqualToString:content]) {
@@ -94,7 +98,7 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
     return _overallMark;
 }
 
-- (SPPListItemConstructor) voteUserItemConstructor {
+- (SPPListItemConstructorBlock) voteUserItemConstructor {
     if (_voteUserItemConstructor == nil) {
         _voteUserItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
             SPPUserVote *voteUser = [SPPUserVote SPPBaseEntityWithDataDictionary:initData];
@@ -132,19 +136,6 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
 - (NSString*) getNotificationName {
     return SPPVote_onChanged;
 }
-
-/*
-- (void) onDidChangeWithList: (NSArray *) list {
-    if (list) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SPPVote_onChanged
-                                                            object:self
-                                                          userInfo:@{@"list": list}];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SPPVote_onChanged
-                                                            object:self];
-    }
-}
- */
 
 - (SPPUserVote*) userDidVoteWithData:(NSDictionary*)userVoteData {
     return (SPPUserVote*)[self insertUpdateItemInList:votedUsers useItemData:userVoteData useItemConstructor:self.voteUserItemConstructor];
