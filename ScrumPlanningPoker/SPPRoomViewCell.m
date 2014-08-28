@@ -43,7 +43,7 @@
 - (void) redrawCell {
     _nameLabel.text = room.name;;
     _descriptionLabel.text = room.description;
-    _usersCount.text = [NSString stringWithFormat:@"%d", room.connectedUsers.count];
+    _usersCount.text = [NSString stringWithFormat:@"%ld", (long)room.connectedUsers.count];
     [_bState setImage:[self imageForRoomStatus:room.isActive] forState:UIControlStateNormal];
 }
 

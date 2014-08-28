@@ -28,7 +28,7 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 @synthesize roomDelegate;
 
 - (void)dealloc {
-    NSLog(@"********** Room '%@' (id=%d) deallocated.", self.name, self.entityId);
+    NSLog(@"********** Room '%@' (id=%ld) deallocated.", self.name, (long)self.entityId);
 }
 
 + (instancetype) SPPRoomWithDataDictionary: (NSDictionary*) initData {
@@ -48,7 +48,6 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
     if (_voteItemConstructor == nil) {
         _voteItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
             SPPVote *vote = [SPPVote SPPBaseEntityWithDataDictionary:initData];
-            vote.owner = owner;
             vote.voteDelegate = (id)owner;
             return vote;
         };

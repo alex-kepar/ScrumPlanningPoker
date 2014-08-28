@@ -6,17 +6,21 @@
 //  Copyright (c) 2014 Delphi. All rights reserved.
 //
 
-#import "SPPConnection.h"
+#import "SPPWebService.h"
 
-@implementation SPPConnection
+@implementation SPPWebService
 
 @synthesize server;
 @synthesize login;
 @synthesize userToken;
 
-@synthesize connectionDelegate;
+@synthesize delegate;
 
--(void)ConnectTo: (NSString*) aServer Login: (NSString*) aLogin Password: (NSString*) aPassword;
+- (void)dealloc {
+    NSLog(@"********** SPPWebService deallocated.");
+}
+
+-(void)connectTo: (NSString*) aServer Login: (NSString*) aLogin Password: (NSString*) aPassword;
 {
     NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@/Handlers/LoginHandler.ashx", aServer]];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
@@ -27,9 +31,10 @@
     [request addValue:[NSString stringWithFormat:@"Basic %@", [messageData base64EncodedStringWithOptions:0]] forHTTPHeaderField:@"Authorization"];
     
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+    __weak SPPWebService *weakSelf = self;
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
                                   {
-                                      //[self unLockView];
                                       if (error == nil)
                                       {
                                           NSInteger status = [(NSHTTPURLResponse *)response statusCode];
@@ -48,99 +53,106 @@
                                                                       }];
                                               if (cookieIndex != NSNotFound)
                                               {
-                                                  server = aServer;
-                                                  login = aLogin;
-                                                  userToken = [(NSHTTPCookie *)cookies[cookieIndex] value];
-                                                  //properties.userToken = [(NSHTTPCookie *)cookies[cookieIndex] value];
-                                                  //properties.server = _txtServer.text;
-                                                  //properties.hubConnection = nil;
-                                                  //dispatch_async(dispatch_get_main_queue(), ^{
-                                                  //    [self performSegueWithIdentifier:@"ShowRooms" sender:self];
-                                                  //});
-                                                  //dispatch_async(dispatch_get_main_queue(), ^{
-                                                  //    [self performSegueWithIdentifier:@"TestSegue" sender:self];
-                                                  //});
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                          [self EventConnectionDidOpen];
+                                                      [weakSelf onWebServiceDidOpenWithSerever:aServer
+                                                                                              Login:aLogin
+                                                                                          UserToken:[(NSHTTPCookie *)cookies[cookieIndex] value]];
                                                       });
                                               }
                                               else
                                               {
                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                      [self EventConnectionDidReceiveErrorMessage:@"Authorization not passed"];
+                                                      [weakSelf onWebServiceDidReceiveErrorMessage:@"Authorization not passed"];
                                                   });
                                               }
                                           }
                                           else
                                           {
                                               dispatch_async(dispatch_get_main_queue(), ^{
-                                                  [self EventConnectionDidReceiveErrorMessage:[NSString stringWithFormat:@"%@", [NSHTTPURLResponse localizedStringForStatusCode: status ]]];
+                                                  [weakSelf onWebServiceDidReceiveErrorMessage:[NSString stringWithFormat:@"%@", [NSHTTPURLResponse localizedStringForStatusCode: status ]]];
                                               });
                                           }
                                       }
                                       else
                                       {
                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                              [self EventConnectionDidReceiveError:error];
+                                              [weakSelf onWebServiceDidReceiveError:error];
                                           });
                                       }
                                   }];
     [task resume];
 }
 
--(void)GetRoomList
+-(void)reset {
+    NSURLSession *session = [NSURLSession sharedSession];
+    __weak SPPWebService *weakSelf = self;
+    [session resetWithCompletionHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf onWebServiceDidReset];
+        });
+    }];
+}
+
+
+-(void)getRoomList
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@/api/room/GetRooms", server]];
     NSURLRequest *request=[NSURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
+    __weak SPPWebService *weakSelf = self;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
                                   {
                                       if (error == nil)
                                       {
                                           NSArray* roomsList = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                              [self EventConnectionReceiveRoomList:roomsList];
+                                              [weakSelf onWebServiceReceiveRoomList:roomsList];
                                           });
                                       }
                                       else
                                       {
                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                              [self EventConnectionDidReceiveError:error];
+                                              [weakSelf onWebServiceDidReceiveError:error];
                                           });
                                       }
                                   }];
     [task resume];
 }
 
--(void) EventConnectionDidOpen
+-(void) onWebServiceDidOpenWithSerever:(NSString*)aServer Login:(NSString*)aLogin UserToken:(NSString*)aUserToken
 {
-    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(connectionDidOpen:)])
-    {
-        [connectionDelegate connectionDidOpen:self];
+    server = aServer;
+    login = aLogin;
+    userToken = aUserToken;
+    if (delegate && [delegate respondsToSelector:@selector(webService:didConnected: )]) {
+        [delegate webService:self didConnected:server];
     }
 }
 
--(void) EventConnectionReceiveRoomList: (NSArray *) roomList
+-(void) onWebServiceReceiveRoomList: (NSArray *) roomList
 {
-    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(connection:didReceiveRoomList:)])
-    {
-        [connectionDelegate connection:self didReceiveRoomList:roomList];
+    if (delegate && [delegate respondsToSelector:@selector(webService:didReceiveRoomList:)]) {
+        [delegate webService:self didReceiveRoomList:roomList];
     }
 }
 
--(void) EventConnectionDidReceiveErrorMessage: (NSString*) message
+-(void) onWebServiceDidReceiveErrorMessage: (NSString*) message
 {
     NSDictionary *errorDetail = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
-    NSError *error=[NSError errorWithDomain:@"SPPConnection" code:-100 userInfo:errorDetail];
-    [self EventConnectionDidReceiveError:error];
+    NSError *error=[NSError errorWithDomain:@"SPPWebService" code:-100 userInfo:errorDetail];
+    [self onWebServiceDidReceiveError:error];
 }
     
--(void) EventConnectionDidReceiveError: (NSError *) error
+-(void) onWebServiceDidReceiveError: (NSError *) error
 {
-    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(connection:didReceiveError:)])
-    {
-        [connectionDelegate connection:self didReceiveError:error];
+    if (delegate && [delegate respondsToSelector:@selector(webService:didReceiveError:)]) {
+        [delegate webService:self didReceiveError:error];
     }
 }
 
+-(void) onWebServiceDidReset {
+    if (delegate && [delegate respondsToSelector:@selector(webService:didReset:)]) {
+        [delegate webService:self didReset:server];
+    }
+}
 @end

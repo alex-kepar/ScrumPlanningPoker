@@ -27,7 +27,7 @@
 		8858A78D18D896DB00A06AD2 /* SPPAgileHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */; };
 		8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */; };
 		885A370718CF164C00AD3FF9 /* SPPBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */; };
-		885FB4E91958510900AB1A21 /* SPPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 885FB4E81958510900AB1A21 /* SPPConnection.m */; };
+		885FB4E91958510900AB1A21 /* SPPWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 885FB4E81958510900AB1A21 /* SPPWebService.m */; };
 		8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */; };
 		887B4BDF19533060005CE261 /* SPPRoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 887B4BDE19533060005CE261 /* SPPRoomViewCell.m */; };
 		887B4BE31954546B005CE261 /* RoomClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = 887B4BE11954546B005CE261 /* RoomClosed.png */; };
@@ -100,8 +100,8 @@
 		8858A79618DAF4C900A06AD2 /* SPPUserViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPUserViewCell.m; sourceTree = "<group>"; };
 		885A370518CF164C00AD3FF9 /* SPPBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPBaseViewController.h; sourceTree = "<group>"; };
 		885A370618CF164C00AD3FF9 /* SPPBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPBaseViewController.m; sourceTree = "<group>"; };
-		885FB4E71958510900AB1A21 /* SPPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPConnection.h; sourceTree = "<group>"; };
-		885FB4E81958510900AB1A21 /* SPPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPConnection.m; sourceTree = "<group>"; };
+		885FB4E71958510900AB1A21 /* SPPWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPWebService.h; sourceTree = "<group>"; };
+		885FB4E81958510900AB1A21 /* SPPWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPWebService.m; sourceTree = "<group>"; };
 		8860A78418D1F04F005C5EB1 /* SelectRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRoomViewController.h; sourceTree = "<group>"; };
 		8860A78518D1F04F005C5EB1 /* SelectRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRoomViewController.m; sourceTree = "<group>"; };
 		887B4BDD19533060005CE261 /* SPPRoomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPRoomViewCell.h; sourceTree = "<group>"; };
@@ -182,8 +182,8 @@
 				8858A78C18D896DB00A06AD2 /* SPPAgileHub.m */,
 				884ECBD8199103980019A3A9 /* SPPAgileHubNotifications.h */,
 				884ECBD9199103980019A3A9 /* SPPAgileHubNotifications.m */,
-				885FB4E71958510900AB1A21 /* SPPConnection.h */,
-				885FB4E81958510900AB1A21 /* SPPConnection.m */,
+				885FB4E71958510900AB1A21 /* SPPWebService.h */,
+				885FB4E81958510900AB1A21 /* SPPWebService.m */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -478,7 +478,7 @@
 				88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */,
 				C3A4A6F418B24ACD00A5E4EB /* main.m in Sources */,
 				88C2E93B197913AC00E33A83 /* SPPVoteViewCell.m in Sources */,
-				885FB4E91958510900AB1A21 /* SPPConnection.m in Sources */,
+				885FB4E91958510900AB1A21 /* SPPWebService.m in Sources */,
 				884ECBF31994F2E90019A3A9 /* SPPUserVote.m in Sources */,
 				8858A79718DAF4C900A06AD2 /* SPPUserViewCell.m in Sources */,
 				884ECBDD199128FD0019A3A9 /* RoomViewNotifications.m in Sources */,

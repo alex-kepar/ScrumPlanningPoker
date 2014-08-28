@@ -33,7 +33,6 @@
     
     self.navigationItem.prompt=promptRoot;
     self.navigationItem.title=@"Rooms";
-    //agileHubFacade.delegate = self;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notifyAgileHubFacade_onChanged:)
                                                  name:SPPAgileHubFacade_onChanged
@@ -44,20 +43,10 @@
                                                object:nil];
 }
 
-//-(void) dealloc {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//}
-
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [agileHubFacade closeRoom];
-    //if (selectedRoomDto != nil) {
-    //    [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHub_LeaveRoom
-    //                                                        object:self
-    //                                                      userInfo:@{@"roomName": [selectedRoomDto valueForKey:@"Name"]}];
-    //    selectedRoomDto = nil;
-    //}
 }
 
 - (void)didReceiveMemoryWarning

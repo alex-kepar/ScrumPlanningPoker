@@ -19,7 +19,7 @@ NSString *const SPPUserVote_onChanged = @"SPPUserVote_onChanged";
 @synthesize userId = _userId;
 
 - (void)dealloc {
-    NSLog(@"********** UserVote for user '%d' deallocated.", self.userId);
+    NSLog(@"********** UserVote for user '%ld' deallocated.", (long)self.userId);
 }
 
 - (void) setMark:(NSInteger)mark {

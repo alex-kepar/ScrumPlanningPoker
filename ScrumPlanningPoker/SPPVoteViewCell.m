@@ -55,7 +55,7 @@
         }
     } else {
         if (vote.isFinished) {
-            self.lOveralVote.text = [NSString stringWithFormat:@"%d", vote.overallMark];
+            self.lOveralVote.text = [NSString stringWithFormat:@"%ld", (long)vote.overallMark];
         } else {
             self.lOveralVote.text = @"no vote";
         }

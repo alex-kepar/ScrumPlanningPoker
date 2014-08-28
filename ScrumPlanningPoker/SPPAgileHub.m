@@ -17,42 +17,33 @@
 }
 
 @synthesize sessionId;
-@synthesize connectDelegate;
+@synthesize connectionDelegate;
+
+- (void)dealloc {
+    NSLog(@"********** SPPAgileHub deallocated.");
+}
 
 - (void) Disconnect
 {
     if (hubConnection) {
         [hubConnection stop];
-        [hubConnection disconnect];
+        //[hubConnection didClose];
         hubConnection = nil;
     }
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) ConnectTo:(NSString *) server
 {
     [self Disconnect];
-    
-    /*[[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notify_JoinRoom:)
-                                                 name:SPPAgileHub_JoinRoom
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notify_LeaveRoom:)
-                                                 name:SPPAgileHub_LeaveRoom
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notify_Vote:)
-                                                 name:SPPAgileHub_Vote
-                                               object:nil];
-    */
     hubConnection = [SRHubConnection connectionWithURL:[NSString stringWithFormat:@"http://%@", server]];
     [hubConnection setProtocol:[[SRVersion alloc] initWithMajor:1 minor: 2]];
     //[hubConnection setReceived:(onReceived)received]
     //hubConnection.received = ^(NSString * dataReceived){
     //    NSLog(@"***********************************\n***********************************\nData received:\n%@", dataReceived);
     //};
-
+    //hubConnection.closed = ^() {
+    //    NSLog(@"********** hubConnection closed.");
+    //};
     hub = [hubConnection createHubProxy:@"agileHub"];
     // Connection events
     [hub on:@"onUserLogged" perform:self selector:@selector(onUserLogged:)];
@@ -77,9 +68,9 @@
 #pragma mark + SRConnection Delegate retranslate to SPPAgileHubConnectDelegate
 - (void)SRConnectionDidOpen:(SRConnection *)connection
 {
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:ConnectionDidOpen:)])
+    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:ConnectionDidOpen:)])
     {
-        [connectDelegate agileHub:self ConnectionDidOpen:connection];
+        [connectionDelegate agileHub:self ConnectionDidOpen:connection];
     }
 }
 
@@ -90,17 +81,17 @@
 
 - (void)SRConnectionDidClose:(SRConnection *)connection
 {
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:ConnectionDidClose:)])
+    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:ConnectionDidClose:)])
     {
-        [connectDelegate agileHub:self ConnectionDidClose:connection];
+        [connectionDelegate agileHub:self ConnectionDidClose:connection];
     }
 }
 
 - (void)SRConnection:(SRConnection *)connection didReceiveError:(NSError *)error
 {
-    if (connectDelegate && [connectDelegate respondsToSelector:@selector(agileHub:Connection:didReceiveError:)])
+    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:Connection:didReceiveError:)])
     {
-        [connectDelegate agileHub:self Connection:connection didReceiveError:error];
+        [connectionDelegate agileHub:self Connection:connection didReceiveError:error];
     }
 }
 #pragma mark - SRConnection Delegate
@@ -216,17 +207,17 @@
 
 - (void) room:(NSString*)roomName withVote:(NSInteger)voteId doVote:(NSInteger)voteValue {
     [hub   invoke:@"VoteForItem"
-         withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", voteValue]]];
+         withArgs:@[roomName, [NSString stringWithFormat:@"%ld", (long)voteId], [NSString stringWithFormat:@"%ld", (long)voteValue]]];
 }
 
 - (void)room:(NSString*)roomName openVote:(NSInteger)voteId {
     [hub invoke:@"OpenVoteItem"
-       withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId]]];
+       withArgs:@[roomName, [NSString stringWithFormat:@"%ld", (long)voteId]]];
 }
 
 - (void)room:(NSString*)roomName closeVote:(NSInteger)voteId withOveralValue:(NSInteger)overalValue {
     [hub invoke:@"CloseVoteItem"
-       withArgs:@[roomName, [NSString stringWithFormat:@"%d", voteId], [NSString stringWithFormat:@"%d", overalValue]]];
+       withArgs:@[roomName, [NSString stringWithFormat:@"%ld", (long)voteId], [NSString stringWithFormat:@"%ld", (long)overalValue]]];
 }
 
 - (void)room:(NSString*)roomName changeState:(BOOL)newState {

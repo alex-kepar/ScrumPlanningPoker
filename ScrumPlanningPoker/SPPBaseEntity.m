@@ -119,7 +119,7 @@
         }
     }
     // delete items
-    for (int i = (list.count - 1); i>=0; i--) {
+    for (NSInteger i = (list.count - 1); i>=0; i--) {
         NSNumber *entityId = [NSNumber numberWithInteger:((SPPBaseEntity*)list[i]).entityId];
         if ([itemIdList member:entityId] == nil) {
             [list removeObjectAtIndex:i];

@@ -19,7 +19,7 @@ NSString *const SPPPrivilege_onChanged = @"SPPPrivilege_onChanged";
 @synthesize description = _description;
 
 - (void)dealloc {
-    NSLog(@"********** Privelege '%@' (id=%d) deallocated.", self.name, self.entityId);
+    NSLog(@"********** Privelege '%@' (id=%ld) deallocated.", self.name, (long)self.entityId);
 }
 
 - (void) setName:(NSString *)name {

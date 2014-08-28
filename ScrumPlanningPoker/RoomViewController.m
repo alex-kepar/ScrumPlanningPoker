@@ -146,10 +146,10 @@
         changeVoteStateSeque) {
         if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] &&
             [sender isKindOfClass:[SPPVote class]]) {
-            SPPVote *vote = sender;
+            SPPVote *gotVote = sender;
             VoteViewController *voteController = (VoteViewController *)segue.destinationViewController;
             voteController.promptRoot = self.navigationItem.prompt;
-            voteController.vote = vote;
+            voteController.vote = gotVote;
             if (voteSegue) {
                 voteController.title = @"Vote";
                 voteController.action = ^(SPPVote *vote, NSInteger voteValue) {
@@ -157,10 +157,10 @@
                 };
             } else {
                 NSInteger sumValue = 0;
-                for (SPPUserVote *userVote in vote.votedUsers) {
+                for (SPPUserVote *userVote in gotVote.votedUsers) {
                     sumValue += userVote.mark;
                 }
-                voteController.defaultValue = sumValue / vote.votedUsers.count;
+                voteController.defaultValue = sumValue / gotVote.votedUsers.count;
                 voteController.title = @"Overall vote";
                 voteController.action = ^(SPPVote *vote, NSInteger voteValue) {
                     [vote closeWithOveralValue:voteValue];

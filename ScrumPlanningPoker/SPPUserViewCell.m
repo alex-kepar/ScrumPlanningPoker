@@ -80,14 +80,14 @@
                 text = @"?";
             } else {
                 if (vote.isFinished) {
-                    text = [NSString stringWithFormat:@"%d", voteValue];
+                    text = [NSString stringWithFormat:@"%ld", (long)voteValue];
                 } else {
                     text = @"voted";
                 }
             }
         } else {
             if (voteValue>=0) {
-                text = [NSString stringWithFormat:@"%d", voteValue];
+                text = [NSString stringWithFormat:@"%ld", (long)voteValue];
             }
         }
     }

@@ -12,10 +12,8 @@
 
 @implementation ConnectViewController
 {
-    SPPConnection *webConnection;
-    SPPAgileHub *agileHub;
-    NSInteger userId;
-    NSArray *roomListDto;
+    SPPWebService *webService;
+    SPPAgileHubFacade *agileHubFacade;
 }
 
 - (void)viewDidLoad
@@ -23,41 +21,17 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.title=@"Connection";
-    webConnection = [[SPPConnection alloc] init];
-    agileHub = [[SPPAgileHub alloc] init];
-
-    webConnection.connectionDelegate = self;
-    agileHub.connectDelegate = self;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHub_UserLogged:) name:SPPAgileHub_onUserLogged object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHub_Connected:) name:SPPAgileHub_onConnected object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyAgileHub_ErrorCatched:) name:SPPAgileHub_onErrorCatched object:nil];
 }
-
-//-(void) dealloc {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//}
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    //webConnection.connectionDelegate = self;
-    //agileHub.connectDelegate = self;
-    //agileHub.stateDelegate = nil;
-    //agileHub.roomDelegate = nil;
-    [agileHub Disconnect];
-    //[self.view layoutSubviews];
-}
-
-- (void) viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    //if (connection.connectionDelegate == self) {
-    //    connection.connectionDelegate = nil;
-    //}
-    //if (agileHub.connectDelegate == self) {
-    //    agileHub.connectDelegate = nil;
-    //}
+    webService = nil;
+    if (agileHubFacade) {
+        [self lockView];
+        [agileHubFacade disconnect];
+        agileHubFacade = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,7 +42,9 @@
 
 - (IBAction)actConnect:(id)sender {
     [self lockView];
-    [webConnection ConnectTo:[_txtServer text] Login:[_txtLogin text] Password:[_txtPassword text]];
+    webService = [[SPPWebService alloc] init];
+    webService.delegate = self;
+    [webService connectTo:[_txtServer text] Login:[_txtLogin text] Password:[_txtPassword text]];
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField
@@ -82,84 +58,65 @@
 }
 
 #pragma mark + SPPConnectionDelegate
--(void) connectionDidOpen:(SPPConnection *)connection
+- (void)webService:(SPPWebService*)service didConnected:(NSString*)server;
 {
-    [agileHub ConnectTo:connection.server];
+    [service getRoomList];
 }
 
--(void) connection:(SPPConnection *)connection didReceiveRoomList:(NSArray *)data
+-(void) webService:(SPPWebService *)service didReceiveRoomList:(NSArray *)data
 {
-    roomListDto = data;
-    [self unlockView];
-    [self performSegueWithIdentifier:@"ShowRooms" sender:self];
+    agileHubFacade = [SPPAgileHubFacade SPPAgileHubFacadeWithRoomList:data
+                                                           serverName:service.server];
+    agileHubFacade.connectionDelegate = self;
+    [agileHubFacade connect];
 }
 
--(void) connection:(SPPConnection *)connection didReceiveError:(NSError *)error
+-(void) webService:(SPPWebService *)service didReceiveError:(NSError *)error
 {
     [self unlockView];
     [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
 }
+
 #pragma mark - SPPConnectionDelegate
-
-#pragma mark + SPPAgileHubConnectDelegate
-- (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidClose:(SRConnection *) connection {
-    userId = 0;
-}
-
-- (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidOpen:(SRConnection *) connection {
-    
-}
-
-- (void)agileHub: (SPPAgileHub *) agileHub Connection:(SRConnection *) connection didReceiveError:(NSError *)error {
-    [self unlockView];
-    //if (error.code != 0) {
-    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
-    if (error.code != 0) {
-        [self.navigationController popToViewController:self animated:YES];
-    }
-        //[self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"1101"];
-    //}
-}
-
-//- (void)agileHubDidOpen:(SPPAgileHub *) agileHub {
-//    [webConnection GetRoomList];
-//}
-
-//- (void)agileHub:(SPPAgileHub *) agileHub didLogUser:(NSDictionary *)userData {
-//    logUser = [SPPUser SPPBaseEntityWithDataDictionary:userData];
-//}
-
-//- (void)agileHub:(SPPAgileHub *) agileHub didReceiveError:(NSString *)error {
-//    [self unLockView];
-//    [self showMessage:error withTitle:@"Error connection"];
-//}
-#pragma mark - SPPAgileHubConnectDelegate
 
 #pragma mark + segue handling
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    [self unlockView];
     if ([segue.identifier isEqualToString:@"ShowRooms"]) {
         if ([segue.destinationViewController isKindOfClass:[SelectRoomViewController class]]) {
             SelectRoomViewController *selectRoomController = (SelectRoomViewController *)segue.destinationViewController;
-            selectRoomController.promptRoot = webConnection.server;
-            //selectRoomController.roomList = roomList;
-            //selectRoomController.roomListDto = roomListDto;
-            //selectRoomController.agileHub = agileHub;
-            selectRoomController.agileHubFacade = [SPPAgileHubFacade SPPAgileHubFacadeWithAgileHub:agileHub roomList:roomListDto];
+            SPPAgileHubFacade *facade = sender;
+            selectRoomController.promptRoot = facade.serverName;
+            selectRoomController.agileHubFacade = facade;
         }
     }
 }
 #pragma mark + segue handling
 
--(void) notifyAgileHub_UserLogged:(NSNotification*) notification {
-    NSDictionary *userDto = notification.userInfo[@"userDto"];
-    userId = [[userDto objectForKey:@"Id"] integerValue];
-}
--(void) notifyAgileHub_Connected:(NSNotification*) notification {
-    [webConnection GetRoomList];
-}
--(void) notifyAgileHub_ErrorCatched:(NSNotification*) notification {
+#pragma mark + SPPAgileHubFacadeConnectionDelegate
+- (void)agileHubFacade:(SPPAgileHubFacade *)hub Connection:(SRConnection *)connection didReceiveError:(NSError *)error {
     [self unlockView];
-    [self showMessage:[NSString stringWithFormat: @"%@", notification.userInfo[@"messageDto"]] withTitle:@"Error hub"];
+    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Error connection"];
+    if (error.code != 0) {
+        [self.navigationController popToViewController:self animated:YES];
+    }
 }
+
+- (void)agileHubFacade:(SPPAgileHubFacade*)hub ConnectionDidClose:(SRConnection*)connection {
+    [self unlockView];
+    agileHubFacade = nil;
+}
+
+
+- (void)agileHubFacade:(SPPAgileHubFacade*)hub HubSessionDidOpenByUser:(SPPUser*)user {
+    [self performSegueWithIdentifier:@"ShowRooms" sender:hub];
+}
+
+- (void)agileHubFacade:(SPPAgileHubFacade*)hub HubDidReceiveError:(NSError*)error {
+    [self unlockView];
+    [self showMessage:[NSString stringWithFormat:@"%@", [error localizedDescription]] withTitle:@"Hub error"];
+    
+}
+#pragma mark - SPPAgileHubFacadeConnectionDelegate
 
 @end

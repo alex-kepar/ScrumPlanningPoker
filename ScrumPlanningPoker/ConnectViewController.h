@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SignalR.h"
 #import "SPPBaseViewController.h"
-#import "SPPConnection.h"
-#import "SPPAgileHub.h"
+#import "SPPWebService.h"
+#import "SPPAgileHubFacade.h"
 
-@interface ConnectViewController : SPPBaseViewController <UITextFieldDelegate, SPPConnectionDelegate, SPPAgileHubConnectDelegate>
+@interface ConnectViewController : SPPBaseViewController <UITextFieldDelegate, SPPWebServiceDelegate, SPPAgileHubFacadeConnectionDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtServer;
 @property (weak, nonatomic) IBOutlet UITextField *txtLogin;

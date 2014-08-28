@@ -24,6 +24,11 @@ typedef SPPBaseEntity* (^SPPListItemConstructorBlock)(NSObject *owner, NSDiction
 
 @property (readonly) NSInteger entityId;
 
+/**
+ * Return the SPPBaseEntity object.
+ * @param initData An NSDictionary object that provides the data to initialize.
+ * @return The newly created SPPBaseEntity object.
+ */
 + (instancetype) SPPBaseEntityWithDataDictionary:(NSDictionary*)initData;
 - (instancetype) initWithDataDictionary:(NSDictionary*)initData;
 

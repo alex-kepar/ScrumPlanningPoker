@@ -10,7 +10,7 @@
 #import "SignalR.h"
 
 @class SPPAgileHub;
-@protocol SPPAgileHubConnectDelegate<NSObject>
+@protocol SPPAgileHubConnectionDelegate<NSObject>
 @optional
 - (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidOpen:(SRConnection *) connection;
 - (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidClose:(SRConnection *) connection;
@@ -19,8 +19,7 @@
 
 @interface SPPAgileHub : NSObject <SRConnectionDelegate>
 
-@property (nonatomic, assign)id <SPPAgileHubConnectDelegate> connectDelegate;
-
+@property (nonatomic, assign)id <SPPAgileHubConnectionDelegate> connectionDelegate;
 @property NSString *sessionId;
 
 - (void) ConnectTo:(NSString *) server;

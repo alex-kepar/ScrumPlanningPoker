@@ -28,7 +28,6 @@ FOUNDATION_EXPORT NSString *const SPPVote_onChanged;
 @property BOOL isFinished;
 @property NSInteger overallMark;
 @property NSMutableArray *votedUsers;
-@property NSObject *owner;
 
 @property (nonatomic, assign) id <SPPVoteDelegate> voteDelegate;
 

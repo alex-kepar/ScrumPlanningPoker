@@ -14,6 +14,5 @@ FOUNDATION_EXPORT NSString *const SPPUserVote_onChanged;
 
 @property NSInteger mark;
 @property NSInteger userId;
-@property NSObject *owner;
 
 @end

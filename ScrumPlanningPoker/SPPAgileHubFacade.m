@@ -15,24 +15,21 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
 @implementation SPPAgileHubFacade {
     NSMutableArray *roomList;
     SPPAgileHub *agileHub;
-    SPPRoom *openedRoom;
-}
-
-//@synthesize delegate;
-
-+ (instancetype) SPPAgileHubFacadeWithAgileHub:(SPPAgileHub*)initAgileHub roomList:(NSArray*)initRoomList {
-    return [[self alloc] initWithAgileHub:initAgileHub roomList:initRoomList];
 }
 
 - (NSArray *) rooms {
     return roomList;
 }
+@synthesize connectionDelegate;
+@synthesize serverName;
+@synthesize currentUser;
+@synthesize openedRoom;
 
-- (SPPRoom*) openedRoom {
-    return openedRoom;
++ (instancetype) SPPAgileHubFacadeWithRoomList:(NSArray*)initRoomList serverName:(NSString*)initServerName {
+    return [[self alloc] initWithRoomList:initRoomList serverName:initServerName];
 }
 
-- (instancetype) initWithAgileHub:(SPPAgileHub*)initAgileHub roomList:(NSArray*)initRoomList {
+- (instancetype) initWithRoomList:(NSArray*)initRoomList serverName:(NSString*)initServerName {
     if (self = [super init]) {
         roomList = [NSMutableArray arrayWithCapacity:initRoomList.count];
         for (int i = 0; i < initRoomList.count; i++) {
@@ -41,7 +38,23 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
             }
         }
 
-        agileHub = initAgileHub;
+        serverName = initServerName;
+        agileHub = [[SPPAgileHub alloc] init];
+        agileHub.connectionDelegate = self;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(notifyAgileHub_Connected:)
+                                                     name:SPPAgileHub_onConnected
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(notifyAgileHub_ErrorCatched:)
+                                                     name:SPPAgileHub_onErrorCatched
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(notifyAgileHub_UserLogged:)
+                                                     name:SPPAgileHub_onUserLogged
+                                                   object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(notifyAgileHubRoom_Changed:)
@@ -97,14 +110,40 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
 }
 
 // notify handling
+-(void) notifyAgileHub_Connected:(NSNotification*) notification {
+    NSDictionary *sessionDto = notification.userInfo[@"sessionDto"];
+    NSInteger userId = [[sessionDto valueForKey:@"UserId"] integerValue];
+    if (userId != currentUser.entityId) {
+        currentUser = nil;
+        if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:HubDidReceiveError:)]) {
+            NSDictionary *errorDetail = [NSDictionary dictionaryWithObject:@"Id o the logged user does not correspond to the connected users's Id." forKey:NSLocalizedDescriptionKey];
+            NSError *error=[NSError errorWithDomain:@"SPPAgileHubFacade" code:-100 userInfo:errorDetail];
+            [connectionDelegate agileHubFacade:self HubDidReceiveError:error];
+        }
+    } else {
+        if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:HubSessionDidOpenByUser:)]) {
+            [connectionDelegate agileHubFacade:self HubSessionDidOpenByUser:currentUser];
+        }
+    }
+}
+
+-(void) notifyAgileHub_ErrorCatched:(NSNotification*) notification {
+    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:HubDidReceiveError:)]) {
+        NSDictionary *errorDetail = [NSDictionary dictionaryWithObject:notification.userInfo[@"messageDto"] forKey:NSLocalizedDescriptionKey];
+        NSError *error=[NSError errorWithDomain:@"SPPAgileHubFacade" code:-101 userInfo:errorDetail];
+        [connectionDelegate agileHubFacade:self HubDidReceiveError:error];
+    }
+}
+
+-(void) notifyAgileHub_UserLogged:(NSNotification*) notification {
+    currentUser = [SPPUser SPPBaseEntityWithDataDictionary:notification.userInfo[@"userDto"]];
+}
+
 -(void) notifyAgileHubRoom_onOpened:(NSNotification*) notification {
     openedRoom = [self _synchronizeRoomUseData:notification.userInfo[@"roomDto"]];
     [[NSNotificationCenter defaultCenter] postNotificationName:SPPAgileHubFacade_onDidOpenRoom
                                                         object:self
                                                       userInfo:@{@"room": openedRoom}];
-    //if (delegate && [delegate respondsToSelector:@selector(SPPAgileHubFacade:DidOpenRoom:)]) {
-    //    [delegate SPPAgileHubFacade:self DidOpenRoom:openedRoom];
-    //}
 }
 
 -(void) notifyAgileHubRoom_Changed:(NSNotification*) notification {
@@ -112,25 +151,25 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
 }
 
 -(void) notifyAgileHubRoom_onUserJoined:(NSNotification*) notification {
-    if (openedRoom != nil) {
+    if (openedRoom) {
         [openedRoom updateUser:notification.userInfo[@"userDto"]];
     }
 }
 
 -(void) notifyAgileHubRoom_onUserLeft:(NSNotification*) notification {
-    if (openedRoom != nil) {
+    if (openedRoom) {
         [openedRoom removeUser:notification.userInfo[@"userDto"]];
     }
 }
 
 -(void) notifyAgileHubRoom_onUserVoted:(NSNotification*) notification {
-    if (openedRoom != nil) {
+    if (openedRoom) {
         [openedRoom userVote:notification.userInfo[@"userVoteDto"]];
     }
 }
 
 -(void) notifyAgileHubRoom_UpdateVote:(NSNotification*) notification {
-    if (openedRoom != nil) {
+    if (openedRoom) {
         [openedRoom updateVote:notification.userInfo[@"voteDto"]];
     }
 }
@@ -143,21 +182,21 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
 }
 
 - (void) openRoomUseName: (NSString*)roomName {
-    if (openedRoom != nil) {
+    if (openedRoom) {
         [self closeRoom];
     }
     [agileHub joinRoom:roomName];
 }
 
 - (void) closeRoom {
-    if (openedRoom != nil) {
+    if (openedRoom) {
         [agileHub leaveRoom:openedRoom.name];
         openedRoom = nil;
     }
 }
 
 - (void) vote:(NSInteger)voteId doVote:(NSInteger)voteValue {
-    if (openedRoom != nil) {
+    if (openedRoom) {
         [agileHub room:openedRoom.name
               withVote:voteId
                 doVote:voteValue];
@@ -213,5 +252,37 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
     }
     return room;
 }
+
+#pragma mark + connection block
+- (void) connect {
+    [agileHub ConnectTo:serverName];
+}
+
+- (void) disconnect {
+    [agileHub Disconnect];
+}
+#pragma mark - connection block
+
+#pragma mark + SPPAgileHubConnectDelegate
+- (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidClose:(SRConnection *) connection {
+    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:ConnectionDidClose:)])
+    {
+        [connectionDelegate agileHubFacade:self ConnectionDidClose:connection];
+    }
+
+}
+
+- (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidOpen:(SRConnection *) connection {
+    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:ConnectionDidOpen:)]) {
+        [connectionDelegate agileHubFacade:self ConnectionDidOpen:connection];
+    }
+}
+
+- (void)agileHub: (SPPAgileHub *) agileHub Connection:(SRConnection *) connection didReceiveError:(NSError *)error {
+    if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:Connection:didReceiveError:)]) {
+        [connectionDelegate agileHubFacade:self Connection:connection didReceiveError:error];
+    }
+}
+#pragma mark - SPPAgileHubConnectDelegate
 
 @end

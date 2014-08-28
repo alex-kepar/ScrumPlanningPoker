@@ -70,7 +70,7 @@
     
     if(cell!=nil)
     {
-        cell.label.text = [NSString stringWithFormat:@"%d", [cardsList[indexPath.row] integerValue]];
+        cell.label.text = [NSString stringWithFormat:@"%ld", (long)[cardsList[indexPath.row] integerValue]];
     }
     return cell;
 }

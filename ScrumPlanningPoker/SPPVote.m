@@ -102,7 +102,6 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
     if (_voteUserItemConstructor == nil) {
         _voteUserItemConstructor = ^(NSObject *owner, NSDictionary *initData) {
             SPPUserVote *voteUser = [SPPUserVote SPPBaseEntityWithDataDictionary:initData];
-            voteUser.owner = owner;
             return voteUser;
         };
     }

@@ -21,7 +21,7 @@ NSString *const SPPUser_onChanged = @"SPPUser_onChanged";
 @synthesize privileges;
 
 - (void)dealloc {
-    NSLog(@"********** User '%@' (id=%d) deallocated.", self.name, self.entityId);
+    NSLog(@"********** User '%@' (id=%ld) deallocated.", self.name, (long)self.entityId);
 }
 
 - (void) setName:(NSString *)name {
