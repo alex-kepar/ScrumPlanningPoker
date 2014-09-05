@@ -19,6 +19,7 @@
 @implementation RoomViewController
 
 @synthesize room;
+@synthesize currentUser;
 @synthesize promptRoot;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -35,17 +36,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.prompt = [NSString stringWithFormat:@"%@/%@", promptRoot, room.name];
-    self.navigationItem.title=@"Votes";
+    self.navigationItem.title = @"Votes";
+    self.outRoomButton.room = room;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notifyRoom_onChanged:)
                                                  name:SPPRoom_onChanged
                                                object:nil];
 }
-
-//-(void) dealloc {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//}
-
 
 #pragma mark + UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -66,6 +63,10 @@
 
 
 #pragma mark + UITableViewDataSource
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return room.itemsToVote.count;
@@ -75,14 +76,14 @@
 {
     SPPVoteViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"VoteCell" forIndexPath:indexPath];
     if (cell != nil) {
-        [cell initializeWithVote:room.itemsToVote[indexPath.row]];
+        [cell initializeWithVote:room.itemsToVote[indexPath.row] forCurrentUser:currentUser forRoom:room];
         __weak RoomViewController *weakSelf = self;
         cell.voteAction = ^(SPPVote *vote) {
             RoomViewController *strongSelf = weakSelf;
             if (!strongSelf) {
                 return;
             }
-            [strongSelf selectVote:vote];
+            //[strongSelf selectVote:vote];
             [strongSelf performSegueWithIdentifier:@"VoteSeque" sender:vote];
         };
         cell.changeStateAction = ^(SPPVote *vote) {
@@ -90,7 +91,7 @@
             if (!strongSelf) {
                 return;
             }
-            [strongSelf selectVote:vote];
+            //[strongSelf selectVote:vote];
             if (!vote.isOpened) {
                 [vote open];
             } else if (!vote.isFinished) {
@@ -103,7 +104,7 @@
     return cell;
 }
 
-- (void)selectVote:(SPPVote*)vote {
+//- (void)selectVote:(SPPVote*)vote {
     /*NSInteger row = [room.itemsToVote indexOfObjectPassingTest:^BOOL(SPPVote* item, NSUInteger idx, BOOL *stop) {
         return (item.entityId == vote.entityId);
     }];
@@ -114,7 +115,7 @@
             [self tableView:self.tvVotes didSelectRowAtIndexPath:[self.tvVotes indexPathForSelectedRow]];
         }
     }*/
-}
+//}
 
 #pragma mark - UITableViewDataSource
 
@@ -172,18 +173,18 @@
 #pragma mark - segue handling
 
 -(void) notifyRoom_onChanged:(NSNotification*) notification {
-    if (notification.object == room) {
-        if (notification.userInfo) {
-            id list = [notification.userInfo valueForKey:@"list"];
-            if (list == room.connectedUsers) {
-                [self.cvUsers reloadData];
-            } else if (list == room.itemsToVote) {
-                [self.tvVotes reloadData];
-            }
-        } else if (!room.isActive) {
-            [self showMessage:@"Room has been closed." withTitle:room.name];
-            [self.navigationController popViewControllerAnimated:YES];
+    if (notification.object == room &&
+        notification.userInfo) {
+        id list = [notification.userInfo valueForKey:@"list"];
+        if (list == room.connectedUsers) {
+            [self.cvUsers reloadData];
+        } else if (list == room.itemsToVote) {
+            [self.tvVotes reloadData];
         }
+        // else if (!room.isActive) {
+        //    [self showMessage:@"Room has been closed." withTitle:room.name];
+        //    [self.navigationController popViewControllerAnimated:YES];
+        //}
     }
 }
 

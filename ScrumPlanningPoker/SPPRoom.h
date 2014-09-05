@@ -21,9 +21,9 @@ FOUNDATION_EXPORT NSString *const SPPRoom_onChanged;
 - (void)SPPRoom:(SPPRoom *)room changeState:(BOOL)newState;
 @end
 
-@interface SPPRoom : SPPBaseEntity //<SPPAgileHubRoomDelegate>
+@interface SPPRoom : SPPBaseEntity <SPPVoteDelegate>
 
-@property (nonatomic, assign)id <SPPRoomDelegate> roomDelegate;
+@property (nonatomic, weak)id <SPPRoomDelegate> roomDelegate;
 
 @property NSString* name;
 @property NSString* description;

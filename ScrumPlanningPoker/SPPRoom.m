@@ -142,19 +142,22 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 #pragma mark + SPPVoteDelegate
 - (void)SPPVote:(SPPVote*)vote doVote: (NSInteger) voteValue {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:withVote:doVote:)]) {
-        [roomDelegate SPPRoom:self withVote:vote doVote:voteValue];
+        __weak SPPRoom *weakSelf = self;
+        [roomDelegate SPPRoom:weakSelf withVote:vote doVote:voteValue];
     }
 }
 
 - (void)SPPVoteOpen:(SPPVote*)vote {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:openVote:)]) {
-        [roomDelegate SPPRoom:self openVote:vote];
+        __weak SPPRoom *weakSelf = self;
+        [roomDelegate SPPRoom:weakSelf openVote:vote];
     }
 }
 
 - (void)SPPVoteClose:(SPPVote*)vote withOveralValue:(NSInteger)overalValue {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:closeVote:withOveralValue:)]) {
-        [roomDelegate SPPRoom:self closeVote:vote withOveralValue:overalValue];
+        __weak SPPRoom *weakSelf = self;
+        [roomDelegate SPPRoom:weakSelf closeVote:vote withOveralValue:overalValue];
     }
 }
 
@@ -162,7 +165,8 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
 
 - (void)changeState:(BOOL)newState {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:changeState:)]) {
-        [roomDelegate SPPRoom:self changeState:newState];
+        __weak SPPRoom *weakSelf = self;
+        [roomDelegate SPPRoom:weakSelf changeState:newState];
     }
 }
 

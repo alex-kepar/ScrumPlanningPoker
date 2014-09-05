@@ -70,7 +70,8 @@
 {
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:ConnectionDidOpen:)])
     {
-        [connectionDelegate agileHub:self ConnectionDidOpen:connection];
+        __weak SPPAgileHub *weakSelf = self;
+        [connectionDelegate agileHub:weakSelf ConnectionDidOpen:connection];
     }
 }
 
@@ -83,7 +84,8 @@
 {
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:ConnectionDidClose:)])
     {
-        [connectionDelegate agileHub:self ConnectionDidClose:connection];
+        __weak SPPAgileHub *weakSelf = self;
+        [connectionDelegate agileHub:weakSelf ConnectionDidClose:connection];
     }
 }
 
@@ -91,7 +93,8 @@
 {
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:Connection:didReceiveError:)])
     {
-        [connectionDelegate agileHub:self Connection:connection didReceiveError:error];
+        __weak SPPAgileHub *weakSelf = self;
+        [connectionDelegate agileHub:weakSelf Connection:connection didReceiveError:error];
     }
 }
 #pragma mark - SRConnection Delegate

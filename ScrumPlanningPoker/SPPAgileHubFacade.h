@@ -28,7 +28,7 @@ FOUNDATION_EXPORT NSString *const SPPAgileHubFacade_onDidOpenRoom;
 
 @interface SPPAgileHubFacade : NSObject <SPPRoomDelegate, SPPAgileHubConnectionDelegate>
 
-@property (nonatomic, assign)id <SPPAgileHubFacadeConnectionDelegate> connectionDelegate;
+@property (nonatomic, weak)id <SPPAgileHubFacadeConnectionDelegate> connectionDelegate;
 
 @property NSString *serverName;
 @property (readonly) SPPUser *currentUser;

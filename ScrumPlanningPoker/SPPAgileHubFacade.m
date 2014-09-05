@@ -118,11 +118,13 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
         if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:HubDidReceiveError:)]) {
             NSDictionary *errorDetail = [NSDictionary dictionaryWithObject:@"Id o the logged user does not correspond to the connected users's Id." forKey:NSLocalizedDescriptionKey];
             NSError *error=[NSError errorWithDomain:@"SPPAgileHubFacade" code:-100 userInfo:errorDetail];
-            [connectionDelegate agileHubFacade:self HubDidReceiveError:error];
+            __weak SPPAgileHubFacade *weakSelf = self;
+            [connectionDelegate agileHubFacade:weakSelf HubDidReceiveError:error];
         }
     } else {
         if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:HubSessionDidOpenByUser:)]) {
-            [connectionDelegate agileHubFacade:self HubSessionDidOpenByUser:currentUser];
+            __weak SPPAgileHubFacade *weakSelf = self;
+            [connectionDelegate agileHubFacade:weakSelf HubSessionDidOpenByUser:currentUser];
         }
     }
 }
@@ -131,7 +133,8 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:HubDidReceiveError:)]) {
         NSDictionary *errorDetail = [NSDictionary dictionaryWithObject:notification.userInfo[@"messageDto"] forKey:NSLocalizedDescriptionKey];
         NSError *error=[NSError errorWithDomain:@"SPPAgileHubFacade" code:-101 userInfo:errorDetail];
-        [connectionDelegate agileHubFacade:self HubDidReceiveError:error];
+        __weak SPPAgileHubFacade *weakSelf = self;
+        [connectionDelegate agileHubFacade:weakSelf HubDidReceiveError:error];
     }
 }
 
@@ -267,20 +270,23 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
 - (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidClose:(SRConnection *) connection {
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:ConnectionDidClose:)])
     {
-        [connectionDelegate agileHubFacade:self ConnectionDidClose:connection];
+        __weak SPPAgileHubFacade *weakSelf = self;
+        [connectionDelegate agileHubFacade:weakSelf ConnectionDidClose:connection];
     }
 
 }
 
 - (void)agileHub: (SPPAgileHub *) agileHub ConnectionDidOpen:(SRConnection *) connection {
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:ConnectionDidOpen:)]) {
-        [connectionDelegate agileHubFacade:self ConnectionDidOpen:connection];
+        __weak SPPAgileHubFacade *weakSelf = self;
+        [connectionDelegate agileHubFacade:weakSelf ConnectionDidOpen:connection];
     }
 }
 
 - (void)agileHub: (SPPAgileHub *) agileHub Connection:(SRConnection *) connection didReceiveError:(NSError *)error {
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHubFacade:Connection:didReceiveError:)]) {
-        [connectionDelegate agileHubFacade:self Connection:connection didReceiveError:error];
+        __weak SPPAgileHubFacade *weakSelf = self;
+        [connectionDelegate agileHubFacade:weakSelf Connection:connection didReceiveError:error];
     }
 }
 #pragma mark - SPPAgileHubConnectDelegate

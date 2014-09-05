@@ -28,7 +28,7 @@
     [super viewDidAppear:animated];
     webService = nil;
     if (agileHubFacade) {
-        [self lockView];
+        //[self lockView];
         [agileHubFacade disconnect];
         agileHubFacade = nil;
     }
@@ -60,7 +60,8 @@
 #pragma mark + SPPConnectionDelegate
 - (void)webService:(SPPWebService*)service didConnected:(NSString*)server;
 {
-    [service getRoomList];
+    //[service getRoomList];
+    [webService getRoomList];
 }
 
 -(void) webService:(SPPWebService *)service didReceiveRoomList:(NSArray *)data
@@ -102,10 +103,10 @@
     }
 }
 
-- (void)agileHubFacade:(SPPAgileHubFacade*)hub ConnectionDidClose:(SRConnection*)connection {
-    [self unlockView];
-    agileHubFacade = nil;
-}
+//- (void)agileHubFacade:(SPPAgileHubFacade*)hub ConnectionDidClose:(SRConnection*)connection {
+//    [self unlockView];
+//    agileHubFacade = nil;
+//}
 
 
 - (void)agileHubFacade:(SPPAgileHubFacade*)hub HubSessionDidOpenByUser:(SPPUser*)user {

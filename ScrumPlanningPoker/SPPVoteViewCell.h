@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "SPPVote.h"
+#import "SPPUser.h"
+#import "SPPRoom.h"
 
 typedef void(^SPPVoteViewCellVoteActionBlock)(SPPVote *vote);
 
 @interface SPPVoteViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lContent;
-//@property (weak, nonatomic) IBOutlet UILabel *lState;
 @property (weak, nonatomic) IBOutlet UILabel *lOveralVote;
 @property (weak, nonatomic) IBOutlet UIButton *bVote;
 @property (weak, nonatomic) IBOutlet UISwitch *swOpened;
@@ -23,6 +24,5 @@ typedef void(^SPPVoteViewCellVoteActionBlock)(SPPVote *vote);
 @property (copy, nonatomic) SPPVoteViewCellVoteActionBlock voteAction;
 @property (copy, nonatomic) SPPVoteViewCellVoteActionBlock changeStateAction;
 
-- (void)initializeWithVote:(SPPVote*)initVote;
-//- (void)setVoteAction:(SPPVoteViewCellVoteAction)newVoteAction;
+- (void)initializeWithVote:(SPPVote*)initVote forCurrentUser:(SPPUser*)initCurrentUser forRoom:(SPPRoom*)initRoom;
 @end

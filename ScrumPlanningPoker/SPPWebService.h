@@ -10,13 +10,12 @@
 
 @class SPPWebService;
 
-@protocol SPPWebServiceDelegate<NSObject>
+@protocol SPPWebServiceDelegate<NSObject, NSURLSessionTaskDelegate>
 //@required
 @optional
 - (void)webService:(SPPWebService*)service didConnected:(NSString*)server;
 - (void)webService:(SPPWebService*)service didReceiveError:(NSError*)error;
 - (void)webService:(SPPWebService*)service didReceiveRoomList:(NSArray*)data;
-- (void)webService:(SPPWebService*)service didReset:(NSString*)server;
 @end
 
 @interface SPPWebService : NSObject
@@ -24,9 +23,8 @@
 @property (readonly) NSString* server;
 @property (readonly) NSString* login;
 @property (readonly) NSString* userToken;
-@property (nonatomic, assign)id <SPPWebServiceDelegate> delegate;
+@property (nonatomic, weak)id <SPPWebServiceDelegate> delegate;
 
 -(void)connectTo: (NSString*) server Login: (NSString*) login Password: (NSString*) password;
--(void)reset;
 -(void)getRoomList;
 @end

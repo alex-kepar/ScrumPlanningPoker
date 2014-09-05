@@ -125,15 +125,12 @@
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgg-st-ZkX">
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgg-st-ZkX" customClass="SPPRoomButton">
                                                     <rect key="frame" x="5" y="4" width="35" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" image="RoomClosed.png">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
-                                                    <connections>
-                                                        <action selector="actChangeState:" destination="uLl-jF-utN" eventType="touchUpInside" id="gBO-Um-Ygf"/>
-                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UXU-sb-GVw">
                                                     <rect key="frame" x="23" y="24" width="26" height="21"/>
@@ -144,9 +141,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="bState" destination="fgg-st-ZkX" id="VeX-eb-GEk"/>
                                             <outlet property="descriptionLabel" destination="UXU-sb-GVw" id="PUl-Eo-eRg"/>
                                             <outlet property="nameLabel" destination="U5w-l2-tH3" id="PTY-3o-IaI"/>
+                                            <outlet property="outRoomButton" destination="fgg-st-ZkX" id="L0m-Cm-A1n"/>
                                             <outlet property="usersCount" destination="UXU-sb-GVw" id="2Ej-IA-KMR"/>
                                         </connections>
                                     </tableViewCell>
@@ -318,9 +315,27 @@
                             <constraint firstItem="PIu-el-12F" firstAttribute="leading" secondItem="6zT-u0-oxS" secondAttribute="leading" id="z6d-kE-Bb7"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="oYJ-VP-uJR"/>
+                    <navigationItem key="navigationItem" id="oYJ-VP-uJR">
+                        <barButtonItem key="rightBarButtonItem" id="6dW-HP-QDZ">
+                            <view key="customView" contentMode="scaleToFill" id="URo-VT-kSC">
+                                <rect key="frame" x="271" y="5" width="33" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9O8-rx-XyM" customClass="SPPRoomButton">
+                                        <rect key="frame" x="0.0" y="0.0" width="33" height="33"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button" image="RoomClosed.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="cvUsers" destination="1dW-oX-11j" id="luG-Gp-NHK"/>
+                        <outlet property="outRoomButton" destination="9O8-rx-XyM" id="b7p-Nn-hbe"/>
                         <outlet property="tvVotes" destination="PIu-el-12F" id="rrq-6B-mxi"/>
                         <segue destination="T6X-Fq-gO7" kind="push" identifier="ChangeVoteStateSeque" id="W3m-BT-Edk"/>
                         <segue destination="T6X-Fq-gO7" kind="push" identifier="VoteSeque" id="7ti-r8-RLd"/>

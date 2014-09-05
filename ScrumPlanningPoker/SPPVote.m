@@ -25,7 +25,6 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
 @synthesize isFinished = _isFinished;
 @synthesize overallMark = _overallMark;
 @synthesize votedUsers;
-
 @synthesize voteDelegate;
 
 - (void)dealloc {
@@ -142,19 +141,22 @@ NSString *const SPPVote_onChanged = @"SPPVote_onChanged";
 
 - (void) doVote: (NSInteger) voteValue {
     if (voteDelegate && [voteDelegate respondsToSelector:@selector(SPPVote:doVote:)]) {
-        [voteDelegate SPPVote:self doVote:voteValue];
+        __weak SPPVote *weakSelf = self;
+        [voteDelegate SPPVote:weakSelf doVote:voteValue];
     }
 }
 
 - (void)open {
     if (voteDelegate && [voteDelegate respondsToSelector:@selector(SPPVoteOpen:)]) {
-        [voteDelegate SPPVoteOpen:self];
+        __weak SPPVote *weakSelf = self;
+        [voteDelegate SPPVoteOpen:weakSelf];
     }
 }
 
 - (void)closeWithOveralValue:(NSInteger)overalValue {
     if (voteDelegate && [voteDelegate respondsToSelector:@selector(SPPVoteClose:withOveralValue:)]) {
-        [voteDelegate SPPVoteClose:self withOveralValue:overalValue];
+        __weak SPPVote *weakSelf = self;
+        [voteDelegate SPPVoteClose:weakSelf withOveralValue:overalValue];
     }
 }
 

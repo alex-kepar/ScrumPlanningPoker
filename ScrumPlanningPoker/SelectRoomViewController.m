@@ -14,16 +14,12 @@
 //#import "SPPAgileHub.h"
 
 @interface SelectRoomViewController ()
-{
-    //NSDictionary *selectedRoomDto;
-    //SPPAgileHub *agileHub;
-}
+
 @end
 
 @implementation SelectRoomViewController
 
 @synthesize promptRoot;
-//@synthesize roomListDto;
 @synthesize agileHubFacade;
 
 - (void)viewDidLoad
@@ -68,9 +64,9 @@
     if(cell!=nil)
     {
         [cell initializeWithRoom:agileHubFacade.rooms[indexPath.row]];
-        cell.changeStateAction = ^(SPPRoom *room){
-            [room changeState:!room.isActive];
-        };
+        //cell.changeStateAction = ^(SPPRoom *room){
+        //    [room changeState:!room.isActive];
+        //};
     }
     return cell;
 }
@@ -91,6 +87,7 @@
         if ([segue.destinationViewController isKindOfClass:[RoomViewController class]]) {
             RoomViewController *roomViewController = (RoomViewController *)segue.destinationViewController;
             roomViewController.room = agileHubFacade.openedRoom;
+            roomViewController.currentUser = agileHubFacade.currentUser;
             roomViewController.promptRoot = self.navigationItem.prompt;
         }
     }

@@ -19,7 +19,7 @@
 
 @interface SPPAgileHub : NSObject <SRConnectionDelegate>
 
-@property (nonatomic, assign)id <SPPAgileHubConnectionDelegate> connectionDelegate;
+@property (nonatomic, weak)id <SPPAgileHubConnectionDelegate> connectionDelegate;
 @property NSString *sessionId;
 
 - (void) ConnectTo:(NSString *) server;

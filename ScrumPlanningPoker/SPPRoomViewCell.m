@@ -12,7 +12,7 @@
     SPPRoom *room;
 }
 
-@synthesize changeStateAction;
+//@synthesize changeStateAction;
 
 -(id) initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
@@ -28,27 +28,29 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(UIImage *) imageForRoomStatus: (BOOL)isActive
-{
-    if(isActive)
-    {
-        return [UIImage imageNamed:@"RoomOpened.png"];
-    }
-    else
-    {
-        return [UIImage imageNamed:@"RoomClosed.png"];
-    }
-}
+//-(UIImage *) imageForRoomStatus: (BOOL)isActive
+//{
+//    if(isActive)
+//    {
+//        return [UIImage imageNamed:@"RoomOpened.png"];
+//    }
+//    else
+//    {
+//        return [UIImage imageNamed:@"RoomClosed.png"];
+//    }
+//}
 
 - (void) redrawCell {
     _nameLabel.text = room.name;;
     _descriptionLabel.text = room.description;
     _usersCount.text = [NSString stringWithFormat:@"%ld", (long)room.connectedUsers.count];
-    [_bState setImage:[self imageForRoomStatus:room.isActive] forState:UIControlStateNormal];
+    //_outRoomButton.isActive = room.isActive;
+//    [_bState setImage:[self imageForRoomStatus:room.isActive] forState:UIControlStateNormal];
 }
 
 -(void) initializeWithRoom:(SPPRoom*) initRoom {
     room = initRoom;
+    self.outRoomButton.room = initRoom;
     [self redrawCell];
 }
 
@@ -59,9 +61,9 @@
     }
 }
 
-- (IBAction)actChangeState:(UIButton *)sender {
-    if (changeStateAction) {
-        changeStateAction(room);
-    }
-}
+//- (IBAction)actChangeState:(UIButton *)sender {
+//    if (changeStateAction) {
+//        changeStateAction(room);
+//    }
+//}
 @end
