@@ -26,7 +26,7 @@ FOUNDATION_EXPORT NSString *const SPPRoom_onChanged;
 @property (nonatomic, weak)id <SPPRoomDelegate> roomDelegate;
 
 @property NSString* name;
-@property NSString* description;
+@property NSString* roomDescription;
 @property BOOL isActive;
 @property NSMutableArray* connectedUsers;
 @property NSMutableArray* itemsToVote;

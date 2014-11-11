@@ -10,6 +10,7 @@
 #import "RoomViewNotifications.h"
 #import "SPPUserVote.h"
 #import "SPPAnimationFactory.h"
+#import "CALayer+XibConfiguration.h"
 
 @interface SPPUserViewCell()
 @property (strong, nonatomic) CATransition *animation;
@@ -18,6 +19,8 @@
 @implementation SPPUserViewCell {
     SPPUser *user;
     SPPVote *vote;
+    SPPUser *currentUser;
+    
 //    NSInteger voteValue;
 }
 
@@ -28,14 +31,31 @@
     return _animation;
 }
 
--(void) initializeWithUser:(SPPUser*)initUser andVote:(SPPVote*)initVote {
+- (void)initializeWithUser:(SPPUser*)initUser andVote:(SPPVote*)initVote andCurrentUser:(SPPUser*)initCurrentUser {
     user = initUser;
     vote = initVote;
+    currentUser = initCurrentUser;
+    [self initializeLayerForView:self.contentView];
+
     [self redrawWithAnimation:NO];
 }
 
--(id) initWithCoder:(NSCoder *)aDecoder {
+- (void)initializeLayerForView:(UIView*)view {
+    CGFloat alpha = user.isAdmin ? 1 : 0.5;
+    view.layer.borderUIColor = (currentUser.entityId == user.entityId) ? [UIColor colorWithRed:0 green:1 blue:0 alpha:alpha] : [UIColor colorWithWhite:0 alpha:alpha];
+    view.layer.borderWidth = user.isAdmin ? 1 : 0.5;
+    view.layer.cornerRadius = 6;
+    view.layer.masksToBounds = NO;
+    [view setClipsToBounds:YES];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
+        //layer.cornerRadius = 6
+        //layer.masksToBounds = NO
+        //layer.borderWidth = 0.5
+        //layer.borderUIColor = lightGrayColor;
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(notifyUser_onChanged:)
                                                      name:SPPUser_onChanged
@@ -100,7 +120,7 @@
     }
     if (![self.lVote.text isEqualToString:text]) {
         if (isAnimate) {
-            [self.lVote.layer addAnimation:self.animation forKey:@"111kCATransitionFade"];
+            [self.lVote.layer addAnimation:self.animation forKey:@"kCATransitionFade"];
         }
         self.lVote.text = text;
     }
@@ -111,5 +131,4 @@
     vote = notification.userInfo[@"vote"];
     [self redrawWithAnimation:NO];
 }
-
 @end

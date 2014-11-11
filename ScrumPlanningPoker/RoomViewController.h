@@ -10,14 +10,15 @@
 #import "SPPRoom.h"
 #import "SPPUser.h"
 #import "SPPRoomButton.h"
+#import "SPPEditableCollectionView.h"
 
-@interface RoomViewController : SPPBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RoomViewController : SPPBaseViewController <UICollectionViewDataSource, SPPEditableCollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property SPPRoom *room;
 @property SPPUser *currentUser;
 @property NSString *promptRoot;
 
-@property (weak, nonatomic) IBOutlet UICollectionView *cvUsers;
+@property (weak, nonatomic) IBOutlet SPPEditableCollectionView *cvUsers;
 @property (weak, nonatomic) IBOutlet UITableView *tvVotes;
 @property (weak, nonatomic) IBOutlet SPPRoomButton *outRoomButton;
 

@@ -14,6 +14,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (weak, nonatomic) IBOutlet UILabel *lVote;
+@property (weak, nonatomic) IBOutlet UIView *editableView;
 
--(void) initializeWithUser:(SPPUser*)initUser andVote:(SPPVote*)initVote;
+
+-(void) initializeWithUser:(SPPUser*)initUser andVote:(SPPVote*)initVote andCurrentUser:(SPPUser*)initCurrentUser;
 @end

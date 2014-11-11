@@ -98,7 +98,6 @@
     } else {
         attributes.alpha = INACTIVE_GREY_VALUE;
         attributes.zIndex = 0;
-
         zoom = 1 - ZOOM_FACTOR;//*(1 - ABS(normalizedDistance));
         //transform = CATransform3DScale(transform, zoom, zoom, 1);
         

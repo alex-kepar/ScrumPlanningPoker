@@ -108,7 +108,6 @@
 //    agileHubFacade = nil;
 //}
 
-
 - (void)agileHubFacade:(SPPAgileHubFacade*)hub HubSessionDidOpenByUser:(SPPUser*)user {
     [self performSegueWithIdentifier:@"ShowRooms" sender:hub];
 }

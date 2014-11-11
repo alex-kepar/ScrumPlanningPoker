@@ -14,6 +14,7 @@
 		881F469718DB565D004DF389 /* CALayer+XibConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */; };
 		882C81D218C4B42C0011AD59 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882C81D118C4B42C0011AD59 /* main.storyboard */; };
 		882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 882C81D418C4C8D00011AD59 /* ConnectViewController.m */; };
+		884AAA8419FE7D59009D3985 /* SPPEditableCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 884AAA8319FE7D59009D3985 /* SPPEditableCollectionView.m */; };
 		884ECBDA199103980019A3A9 /* SPPAgileHubNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 884ECBD9199103980019A3A9 /* SPPAgileHubNotifications.m */; };
 		884ECBDD199128FD0019A3A9 /* RoomViewNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 884ECBDC199128FD0019A3A9 /* RoomViewNotifications.m */; };
 		884ECBE11994E7DC0019A3A9 /* SPPBaseEntity+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 884ECBE01994E7D90019A3A9 /* SPPBaseEntity+Protected.m */; };
@@ -76,6 +77,8 @@
 		882C81D118C4B42C0011AD59 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		882C81D318C4C8D00011AD59 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		882C81D418C4C8D00011AD59 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
+		884AAA8219FE7D59009D3985 /* SPPEditableCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPEditableCollectionView.h; sourceTree = "<group>"; };
+		884AAA8319FE7D59009D3985 /* SPPEditableCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPEditableCollectionView.m; sourceTree = "<group>"; };
 		884ECBD8199103980019A3A9 /* SPPAgileHubNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPAgileHubNotifications.h; sourceTree = "<group>"; };
 		884ECBD9199103980019A3A9 /* SPPAgileHubNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPAgileHubNotifications.m; sourceTree = "<group>"; };
 		884ECBDB199128FD0019A3A9 /* RoomViewNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewNotifications.h; sourceTree = "<group>"; };
@@ -222,6 +225,8 @@
 				881F469618DB565D004DF389 /* CALayer+XibConfiguration.m */,
 				8874035219BA08C900EE6E5B /* SPPAnimationFactory.h */,
 				8874035319BA08C900EE6E5B /* SPPAnimationFactory.m */,
+				884AAA8219FE7D59009D3985 /* SPPEditableCollectionView.h */,
+				884AAA8319FE7D59009D3985 /* SPPEditableCollectionView.m */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -383,7 +388,7 @@
 		C3A4A6DC18B24ACD00A5E4EB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Delphi;
 				TargetAttributes = {
 					C3A4A6FE18B24ACD00A5E4EB = {
@@ -496,6 +501,7 @@
 				8812FBD91959D9B8005DA858 /* SPPVoteCardViewCell.m in Sources */,
 				8874034A19B8C23200EE6E5B /* SPPRoomButton.m in Sources */,
 				884ECBF01994F1780019A3A9 /* SPPVote.m in Sources */,
+				884AAA8419FE7D59009D3985 /* SPPEditableCollectionView.m in Sources */,
 				8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */,
 				884ECBED1994F05F0019A3A9 /* SPPUser.m in Sources */,
 			);
@@ -543,7 +549,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -582,7 +587,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -646,7 +650,6 @@
 		C3A4A71418B24ACD00A5E4EB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ScrumPlanningPoker.app/ScrumPlanningPoker";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -669,7 +672,6 @@
 		C3A4A71518B24ACD00A5E4EB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ScrumPlanningPoker.app/ScrumPlanningPoker";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

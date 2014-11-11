@@ -22,14 +22,14 @@
 @synthesize currentUser;
 @synthesize promptRoot;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+//{
+//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
 
 - (void)viewDidLoad
 {
@@ -38,13 +38,14 @@
     self.navigationItem.prompt = [NSString stringWithFormat:@"%@/%@", promptRoot, room.name];
     self.navigationItem.title = @"Votes";
     self.outRoomButton.room = room;
+    self.cvUsers.isEditMode = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notifyRoom_onChanged:)
                                                  name:SPPRoom_onChanged
                                                object:nil];
 }
 
-#pragma mark + UICollectionViewDataSource
+#pragma mark - Users list handling (SPPEditableCollectionViewDataSource)
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return room.connectedUsers.count;
@@ -55,16 +56,33 @@
     SPPUserViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserCell" forIndexPath:indexPath];
     if (cell != nil)
     {
-        [cell initializeWithUser:room.connectedUsers[indexPath.row] andVote:nil];//selectedVote];
+        [cell initializeWithUser:room.connectedUsers[indexPath.row] andVote:nil andCurrentUser:currentUser];
     }
     return cell;
 }
-#pragma mark - UICollectionViewDataSource
 
+-(BOOL)collectionView:(UICollectionView *)collectionView canEditCellAtIndexPath:(NSIndexPath *)indexPath {
+    SPPUser *user = room.connectedUsers[indexPath.row];
+    return currentUser.isAdmin
+        && room.isActive
+        && user.entityId != currentUser.entityId;
+}
 
-#pragma mark + UITableViewDataSource
+- (void)collectionView:(UICollectionView *)collectionView shouldDeleteItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"Delete user");
+}
+
+#pragma mark - Vote list handling (UITableViewDataSource)
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+    return currentUser.isAdmin && room.isActive;
+}
+
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"Delete vote");
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -104,22 +122,6 @@
     return cell;
 }
 
-//- (void)selectVote:(SPPVote*)vote {
-    /*NSInteger row = [room.itemsToVote indexOfObjectPassingTest:^BOOL(SPPVote* item, NSUInteger idx, BOOL *stop) {
-        return (item.entityId == vote.entityId);
-    }];
-    if (row != NSNotFound) {
-        NSIndexPath *index = [NSIndexPath indexPathForRow:row inSection:0];
-        if (index != [self.tvVotes indexPathForSelectedRow]) {
-            [self.tvVotes selectRowAtIndexPath:index animated:NO scrollPosition:UITableViewScrollPositionNone];
-            [self tableView:self.tvVotes didSelectRowAtIndexPath:[self.tvVotes indexPathForSelectedRow]];
-        }
-    }*/
-//}
-
-#pragma mark - UITableViewDataSource
-
-#pragma mark + UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SPPVote *selectedVote = room.itemsToVote[indexPath.row];
@@ -127,18 +129,16 @@
                                                         object:self
                                                       userInfo:@{@"vote": selectedVote}];
 }
-#pragma mark - UITableViewDelegate
 
-#pragma mark + segue handling
-
-- (id) _findSuperviewForObject:(id)obj KindOfClass:(Class)classResult {
-    id superview = [obj superview];
-    if ([superview isKindOfClass:classResult] ||
-        superview == nil) {
-        return superview;
-    }
-    return [self _findSuperviewForObject:superview KindOfClass:classResult];
-}
+#pragma mark - segue handling
+//- (id) _findSuperviewForObject:(id)obj KindOfClass:(Class)classResult {
+//    id superview = [obj superview];
+//    if ([superview isKindOfClass:classResult] ||
+//        superview == nil) {
+//        return superview;
+//    }
+//    return [self _findSuperviewForObject:superview KindOfClass:classResult];
+//}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     BOOL voteSegue = [segue.identifier isEqualToString:@"VoteSeque"];
@@ -170,21 +170,23 @@
         }
     }
 }
-#pragma mark - segue handling
 
+#pragma mark - messages handling
 -(void) notifyRoom_onChanged:(NSNotification*) notification {
-    if (notification.object == room &&
-        notification.userInfo) {
-        id list = [notification.userInfo valueForKey:@"list"];
-        if (list == room.connectedUsers) {
-            [self.cvUsers reloadData];
-        } else if (list == room.itemsToVote) {
+    if (notification.object == room) {
+        BOOL isVotesNeedRepoad = YES;
+        BOOL isUsersNeedRepoad = YES;
+        if (notification.userInfo) {
+            id list = [notification.userInfo valueForKey:@"list"];
+            isVotesNeedRepoad = list == room.itemsToVote;
+            isUsersNeedRepoad = list == room.connectedUsers;
+        }
+        if (isVotesNeedRepoad) {
             [self.tvVotes reloadData];
         }
-        // else if (!room.isActive) {
-        //    [self showMessage:@"Room has been closed." withTitle:room.name];
-        //    [self.navigationController popViewControllerAnimated:YES];
-        //}
+        if (isUsersNeedRepoad) {
+            [self.cvUsers reloadData];
+        }
     }
 }
 
