@@ -7,6 +7,8 @@
 //
 
 #import "SPPWebService.h"
+#import <AFNetworking/AFNetworking.h>
+
 @interface SPPWebService ()
 
 @property (strong, nonatomic)  NSURLSession *session;
@@ -16,6 +18,7 @@
 @implementation SPPWebService {
     NSURLSessionDataTask *connectDataTask;
     NSURLSessionDataTask *roomListDataTask;
+    NSURLSessionDataTask *roomHandlingDataTask;
 }
 
 @synthesize server;
@@ -45,7 +48,7 @@
     }
 
     NSURL* url = [NSURL URLWithString: [NSString stringWithFormat:@"http://%@/Handlers/LoginHandler.ashx", aServer]];
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url]; //] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSData* passwordData=[aPassword dataUsingEncoding:NSUTF8StringEncoding];
     NSString* passwordEncode=[[passwordData base64EncodedStringWithOptions:0] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     NSData* messageData=[[NSString stringWithFormat:@"%@:%@", aLogin, passwordEncode] dataUsingEncoding:NSUTF8StringEncoding];
@@ -112,7 +115,7 @@
     }
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@/api/room/GetRooms", server]];
-    NSURLRequest *request=[NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
     __weak SPPWebService *weakSelf = self;
     roomListDataTask = [self.session dataTaskWithRequest:request
@@ -136,6 +139,28 @@
                         }];
     if (roomListDataTask) {
         [roomListDataTask resume];
+    }
+}
+
+-(void)removeUser:(NSInteger)userId fromRoom:(NSInteger)roomId {
+    if (roomHandlingDataTask) {
+        [roomHandlingDataTask cancel];
+    }
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@/api/room/LeaveRoom?roomId=%ld&userId=%ld", server, roomId, userId]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"PUT"];
+    
+    __weak SPPWebService *weakSelf = self;
+    roomHandlingDataTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf onWebServiceDidReceiveError:error];
+            });
+        }
+    }];
+    if (roomHandlingDataTask) {
+        [roomHandlingDataTask resume];
     }
 }
 

@@ -8,10 +8,9 @@
 
 #import "SPPRoom.h"
 #import "SPPBaseEntity+Protected.h"
-#import "SPPUser.h"
-#import "SPPVote.h"
 
 NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
+NSString *const SPPRoom_onUserLeft = @"SPPRoom_onUserLeft";
 
 @implementation SPPRoom {
     BOOL isPropertiesChanged;
@@ -116,15 +115,20 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
     return SPPRoom_onChanged;
 }
 
-- (void) updateUser:(NSDictionary*)userDto {
+- (void) didUpdateUser:(NSDictionary*)userDto {
     [self insertUpdateItemInList:connectedUsers useItemData:userDto useItemConstructor:self.userItemConstructor];
 }
 
-- (void) removeUser:(NSDictionary*)userDto {
-    [self deleteItemInList:connectedUsers useItemData:userDto];
+- (void) didRemoveUser:(NSDictionary*)userDto {
+    SPPBaseEntity *deletedUser = [self deleteItemInList:connectedUsers useItemData:userDto];
+    if (deletedUser) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SPPRoom_onUserLeft
+                                                            object:self
+                                                          userInfo:@{@"deletedUser": (SPPUser*)deletedUser}];
+    }
 }
 
-- (void) userVote:(NSDictionary*)userVoteDto {
+- (void) didUserVote:(NSDictionary*)userVoteDto {
     NSInteger voteId=[[userVoteDto objectForKey:@"VoteItemId"] integerValue];
     NSInteger idx = [self.itemsToVote indexOfObjectPassingTest:^BOOL(SPPBaseEntity* item, NSUInteger idx, BOOL *stop) {
         return (item.entityId == voteId);
@@ -135,11 +139,11 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
     }
 }
 
-- (void) updateVote: (NSDictionary *) voteDto {
+- (void) didUpdateVote: (NSDictionary *) voteDto {
     [self insertUpdateItemInList:itemsToVote useItemData:voteDto useItemConstructor:self.voteItemConstructor];
 }
      
-#pragma mark + SPPVoteDelegate
+#pragma mark - SPPVoteDelegate
 - (void)SPPVote:(SPPVote*)vote doVote: (NSInteger) voteValue {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:withVote:doVote:)]) {
         __weak SPPRoom *weakSelf = self;
@@ -161,7 +165,22 @@ NSString *const SPPRoom_onChanged = @"SPPRoom_onChanged";
     }
 }
 
-#pragma mark - SPPVoteDelegate
+#pragma mark - room handling
+- (void)removeUser:(SPPUser*)user {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:removeUser:)]) {
+        __weak SPPRoom *weakSelf = self;
+        [roomDelegate SPPRoom:weakSelf removeUser:user];
+    }
+}
+
+- (void)removeVote:(SPPVote*)vote {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:removeVote:)]) {
+        __weak SPPRoom *weakSelf = self;
+        [roomDelegate SPPRoom:weakSelf removeVote:vote];
+    }
+}
+
+#pragma mark -
 
 - (void)changeState:(BOOL)newState {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:changeState:)]) {

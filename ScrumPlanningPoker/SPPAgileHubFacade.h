@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SPPAgileHub.h"
+#import "SPPWebService.h"
 #import "SPPRoom.h"
 #import "SPPUser.h"
 
@@ -30,13 +31,13 @@ FOUNDATION_EXPORT NSString *const SPPAgileHubFacade_onDidOpenRoom;
 
 @property (nonatomic, weak)id <SPPAgileHubFacadeConnectionDelegate> connectionDelegate;
 
-@property NSString *serverName;
+@property (readonly) SPPWebService *webService;
 @property (readonly) SPPUser *currentUser;
 @property (readonly) NSArray *rooms;
 @property (readonly) SPPRoom *openedRoom;
 
-+ (instancetype) SPPAgileHubFacadeWithRoomList:(NSArray*)initRoomList serverName:(NSString*)initServerName;
-- (instancetype) initWithRoomList:(NSArray*)initRoomList serverName:(NSString*)initServerName;
++ (instancetype) SPPAgileHubFacadeWithRoomList:(NSArray*)initRoomList andWebService:(SPPWebService*)initWebService;
+- (instancetype) initWithRoomList:(NSArray*)initRoomList andWebService:(SPPWebService*)initWebService;
 
 - (void) connect;
 - (void) disconnect;

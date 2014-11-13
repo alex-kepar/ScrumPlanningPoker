@@ -25,6 +25,7 @@
 @property (readonly) NSString* userToken;
 @property (nonatomic, weak)id <SPPWebServiceDelegate> delegate;
 
--(void)connectTo: (NSString*) server Login: (NSString*) login Password: (NSString*) password;
+-(void)connectTo:(NSString*)server Login:(NSString*)login Password:(NSString*)password;
 -(void)getRoomList;
+-(void)removeUser:(NSInteger)userId fromRoom:(NSInteger)roomId;
 @end

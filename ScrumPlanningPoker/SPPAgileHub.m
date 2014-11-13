@@ -65,7 +65,7 @@
     [hubConnection start];
 }
 
-#pragma mark + SRConnection Delegate retranslate to SPPAgileHubConnectDelegate
+#pragma mark - SRConnection Delegate retranslate to SPPAgileHubConnectDelegate
 - (void)SRConnectionDidOpen:(SRConnection *)connection
 {
     if (connectionDelegate && [connectionDelegate respondsToSelector:@selector(agileHub:ConnectionDidOpen:)])
@@ -97,9 +97,8 @@
         [connectionDelegate agileHub:weakSelf Connection:connection didReceiveError:error];
     }
 }
-#pragma mark - SRConnection Delegate
 
-#pragma mark + event notitifocations
+#pragma mark - event notitifocations
 - (void)onUserLogged: (NSDictionary *) userDto
 {
     //[{"H":"agileHub","M":"onUserLogged","A":[{"Name":"Admin","IsAdmin":true,"Privileges":[{"Name":"Admin","Description":"Administrator role.","Id":2},{"Name":"User","Description":"Default system user","Id":3},{"Name":"ScrumMaster","Description":"Scrum master role.","Id":1}],"Id":1}]}]
@@ -188,7 +187,7 @@
                                                         object:self
                                                       userInfo:@{@"voteDto": voteDto}];
 }
-#pragma mark - event notitifocations
+#pragma mark -
 
 - (void) joinRoom: (NSString *) roomName {
     [hub   invoke:@"JoinRoom"
@@ -210,7 +209,7 @@
 
 - (void) room:(NSString*)roomName withVote:(NSInteger)voteId doVote:(NSInteger)voteValue {
     [hub   invoke:@"VoteForItem"
-         withArgs:@[roomName, [NSString stringWithFormat:@"%ld", (long)voteId], [NSString stringWithFormat:@"%ld", (long)voteValue]]];
+         withArgs:@[roomName, [@(voteId) stringValue], [@(voteValue) stringValue]]];
 }
 
 - (void)room:(NSString*)roomName openVote:(NSInteger)voteId {
@@ -226,6 +225,11 @@
 - (void)room:(NSString*)roomName changeState:(BOOL)newState {
     [hub invoke:@"ChangeRoomState"
        withArgs:@[roomName, [NSString stringWithFormat:@"%@", newState?@"true":@"false"]]];
+}
+
+- (void)room:(NSString*)roomName removeVote:(NSInteger)voteId {
+    [hub invoke:@"RemoveVote"
+       withArgs:@[roomName, [@(voteId) stringValue]]];
 }
 
 @end

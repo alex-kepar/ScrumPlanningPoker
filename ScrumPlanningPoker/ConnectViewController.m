@@ -67,7 +67,7 @@
 -(void) webService:(SPPWebService *)service didReceiveRoomList:(NSArray *)data
 {
     agileHubFacade = [SPPAgileHubFacade SPPAgileHubFacadeWithRoomList:data
-                                                           serverName:service.server];
+                                                        andWebService:service];
     agileHubFacade.connectionDelegate = self;
     [agileHubFacade connect];
 }
@@ -87,7 +87,7 @@
         if ([segue.destinationViewController isKindOfClass:[SelectRoomViewController class]]) {
             SelectRoomViewController *selectRoomController = (SelectRoomViewController *)segue.destinationViewController;
             SPPAgileHubFacade *facade = sender;
-            selectRoomController.promptRoot = facade.serverName;
+            selectRoomController.promptRoot = facade.webService.server;
             selectRoomController.agileHubFacade = facade;
         }
     }

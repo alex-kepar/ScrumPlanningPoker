@@ -43,6 +43,10 @@
                                              selector:@selector(notifyRoom_onChanged:)
                                                  name:SPPRoom_onChanged
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notifyRoom_onUserLeft:)
+                                                 name:SPPRoom_onUserLeft
+                                               object:nil];
 }
 
 #pragma mark - Users list handling (SPPEditableCollectionViewDataSource)
@@ -69,7 +73,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView shouldDeleteItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Delete user");
+    //NSLog(@"Delete user");
+    [room removeUser:room.connectedUsers[indexPath.row]];
 }
 
 #pragma mark - Vote list handling (UITableViewDataSource)
@@ -82,7 +87,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Delete vote");
+    //NSLog(@"Delete vote");
+    [room removeVote:room.itemsToVote[indexPath.row]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -186,6 +192,18 @@
         }
         if (isUsersNeedRepoad) {
             [self.cvUsers reloadData];
+        }
+    }
+}
+
+-(void) notifyRoom_onUserLeft:(NSNotification*) notification {
+    if (notification.object == room) {
+        if (notification.userInfo) {
+            SPPUser *deletedUser = [notification.userInfo valueForKey:@"deletedUser"];
+            if (deletedUser.entityId == currentUser.entityId) {
+                [self showMessage:@"Other user removed your user from this room." withTitle:room.name];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }

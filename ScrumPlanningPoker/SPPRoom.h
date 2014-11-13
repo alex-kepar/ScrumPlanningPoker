@@ -8,8 +8,10 @@
 
 #import "SPPBaseEntity.h"
 #import "SPPVote.h"
+#import "SPPUser.h"
 
 FOUNDATION_EXPORT NSString *const SPPRoom_onChanged;
+FOUNDATION_EXPORT NSString *const SPPRoom_onUserLeft;
 
 @class SPPRoom;
 
@@ -19,6 +21,9 @@ FOUNDATION_EXPORT NSString *const SPPRoom_onChanged;
 - (void)SPPRoom:(SPPRoom *)room openVote:(SPPVote *)vote;
 - (void)SPPRoom:(SPPRoom *)room closeVote:(SPPVote *)vote withOveralValue:(NSInteger)overalValue;
 - (void)SPPRoom:(SPPRoom *)room changeState:(BOOL)newState;
+
+- (void)SPPRoom:(SPPRoom *)room removeUser:(SPPUser *)user;
+- (void)SPPRoom:(SPPRoom *)room removeVote:(SPPVote *)vote;
 @end
 
 @interface SPPRoom : SPPBaseEntity <SPPVoteDelegate>
@@ -32,11 +37,13 @@ FOUNDATION_EXPORT NSString *const SPPRoom_onChanged;
 @property NSMutableArray* itemsToVote;
 
 + (instancetype) SPPRoomWithDataDictionary:(NSDictionary*)initData;
-- (void) updateUser:(NSDictionary*)userDto;
-- (void) removeUser:(NSDictionary*)userDto;
-- (void) userVote:(NSDictionary*)userVoteDto;
-- (void) updateVote:(NSDictionary*)voteDto;
+- (void)didUpdateUser:(NSDictionary*)userDto;
+- (void)didRemoveUser:(NSDictionary*)userDto;
+- (void)didUserVote:(NSDictionary*)userVoteDto;
+- (void)didUpdateVote:(NSDictionary*)voteDto;
 
 - (void)changeState:(BOOL)newState;
 
+- (void)removeUser:(SPPUser*)user;
+- (void)removeVote:(SPPVote*)vote;
 @end

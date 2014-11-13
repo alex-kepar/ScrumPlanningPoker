@@ -33,4 +33,6 @@
 - (void)room:(NSString*)roomName closeVote:(NSInteger)voteId withOveralValue:(NSInteger)overalValue;
 - (void)room:(NSString*)roomName changeState:(BOOL)newState;
 
+- (void)room:(NSString*)roomName removeVote:(NSInteger)voteId;
+
 @end
