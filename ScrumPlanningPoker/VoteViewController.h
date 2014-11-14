@@ -26,5 +26,4 @@ typedef void(^VoteViewControllerActionBlock)(SPPVote *vote, NSInteger voteValue)
 @property (weak, nonatomic) IBOutlet SPPVoteCardsViewLayout *vlCardsLayout;
 @property (weak, nonatomic) IBOutlet UITextView *tvContent;
 @property (weak, nonatomic) IBOutlet UICollectionView *cvCardsList;
-- (IBAction)actVote:(id)sender;
 @end

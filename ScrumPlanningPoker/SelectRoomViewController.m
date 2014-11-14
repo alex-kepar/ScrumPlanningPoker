@@ -51,7 +51,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark + UITableViewDataSource
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -71,17 +71,14 @@
     return cell;
 }
 
-#pragma mark - UITableViewDataSource
-
-#pragma mark + UITableViewDelegate
+#pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self lockView];
     [agileHubFacade openRoomUseIndex:indexPath.row];
 }
-#pragma mark - UITableViewDelegate
 
-#pragma mark + segue handling
+#pragma mark - segue handling
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"RoomSegue"]) {
         if ([segue.destinationViewController isKindOfClass:[RoomViewController class]]) {
@@ -92,7 +89,7 @@
         }
     }
 }
-#pragma mark - segue handling
+#pragma mark -
 
 -(void) notifyAgileHubFacade_onChanged:(NSNotification*) notification {
     if (notification.object == agileHubFacade && notification.userInfo) {

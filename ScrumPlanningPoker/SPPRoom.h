@@ -23,6 +23,7 @@ FOUNDATION_EXPORT NSString *const SPPRoom_onUserLeft;
 - (void)SPPRoom:(SPPRoom *)room changeState:(BOOL)newState;
 
 - (void)SPPRoom:(SPPRoom *)room removeUser:(SPPUser *)user;
+- (void)SPPRoom:(SPPRoom *)room addVoteWithContent:(NSString*)voteContent;
 - (void)SPPRoom:(SPPRoom *)room removeVote:(SPPVote *)vote;
 @end
 
@@ -45,5 +46,6 @@ FOUNDATION_EXPORT NSString *const SPPRoom_onUserLeft;
 - (void)changeState:(BOOL)newState;
 
 - (void)removeUser:(SPPUser*)user;
+- (void)addVoteWithContent:(NSString*)voteContent;
 - (void)removeVote:(SPPVote*)vote;
 @end

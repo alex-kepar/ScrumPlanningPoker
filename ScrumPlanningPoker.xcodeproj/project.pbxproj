@@ -35,6 +35,8 @@
 		887B4BDF19533060005CE261 /* SPPRoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 887B4BDE19533060005CE261 /* SPPRoomViewCell.m */; };
 		887B4BE31954546B005CE261 /* RoomClosed.png in Resources */ = {isa = PBXBuildFile; fileRef = 887B4BE11954546B005CE261 /* RoomClosed.png */; };
 		887B4BE41954546B005CE261 /* RoomOpened.png in Resources */ = {isa = PBXBuildFile; fileRef = 887B4BE21954546B005CE261 /* RoomOpened.png */; };
+		88B534AF1A15157C00ECCC3C /* AddVoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B534AE1A15157C00ECCC3C /* AddVoteViewController.m */; };
+		88B534B21A1658E900ECCC3C /* SPPAddViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B534B11A1658E900ECCC3C /* SPPAddViewButton.m */; };
 		88C2E93B197913AC00E33A83 /* SPPVoteViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */; };
 		88C6057E18D3399900A1EB77 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C6057D18D3399900A1EB77 /* RoomViewController.m */; };
 		B54EA18411124EAF8FC2BD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA9419B472B54ED08B208BA4 /* libPods.a */; };
@@ -117,6 +119,10 @@
 		887B4BDE19533060005CE261 /* SPPRoomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPRoomViewCell.m; sourceTree = "<group>"; };
 		887B4BE11954546B005CE261 /* RoomClosed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoomClosed.png; sourceTree = "<group>"; };
 		887B4BE21954546B005CE261 /* RoomOpened.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoomOpened.png; sourceTree = "<group>"; };
+		88B534AD1A15157C00ECCC3C /* AddVoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddVoteViewController.h; sourceTree = "<group>"; };
+		88B534AE1A15157C00ECCC3C /* AddVoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddVoteViewController.m; sourceTree = "<group>"; };
+		88B534B01A1658E900ECCC3C /* SPPAddViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPAddViewButton.h; sourceTree = "<group>"; };
+		88B534B11A1658E900ECCC3C /* SPPAddViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPAddViewButton.m; sourceTree = "<group>"; };
 		88C2E939197913AC00E33A83 /* SPPVoteViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPVoteViewCell.h; sourceTree = "<group>"; };
 		88C2E93A197913AC00E33A83 /* SPPVoteViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPVoteViewCell.m; sourceTree = "<group>"; };
 		88C6057C18D3399900A1EB77 /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
@@ -180,6 +186,8 @@
 				884ECBDC199128FD0019A3A9 /* RoomViewNotifications.m */,
 				8812FBD41959D54A005DA858 /* VoteViewController.h */,
 				8812FBD51959D54A005DA858 /* VoteViewController.m */,
+				88B534AD1A15157C00ECCC3C /* AddVoteViewController.h */,
+				88B534AE1A15157C00ECCC3C /* AddVoteViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -214,6 +222,8 @@
 				8809DB49195D873D00D03238 /* SPPVoteCardsViewLayout.m */,
 				8874034819B8C23200EE6E5B /* SPPRoomButton.h */,
 				8874034919B8C23200EE6E5B /* SPPRoomButton.m */,
+				88B534B01A1658E900ECCC3C /* SPPAddViewButton.h */,
+				88B534B11A1658E900ECCC3C /* SPPAddViewButton.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -483,6 +493,7 @@
 				884ECBE11994E7DC0019A3A9 /* SPPBaseEntity+Protected.m in Sources */,
 				884ECBE41994E89A0019A3A9 /* SPPBaseEntity.m in Sources */,
 				884ECBDA199103980019A3A9 /* SPPAgileHubNotifications.m in Sources */,
+				88B534B21A1658E900ECCC3C /* SPPAddViewButton.m in Sources */,
 				8812FBD61959D54A005DA858 /* VoteViewController.m in Sources */,
 				884ECBEA1994ED9B0019A3A9 /* SPPRoom.m in Sources */,
 				882C81D518C4C8D00011AD59 /* ConnectViewController.m in Sources */,
@@ -501,6 +512,7 @@
 				8812FBD91959D9B8005DA858 /* SPPVoteCardViewCell.m in Sources */,
 				8874034A19B8C23200EE6E5B /* SPPRoomButton.m in Sources */,
 				884ECBF01994F1780019A3A9 /* SPPVote.m in Sources */,
+				88B534AF1A15157C00ECCC3C /* AddVoteViewController.m in Sources */,
 				884AAA8419FE7D59009D3985 /* SPPEditableCollectionView.m in Sources */,
 				8860A78618D1F04F005C5EB1 /* SelectRoomViewController.m in Sources */,
 				884ECBED1994F05F0019A3A9 /* SPPUser.m in Sources */,

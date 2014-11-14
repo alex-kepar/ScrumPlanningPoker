@@ -227,6 +227,11 @@
        withArgs:@[roomName, [NSString stringWithFormat:@"%@", newState?@"true":@"false"]]];
 }
 
+- (void)room:(NSString*)roomName addVoteWithContent:(NSString*)voteContent {
+    [hub invoke:@"AddVote"
+       withArgs:@[roomName, voteContent]];
+}
+
 - (void)room:(NSString*)roomName removeVote:(NSInteger)voteId {
     [hub invoke:@"RemoveVote"
        withArgs:@[roomName, [@(voteId) stringValue]]];

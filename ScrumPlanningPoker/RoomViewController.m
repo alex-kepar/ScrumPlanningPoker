@@ -12,8 +12,13 @@
 #import "SPPVoteViewCell.h"
 #import "SPPVote.h"
 #import "RoomViewNotifications.h"
+#import "AddVoteViewController.h"
+#import "SPPRoomButton.h"
+#import "SPPAddViewButton.h"
 
 @interface RoomViewController ()
+@property (weak, nonatomic) IBOutlet SPPRoomButton *outRoomButton;
+@property (weak, nonatomic) IBOutlet SPPAddViewButton *outAddVoteButton;
 @end
 
 @implementation RoomViewController
@@ -38,6 +43,8 @@
     self.navigationItem.prompt = [NSString stringWithFormat:@"%@/%@", promptRoot, room.name];
     self.navigationItem.title = @"Votes";
     self.outRoomButton.room = room;
+    self.outAddVoteButton.room = room;
+    self.outAddVoteButton.user = currentUser;
     self.cvUsers.isEditMode = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notifyRoom_onChanged:)
@@ -149,6 +156,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     BOOL voteSegue = [segue.identifier isEqualToString:@"VoteSeque"];
     BOOL changeVoteStateSeque = [segue.identifier isEqualToString:@"ChangeVoteStateSeque"];
+    BOOL editVoteSegue = [segue.identifier isEqualToString:@"EditVoteSegue"];
     if (voteSegue ||
         changeVoteStateSeque) {
         if ([segue.destinationViewController isKindOfClass:[VoteViewController class]] &&
@@ -158,7 +166,7 @@
             voteController.promptRoot = self.navigationItem.prompt;
             voteController.vote = gotVote;
             if (voteSegue) {
-                voteController.title = @"Vote";
+                voteController.title = @"Voting";
                 voteController.action = ^(SPPVote *vote, NSInteger voteValue) {
                     [vote doVote:voteValue];
                 };
@@ -168,12 +176,18 @@
                     sumValue += userVote.mark;
                 }
                 voteController.defaultValue = sumValue / gotVote.votedUsers.count;
-                voteController.title = @"Overall vote";
+                voteController.title = @"Overall voting";
                 voteController.action = ^(SPPVote *vote, NSInteger voteValue) {
                     [vote closeWithOveralValue:voteValue];
                 };
             }
         }
+    } else if (editVoteSegue) {
+        AddVoteViewController *addVoteController = (AddVoteViewController*)segue.destinationViewController;
+        addVoteController.promptRoot = [NSString stringWithFormat:@"%@/%@", self.navigationItem.prompt, self.navigationItem.title];
+        addVoteController.action = ^(NSString *voteContent) {
+            [room addVoteWithContent:voteContent];
+        };
     }
 }
 

@@ -94,7 +94,7 @@
     [_vlCardsLayout didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
-- (IBAction)actVote:(id)sender {
+- (IBAction)actButtonVote:(UIBarButtonItem *)sender {
     if (_vlCardsLayout.currentItem < cardsList.count) {
         if (action) {
             action(vote, [cardsList[_vlCardsLayout.currentItem] integerValue]);

@@ -173,6 +173,13 @@ NSString *const SPPRoom_onUserLeft = @"SPPRoom_onUserLeft";
     }
 }
 
+- (void)addVoteWithContent:(NSString*)voteContent {
+    if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:addVoteWithContent:)]) {
+        __weak SPPRoom *weakSelf = self;
+        [roomDelegate SPPRoom:weakSelf addVoteWithContent:voteContent];
+    }
+}
+
 - (void)removeVote:(SPPVote*)vote {
     if (roomDelegate && [roomDelegate respondsToSelector:@selector(SPPRoom:removeVote:)]) {
         __weak SPPRoom *weakSelf = self;

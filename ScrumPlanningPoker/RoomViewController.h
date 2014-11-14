@@ -9,7 +9,6 @@
 #import "SPPBaseViewController.h"
 #import "SPPRoom.h"
 #import "SPPUser.h"
-#import "SPPRoomButton.h"
 #import "SPPEditableCollectionView.h"
 
 @interface RoomViewController : SPPBaseViewController <UICollectionViewDataSource, SPPEditableCollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -20,6 +19,4 @@
 
 @property (weak, nonatomic) IBOutlet SPPEditableCollectionView *cvUsers;
 @property (weak, nonatomic) IBOutlet UITableView *tvVotes;
-@property (weak, nonatomic) IBOutlet SPPRoomButton *outRoomButton;
-
 @end

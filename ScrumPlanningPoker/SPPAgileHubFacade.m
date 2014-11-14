@@ -236,6 +236,11 @@ NSString *const SPPAgileHubFacade_onDidOpenRoom = @"SPPAgileHubFacade_onDidOpenR
                   fromRoom:room.entityId];
 }
 
+- (void)SPPRoom:(SPPRoom *)room addVoteWithContent:(NSString*)voteContent {
+    [agileHub room:room.name
+addVoteWithContent:voteContent];
+}
+
 - (void)SPPRoom:(SPPRoom *)room removeVote:(SPPVote *)vote {
     [agileHub room:room.name
         removeVote:vote.entityId];
