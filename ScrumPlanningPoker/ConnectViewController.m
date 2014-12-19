@@ -20,7 +20,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.navigationItem.title=@"Connection";
+    self.navigationItem.title = @"Connection";
+    self.txtServer.text = @"scrum.somee.com";//@"vinw2617/WebSignalR";
+    self.txtLogin.text = @"Admin";
+    self.txtPassword.text = @"admin1234";
 }
 
 - (void)viewDidAppear:(BOOL)animated
